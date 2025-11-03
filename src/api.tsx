@@ -45,6 +45,18 @@ api.interceptors.response.use(
 
 );
 
+
+export const loginApis = {
+    sendOtp: async (mobile: string | null, email: string, referral_code: string): Promise<any> => {
+       const response = await api.post(endPoints.sendOtp, {mobile, email, referral_code});
+       return response.data;
+    },
+    verifyOtp: async (mobile: string, otp: string): Promise<any> => {
+       const response = await api.post(endPoints.verifyOtp, {mobile, otp});
+       return response.data;
+    }
+}
+
 export const contests = {
     // fetching contests details to show on home page
     fetchContests: async () => {
