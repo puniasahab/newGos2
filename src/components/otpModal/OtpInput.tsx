@@ -45,7 +45,7 @@ const OtpInput: React.FC<OtpInputProps> = ({ numInputs = 4, onComplete }) => {
           onChange={(e) => handleChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
           ref={(el) => { inputRefs.current[index] = el; }}
-          style={{ width: '40px', height: '40px', textAlign: 'center', fontSize: '20px', border: 'none', borderBottom: '2px solid #930000', outline: 'none',  }}
+          style={{ width: '40px', height: '40px', textAlign: 'center', fontSize: '20px', border: 'none', borderBottom: '2px solid #930000', outline: 'none', backgroundColor: 'transparent', color: 'black' }}
         />
       ))}
     </div>

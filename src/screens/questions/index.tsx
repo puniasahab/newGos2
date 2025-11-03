@@ -267,7 +267,7 @@ const Questions = () => {
                    strokeWidth={4}
                    duration={12} // Timer duration in seconds
                 //    trailColor="green-500"
-                   colors={['#004777', '#F7B801', '#A30000', '#A30000']} // Colors for different progress stages
+                   colors={['#004777', '#70580fff', '#A30000', '#A30000']} // Colors for different progress stages
                    colorsTime={[10, 6, 3, 0]} // Time points for color changes
                 onComplete={() => {
                     // Increment question index before skipping

@@ -10,6 +10,7 @@ import { setOpenModal } from "../../screens/login/LoginSlice"
 import OtpInput from './OtpInput';
 import { loginApis } from '../../api';
 import { useNavigate } from 'react-router-dom';
+import { setAuthTokenInLS } from '../../commonFunctions';
 // import { setTotalTimeTakenForFastestFinger } from '../../utils/commonFunctions';
 // import { t } from 'i18next';
 
@@ -88,9 +89,10 @@ const OtpModal: React.FC<OtpModalProps> = () => {
                         // alert('OTP verified successfully: ' + response.message);
                         // Handle successful OTP verification, e.g., navigate to the next screen
                         dispatch(setOpenModal(false));
+                        setAuthTokenInLS(response.data.token);
                         // Navigate to the next screen or show success message
                         // setTotalTimeTakenForFastestFinger('0');
-                        navigate("/home")
+                        navigate("/")
                     } else {
                         // Show error message instead of redirecting
                         setShowErrorMessage(true);
@@ -168,7 +170,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
               <CloseIcon />
             </IconButton>
             <Typography sx = {{textAlign: 'center', color: '#930000', fontWeight: 'bold', fontSize: '22px'}}>Enter OTP</Typography>
-            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>We have sent a code to<strong>{phoneNumber}</strong></Typography>
+            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>We have sent a code to <strong>{phoneNumber}</strong></Typography>
 
             {showSuccessMessage && (
                 <Typography sx={{ 

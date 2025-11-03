@@ -14,3 +14,32 @@ export const getNameAndContestId = () => {
     const data = localStorage.getItem("nameAndContestId");
     return data ? JSON.parse(data) : [];
 };
+
+
+export const setPhoneNumberInLS = (phoneNumber: string) => {
+    localStorage.setItem("phoneNumber", phoneNumber);
+}
+
+export const getPhoneNumberFromLS = (): string | null => {
+    return localStorage.getItem("phoneNumber");
+}
+
+export const setAuthTokenInLS = (token: string) => {
+    localStorage.setItem("authToken", token);
+} 
+
+export const getAuthTokenFromLS = (): string | null => {
+    return localStorage.getItem("authToken");
+}
+
+export const removeAuthTokenFromLS = () => {
+    localStorage.removeItem("authToken");
+}
+
+export const clearAllLS = () => {
+    localStorage.clear();
+}
+
+export const removePhoneNumberFromLS = () => {
+    localStorage.removeItem("phoneNumber");
+}

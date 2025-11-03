@@ -4,6 +4,8 @@ import SoundProvider from "./components/sound";
 import Home from "./screens/home";
 import Questions from "./screens/questions";
 import Login from "./screens/login";
+import Profile from "./screens/profile";
+import EditProfile from "./screens/profile/EditProfile";
 import "./index.css";
 import { Provider } from "react-redux";
 import Leaderboard from "./screens/leaderboard";
@@ -21,6 +23,8 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/questions/:type" element={<Questions />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
             </Routes>
           </div>
         </BrowserRouter>

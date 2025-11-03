@@ -3,6 +3,7 @@ import homeReducer from './screens/home/homeSlice';
 import leaderboardReducer from "./screens/leaderboard/leaderboardSlice";
 import questionsReducer from "./screens/questions/questionsSlice";
 import logiReducer from "./screens/login/LoginSlice";
+import profileReducer from "./screens/profile/ProfileSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         leaderboard: leaderboardReducer,
         questions: questionsReducer,
         login: logiReducer,
+        profile: profileReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

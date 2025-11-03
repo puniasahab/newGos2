@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import homeBanner from '../../assets/homeBanner.png';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { setOpenModal } from './LoginSlice';
+import { setOpenModal, setPhoneNumber } from './LoginSlice';
 import { loginApis } from '../../api';
 import OtpModal from '../../components/otpModal/OtpModal';
+import { setPhoneNumberInLS } from '../../commonFunctions';
 
 const Login = () => {
     const dispatch = useAppDispatch();
@@ -29,12 +30,14 @@ const Login = () => {
             alert('Please enter a valid 10-digit mobile number');
             return;
         }
-
+        
+        dispatch(setOpenModal(true));
+        setPhoneNumberInLS(mobileNumber);
+        dispatch(setPhoneNumber(mobileNumber));
         try {
             const res = await loginApis.sendOtp(mobileNumber, '', '');
             console.log(res, "Send otp response");
-            setIsLoading(true);
-            setOpenModal(true);
+            // setIsLoading(true);
         } catch (error) {
             console.error("Error sending OTP:", error);
         }

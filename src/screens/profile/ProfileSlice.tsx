@@ -1,0 +1,132 @@
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+
+interface UserProfile {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    country: string;
+    avatar?: string;
+    isEmailVerified: boolean;
+    gainedStones: number;
+    totalPlayed: number;
+    referralCount: number;
+    dailyGameStones: number;
+}
+
+interface ProfileState {
+    userProfile: UserProfile;
+    isLoading: boolean;
+    error: string | null;
+    isEditMode: boolean;
+}
+
+const initialState: ProfileState = {
+    userProfile: {
+        id: '1',
+        name: 'Davis Curtis',
+        email: 'davis_curtis@gmail.com',
+        phone: '9999999999',
+        country: 'India',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b830?w=150&h=150&fit=crop&crop=face',
+        isEmailVerified: true,
+        gainedStones: 1000,
+        totalPlayed: 20,
+        referralCount: 10,
+        dailyGameStones: 2000
+    },
+    isLoading: false,
+    error: null,
+    isEditMode: false
+};
+
+const profileSlice = createSlice({
+    name: 'profile',
+    initialState,
+    reducers: {
+        setUserProfile: (state, action: PayloadAction<UserProfile>) => {
+            state.userProfile = action.payload;
+        },
+        updateUserProfile: (state, action: PayloadAction<Partial<UserProfile>>) => {
+            state.userProfile = { ...state.userProfile, ...action.payload };
+        },
+        setUserName: (state, action: PayloadAction<string>) => {
+            state.userProfile.name = action.payload;
+        },
+        setUserEmail: (state, action: PayloadAction<string>) => {
+            state.userProfile.email = action.payload;
+        },
+        setUserPhone: (state, action: PayloadAction<string>) => {
+            state.userProfile.phone = action.payload;
+        },
+        setUserCountry: (state, action: PayloadAction<string>) => {
+            state.userProfile.country = action.payload;
+        },
+        setUserAvatar: (state, action: PayloadAction<string>) => {
+            state.userProfile.avatar = action.payload;
+        },
+        setEmailVerified: (state, action: PayloadAction<boolean>) => {
+            state.userProfile.isEmailVerified = action.payload;
+        },
+        setGainedStones: (state, action: PayloadAction<number>) => {
+            state.userProfile.gainedStones = action.payload;
+        },
+        setTotalPlayed: (state, action: PayloadAction<number>) => {
+            state.userProfile.totalPlayed = action.payload;
+        },
+        setReferralCount: (state, action: PayloadAction<number>) => {
+            state.userProfile.referralCount = action.payload;
+        },
+        setDailyGameStones: (state, action: PayloadAction<number>) => {
+            state.userProfile.dailyGameStones = action.payload;
+        },
+        incrementGainedStones: (state, action: PayloadAction<number>) => {
+            state.userProfile.gainedStones += action.payload;
+        },
+        incrementTotalPlayed: (state) => {
+            state.userProfile.totalPlayed += 1;
+        },
+        incrementReferralCount: (state) => {
+            state.userProfile.referralCount += 1;
+        },
+        setIsLoading: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
+        setError: (state, action: PayloadAction<string | null>) => {
+            state.error = action.payload;
+        },
+        setEditMode: (state, action: PayloadAction<boolean>) => {
+            state.isEditMode = action.payload;
+        },
+        resetProfile: (state) => {
+            state.userProfile = initialState.userProfile;
+            state.error = null;
+            state.isEditMode = false;
+        }
+    }
+});
+
+export const {
+    setUserProfile,
+    updateUserProfile,
+    setUserName,
+    setUserEmail,
+    setUserPhone,
+    setUserCountry,
+    setUserAvatar,
+    setEmailVerified,
+    setGainedStones,
+    setTotalPlayed,
+    setReferralCount,
+    setDailyGameStones,
+    incrementGainedStones,
+    incrementTotalPlayed,
+    incrementReferralCount,
+    setIsLoading,
+    setError,
+    setEditMode,
+    resetProfile
+} = profileSlice.actions;
+
+export default profileSlice.reducer;
