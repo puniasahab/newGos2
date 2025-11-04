@@ -7,8 +7,8 @@ export const endPoints = {
     getQuestion: '/play',
     // for submitting answer for particular question
     submitAnswer: '/answer',
-    
     sendOtp: '/user-register',
-
-    verifyOtp: '/user-new-verify-otp'
+    verifyOtp: '/user-new-verify-otp',
+    getProfileData: '/user-profile',
+    updateProfileData: '/profile-update',
 }

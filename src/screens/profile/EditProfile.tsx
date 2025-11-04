@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { updateUserProfile, setEmailVerified } from './ProfileSlice';
 import Footer from '../../components/footer';
+import { profileApi } from '../../api';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -30,6 +31,25 @@ const EditProfile = () => {
         console.log('Email verified');
     };
 
+
+    const editProfile = async () => {
+        try {
+            const updatedData = {
+                first_name: formData.name.split(' ')[0],
+                last_name: formData.name.split(' ')[1],
+                // gender: formData.gender,
+                // date_of_birth: formData.dob,
+                mobile: formData.mobile,
+                email: formData.email,
+                // profile_photo_url: profileImage,
+            }
+            const res = await profileApi.updateProfileData(updatedData);
+            console.log('Profile updated successfully:', res.data);
+        } catch (error) {
+            console.error('Error updating profile:', error);
+        }
+    }
+
     const handleConfirm = () => {
         // Update profile in Redux store
         dispatch(updateUserProfile({
@@ -38,6 +58,7 @@ const EditProfile = () => {
             country: formData.country,
             phone: formData.mobile
         }));
+        editProfile();
         console.log('Profile updated:', formData);
         navigate('/profile');
     };
@@ -185,7 +206,8 @@ const EditProfile = () => {
                                 color: 'white',
                                 fontSize: '16px',
                                 outline: 'none',
-                                transition: 'border-color 0.3s ease'
+                                transition: 'border-color 0.3s ease',
+                                boxSizing: 'border-box'
                             }}
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
@@ -218,7 +240,8 @@ const EditProfile = () => {
                                     color: 'white',
                                     fontSize: '16px',
                                     outline: 'none',
-                                    transition: 'border-color 0.3s ease'
+                                    transition: 'border-color 0.3s ease',
+                                    boxSizing: 'border-box'
                                 }}
                                 onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                                 onBlur={(e) => e.target.style.borderColor = '#333'}
@@ -269,7 +292,8 @@ const EditProfile = () => {
                                 color: 'white',
                                 fontSize: '16px',
                                 outline: 'none',
-                                transition: 'border-color 0.3s ease'
+                                transition: 'border-color 0.3s ease',
+                                boxSizing: 'border-box'
                             }}
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
@@ -292,7 +316,8 @@ const EditProfile = () => {
                             backgroundColor: 'transparent',
                             border: '2px solid #333',
                             borderRadius: '8px',
-                            overflow: 'hidden'
+                            overflow: 'hidden',
+                            boxSizing: 'border-box'
                         }}>
                             <div style={{
                                 backgroundColor: '#1a1a1a',
@@ -314,7 +339,8 @@ const EditProfile = () => {
                                     border: 'none',
                                     color: 'white',
                                     fontSize: '16px',
-                                    outline: 'none'
+                                    outline: 'none',
+                                    boxSizing: 'border-box'
                                 }}
                             />
                         </div>

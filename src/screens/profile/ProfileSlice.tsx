@@ -24,17 +24,17 @@ interface ProfileState {
 
 const initialState: ProfileState = {
     userProfile: {
-        id: '1',
-        name: 'Davis Curtis',
-        email: 'davis_curtis@gmail.com',
-        phone: '9999999999',
+        id: '',
+        name: '',
+        email: '',
+        phone: '',
         country: 'India',
-        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b830?w=150&h=150&fit=crop&crop=face',
-        isEmailVerified: true,
-        gainedStones: 1000,
-        totalPlayed: 20,
-        referralCount: 10,
-        dailyGameStones: 2000
+        avatar: '',
+        isEmailVerified: false,
+        gainedStones: 0,
+        totalPlayed: 0,
+        referralCount: 0,
+        dailyGameStones: 0
     },
     isLoading: false,
     error: null,

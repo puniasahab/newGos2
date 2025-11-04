@@ -38,7 +38,7 @@ api.interceptors.response.use(
         if(error.response?.status === 401) {
             // Handle Unauthorized access
             localStorage.removeItem("authToken");
-            window.location.href = "/"; // Redirect to login page
+            // window.location.href = "/"; // Redirect to login page
         }
         return Promise.reject(error);
     }
@@ -56,6 +56,19 @@ export const loginApis = {
        return response.data;
     }
 }
+
+export const profileApi = {
+    getProfileData: async(): Promise<any> => {
+        const response = await api.get(endPoints.getProfileData);
+        return response.data;
+    },
+
+    updateProfileData: async(data: any): Promise<any> => {
+        const response = await api.post(endPoints.updateProfileData, data);
+        return response.data;
+    }
+}
+
 
 export const contests = {
     // fetching contests details to show on home page

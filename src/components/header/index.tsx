@@ -3,9 +3,11 @@ import { AlignJustify, Bell, Globe, Share2, User, Settings, LogOut, X } from 'lu
 import './header.css';
 import homeBanneer from '../../assets/homeBanner.png';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -153,7 +155,9 @@ const Header = () => {
                         cursor: 'pointer',
                         transition: 'all 0.3s ease',
                         boxShadow: '0 2px 8px rgba(220, 36, 48, 0.3)'
-                    }}>
+                    }}
+                    onClick = {() => navigate("/profile")}
+                    >
                         View Profile
                     </button>
                 </div>
