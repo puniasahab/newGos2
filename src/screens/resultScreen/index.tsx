@@ -1,4 +1,4 @@
-import { Menu, Share2, Bell, Globe, Trophy, Check, X, Hand } from 'lucide-react';
+import { Trophy, Check, X, Hand } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 import Header from '../../components/header';
@@ -27,7 +27,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
     const navigate = useNavigate();
 
     const {type} = useParams();
-    console.log("type from result screen:", type);
+    console.log("type from result screen:", type, isPlayed);
 
 
     

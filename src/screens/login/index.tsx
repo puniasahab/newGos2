@@ -10,7 +10,9 @@ import { setPhoneNumberInLS } from '../../commonFunctions';
 const Login = () => {
     const dispatch = useAppDispatch();
     const [mobileNumber, setMobileNumber] = useState('');
+    //@ts-ignore
     const [isLoading, setIsLoading] = useState(false);
+    //@ts-ignore
     const navigate = useNavigate();
 
 
