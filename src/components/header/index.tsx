@@ -32,7 +32,7 @@ const Header = () => {
                             onClick={toggleMenu}
                         />
                         <div style={{marginTop: '12px', marginRight: '8px', marginLeft: '8px'}}>
-                        <img className="w-[130px] h-[30px] object-contain" src={homeBanneer} alt="GameStones Logo"/>
+                        <img className="w-[130px] h-[30px] object-contain" src={homeBanneer} alt="GameStones Logo" onClick = {() => navigate("/")}/>
                         </div>
                         <Share2 size={24} color="var(--primary-color)" className="cursor-pointer hover:opacity-80 transition-opacity" />
                     </div>

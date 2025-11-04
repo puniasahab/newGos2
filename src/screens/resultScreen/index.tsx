@@ -5,13 +5,15 @@ import Header from '../../components/header';
 import { useParams} from 'react-router-dom'
 import { setIsRapidFirePlayed, setIsJackpotPlayed, setIsQuickFingerPlayed } from '../../commonFunctions';
 import { QuestionType } from '../../utils/questionsEnum';
+import { useAppDispatch } from '../../hooks/redux';
+import { setCurrentQuestionIndex } from '../questions/questionsSlice';
 
 interface GameData {
     nextRoundTime: string;
     currentScore: number;
-    correctPercentage: number;
-    wrongPercentage: number;
-    skippedPercentage: number;
+    correctPercentage: string | number;
+    wrongPercentage: string | number;
+    skippedPercentage: string | number;
     correctCount: number;
     wrongCount: number;
     skippedCount: number;
@@ -25,6 +27,7 @@ interface ResultScreenProps {
 
 const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const {type} = useParams();
     console.log("type from result screen:", type, isPlayed);
@@ -56,25 +59,29 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
 
     const handlePlayNow = () => {
         if(type === QuestionType.JACKPOT) {
-            setIsJackpotPlayed(type, true);
+            setIsJackpotPlayed(type, isPlayed);
         } else if(type === QuestionType.FASTEST_FINGER) {
-            setIsQuickFingerPlayed(type, true);
+            setIsQuickFingerPlayed(type, isPlayed);
         } else if(type === QuestionType.RAPID_FIRE) {
-            setIsRapidFirePlayed(type, true);
+            setIsRapidFirePlayed(type, isPlayed);
         }
+        dispatch(setCurrentQuestionIndex(0));
         navigate('/');
     };
 
     const handleViewLeaderboard = () => {
         if(type === QuestionType.JACKPOT) {
-            setIsJackpotPlayed(type, true);
+            setIsJackpotPlayed(type, isPlayed);
         } else if(type === QuestionType.FASTEST_FINGER) {
-            setIsQuickFingerPlayed(type, true);
+            setIsQuickFingerPlayed(type, isPlayed);
         } else if(type === QuestionType.RAPID_FIRE) {
-            setIsRapidFirePlayed(type, true);
+            setIsRapidFirePlayed(type, isPlayed);
         }
+        dispatch(setCurrentQuestionIndex(1));
         navigate('/leaderboard');
     };
+
+
 
 
 

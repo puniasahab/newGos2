@@ -12,6 +12,7 @@ import {
     setUserRanks, setAllTimeData, setMonthlyData, setWeeklyData,
     
 } from './leaderboardSlice';
+import { getContestId } from '../../commonFunctions';
 
 // import firstImage from "../../assets/1.png";
 // import { useTranslation } from "react-i18next";
@@ -25,6 +26,14 @@ interface LeaderboardPlayer {
     avatar?: string;
 }
 
+interface ApiLeaderboardPlayer {
+    user_mobile: string;
+    gain_ston: number;
+    user_email: string;
+    email_verified_at: string;
+    rank: number;
+}
+
 interface LeaderboardProps {
     currentUser?: LeaderboardPlayer;
 }
@@ -36,14 +45,76 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
     const [leaderBoardData, setLeaderBoardData] = useState<any>({});
     // const [activeTab, setActiveTab] = useState('overall');
     const [isLoading, setIsLoading] = useState(false);
-    const { getDailyData, getWeeklyData, getMonthlyData, getAllTimeData,
-        //  userRanks 
-        } = useAppSelector((state) => state.leaderboard);
+    const { userRanks } = useAppSelector((state) => state.leaderboard);
     const [activeTab, setActiveTab] = useState("Weekly");
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
         console.log("Selected Tab:", tab);
+    };
+
+    // Helper functions to get current user data
+    const getCurrentUserRank = () => {
+        if (!userRanks) return null;
+        
+        switch (activeTab) {
+            case "Daily":
+                return userRanks.daily_data?.rank || null;
+            case "Weekly":
+                return userRanks.weekly_data?.rank || null;
+            case "Monthly":
+                return userRanks.monthly_data?.rank || null;
+            case "All Time":
+                return userRanks.all_time_data?.rank || null;
+            default:
+                return null;
+        }
+    };
+
+    const getCurrentUserScore = () => {
+        if (!userRanks) return null;
+        
+        switch (activeTab) {
+            case "Daily":
+                return userRanks.daily_data?.gain_ston || null;
+            case "Weekly":
+                return userRanks.weekly_data?.gain_ston || null;
+            case "Monthly":
+                return userRanks.monthly_data?.gain_ston || null;
+            case "All Time":
+                return userRanks.all_time_data?.gain_ston || null;
+            default:
+                return null;
+        }
+    };
+
+    // Get top 3 players for podium
+    const getTop3Players = (): ApiLeaderboardPlayer[] => {
+        if (!leaderBoardData?.users) return [];
+        return leaderBoardData.users.slice(0, 3);
+    };
+
+    // Get remaining players (4th position onwards)
+    const getRemainingPlayers = (): ApiLeaderboardPlayer[] => {
+        if (!leaderBoardData?.users) return [];
+        return leaderBoardData.users.slice(3);
+    };
+
+    // Format phone number for display
+    const formatPhoneNumber = (phone: string) => {
+        if (!phone || phone === "N/A") return "N/A";
+        return phone.slice(0, 5) + "*****";
+    };
+
+    // Generate avatar initials from phone number or email
+    const generateAvatar = (phone: string, email: string, index: number) => {
+        if (phone && phone !== "N/A") {
+            return phone.slice(-2).toUpperCase();
+        }
+        if (email && email !== "N/A") {
+            return email.slice(0, 2).toUpperCase();
+        }
+        return `P${index + 1}`;
     };
     // const { contestId } = useAppSelector((state) => state.questions);
 
@@ -117,24 +188,32 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
     });
 
     useEffect(() => {
-        const fetchLeaderBoardData = async () => {
+        const fetchLeaderboard = async () => {
             setIsLoading(true);
             try {
-                const data = await leaderboardApi.fetchLeaderboard("20");
-                // console.log(data);
+                const daily = activeTab === "Daily";
+                const weekly = activeTab === "Weekly";
+                const monthly = activeTab === "Monthly";
+                const allTime = activeTab === "All Time";
+                const contestId = getContestId();
+                const data = await leaderboardApi.fetchLeaderboard(contestId, daily, weekly, monthly, allTime);
+                console.log("Leaderboard API Response:", data);
 
-                if (getDailyData) {
+                // Set leaderboard data based on active tab
+                if (daily && data.data.daily_data) {
                     setLeaderBoardData(data.data.daily_data);
-                }
-                else if (getWeeklyData) {
+                } else if (weekly && data.data.weekly_data) {
                     setLeaderBoardData(data.data.weekly_data);
-                }
-                else if (getMonthlyData) {
+                } else if (monthly && data.data.monthly_data) {
                     setLeaderBoardData(data.data.monthly_data);
-                }
-                else if (getAllTimeData) {
+                } else if (allTime && data.data.all_time_data) {
                     setLeaderBoardData(data.data.all_time_data);
+                } else {
+                    // Fallback to weekly data if active tab data is null
+                    setLeaderBoardData(data.data.weekly_data || {});
                 }
+
+                // Store all data in Redux
                 dispatch(setDailyData(data.data.daily_data));
                 dispatch(setWeeklyData(data.data.weekly_data));
                 dispatch(setMonthlyData(data.data.monthly_data));
@@ -147,8 +226,8 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                 setIsLoading(false);
             }
         }
-        fetchLeaderBoardData();
-    }, [getDailyData, getWeeklyData, getMonthlyData, getAllTimeData, dispatch]);
+        fetchLeaderboard();
+    }, [activeTab, dispatch]);
     // const { t } = useTranslation();
     return (
         <>
@@ -219,6 +298,12 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                     >
                         Monthly
                     </span>
+                    <span
+                        style={tabStyle("All Time")}
+                        onClick={() => handleTabClick("All Time")}
+                    >
+                        All Time
+                    </span>
                 </div>
 
                 {/* Winner Crown Section */}
@@ -241,144 +326,158 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                     background: 'black',
                     gap: '10px'
                 }}>
-                    {/* 2nd Place */}
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        backgroundColor: '#1a1a1a',
-                        borderRadius: '12px',
-                        padding: '15px',
-                        minWidth: '80px'
-                    }}>
-                        <div style={{
-                            width: '50px',
-                            height: '50px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #ff6b6b, #4ecdc4)',
-                            marginBottom: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontWeight: 'bold'
-                        }}>
-                            AB
-                        </div>
-                        <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 2</div>
-                        <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>88600*****</div>
-                        <div style={{
-                            backgroundColor: '#C0C0C0',
-                            color: 'black',
-                            borderRadius: '12px',
-                            padding: '4px 8px',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }}>
-                            2
-                        </div>
-                        <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
-                            2100
-                        </div>
-                    </div>
+                    {getTop3Players().length > 0 ? (
+                        <>
+                            {/* 2nd Place */}
+                            {getTop3Players()[1] && (
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    backgroundColor: '#1a1a1a',
+                                    borderRadius: '12px',
+                                    padding: '15px',
+                                    minWidth: '80px'
+                                }}>
+                                    <div style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        borderRadius: '50%',
+                                        background: 'linear-gradient(135deg, #ff6b6b, #4ecdc4)',
+                                        marginBottom: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {generateAvatar(getTop3Players()[1].user_mobile, getTop3Players()[1].user_email, 1)}
+                                    </div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 2</div>
+                                    <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
+                                        {formatPhoneNumber(getTop3Players()[1].user_mobile)}
+                                    </div>
+                                    <div style={{
+                                        backgroundColor: '#C0C0C0',
+                                        color: 'black',
+                                        borderRadius: '12px',
+                                        padding: '4px 8px',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        2
+                                    </div>
+                                    <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
+                                        {getTop3Players()[1].gain_ston}
+                                    </div>
+                                </div>
+                            )}
 
-                    {/* 1st Place */}
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        backgroundColor: '#1a1a1a',
-                        borderRadius: '12px',
-                        padding: '15px',
-                        minWidth: '80px',
-                        position: 'relative',
-                        marginBottom: '20px'
-                    }}>
-                        <Crown size={24} color="#FFD700" style={{ position: 'absolute', top: '-12px' }} />
-                        <div style={{
-                            width: '60px',
-                            height: '60px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                            marginBottom: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            fontSize: '18px'
-                        }}>
-                            CD
-                        </div>
-                        <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 1</div>
-                        <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>98917*****</div>
-                        <div style={{
-                            backgroundColor: '#FFD700',
-                            color: 'black',
-                            borderRadius: '12px',
-                            padding: '4px 8px',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }}>
-                            1
-                        </div>
-                        <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
-                            2500
-                        </div>
-                    </div>
+                            {/* 1st Place */}
+                            {getTop3Players()[0] && (
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    backgroundColor: '#1a1a1a',
+                                    borderRadius: '12px',
+                                    padding: '15px',
+                                    minWidth: '80px',
+                                    position: 'relative',
+                                    marginBottom: '20px'
+                                }}>
+                                    <Crown size={24} color="#FFD700" style={{ position: 'absolute', top: '-12px' }} />
+                                    <div style={{
+                                        width: '60px',
+                                        height: '60px',
+                                        borderRadius: '50%',
+                                        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                                        marginBottom: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                        fontSize: '18px'
+                                    }}>
+                                        {generateAvatar(getTop3Players()[0].user_mobile, getTop3Players()[0].user_email, 0)}
+                                    </div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 1</div>
+                                    <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
+                                        {formatPhoneNumber(getTop3Players()[0].user_mobile)}
+                                    </div>
+                                    <div style={{
+                                        backgroundColor: '#FFD700',
+                                        color: 'black',
+                                        borderRadius: '12px',
+                                        padding: '4px 8px',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        1
+                                    </div>
+                                    <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
+                                        {getTop3Players()[0].gain_ston}
+                                    </div>
+                                </div>
+                            )}
 
-                    {/* 3rd Place */}
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        backgroundColor: '#1a1a1a',
-                        borderRadius: '12px',
-                        padding: '15px',
-                        minWidth: '80px'
-                    }}>
-                        <div style={{
-                            width: '50px',
-                            height: '50px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #f093fb, #f5576c)',
-                            marginBottom: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontWeight: 'bold'
-                        }}>
-                            EF
+                            {/* 3rd Place */}
+                            {getTop3Players()[2] && (
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    backgroundColor: '#1a1a1a',
+                                    borderRadius: '12px',
+                                    padding: '15px',
+                                    minWidth: '80px'
+                                }}>
+                                    <div style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        borderRadius: '50%',
+                                        background: 'linear-gradient(135deg, #f093fb, #f5576c)',
+                                        marginBottom: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {generateAvatar(getTop3Players()[2].user_mobile, getTop3Players()[2].user_email, 2)}
+                                    </div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 3</div>
+                                    <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
+                                        {formatPhoneNumber(getTop3Players()[2].user_mobile)}
+                                    </div>
+                                    <div style={{
+                                        backgroundColor: '#CD7F32',
+                                        color: 'white',
+                                        borderRadius: '12px',
+                                        padding: '4px 8px',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        3
+                                    </div>
+                                    <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
+                                        {getTop3Players()[2].gain_ston}
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
+                            No leaderboard data available for {activeTab}
                         </div>
-                        <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 3</div>
-                        <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>85952*****</div>
-                        <div style={{
-                            backgroundColor: '#CD7F32',
-                            color: 'white',
-                            borderRadius: '12px',
-                            padding: '4px 8px',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                        }}>
-                            3
-                        </div>
-                        <div style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>
-                            1800
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Leaderboard List */}
                 <div style={{ padding: '0 20px 100px', background: 'black' }}>
-                    {[
-                        { rank: 4, name: 'Player 4', phone: '74285*****', score: 1500, avatar: 'GH' },
-                        { rank: 5, name: 'Player 5', phone: '83926*****', score: 1400, avatar: 'IJ' },
-                        { rank: 6, name: 'Player 6', phone: '73929*****', score: 1300, avatar: 'KL' },
-                        { rank: 7, name: 'Player 7', phone: '98110*****', score: 1200, avatar: 'MN' },
-                        { rank: 8, name: 'Player 8', phone: '67584*****', score: 1100, avatar: 'OP' },
-                    ].map((player) => (
-                        <div key={player.rank} style={{
+                    {getRemainingPlayers().map((player: ApiLeaderboardPlayer, index: number) => (
+                        <div key={`${player.user_mobile}-${index}`} style={{
                             display: 'flex',
                             alignItems: 'center',
                             backgroundColor: '#1a1a1a',
@@ -400,13 +499,13 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                     fontSize: '12px',
                                     fontWeight: 'bold'
                                 }}>
-                                    {player.rank}
+                                    {player.rank || (index + 4)}
                                 </div>
                                 <div style={{
                                     width: '40px',
                                     height: '40px',
                                     borderRadius: '50%',
-                                    background: `linear-gradient(135deg, hsl(${player.rank * 60}, 70%, 60%), hsl(${player.rank * 60 + 60}, 70%, 60%))`,
+                                    background: `linear-gradient(135deg, hsl(${(index + 4) * 60}, 70%, 60%), hsl(${(index + 4) * 60 + 60}, 70%, 60%))`,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
@@ -414,82 +513,96 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                     fontWeight: 'bold',
                                     fontSize: '14px'
                                 }}>
-                                    {player.avatar}
+                                    {generateAvatar(player.user_mobile, player.user_email, index + 3)}
                                 </div>
                                 <div>
                                     <div style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>
-                                        {player.name}
+                                        Player {index + 4}
                                     </div>
                                     <div style={{ color: '#999', fontSize: '12px' }}>
-                                        {player.phone}
+                                        {formatPhoneNumber(player.user_mobile)}
                                     </div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <Heart size={16} color="#dc2626" fill="#dc2626" />
                                 <span style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold' }}>
-                                    {player.score}
+                                    {player.gain_ston}
                                 </span>
                             </div>
                         </div>
                     ))}
 
                     {/* Current User Row */}
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: '#2a1810',
-                        borderRadius: '12px',
-                        padding: '12px 16px',
-                        marginTop: '16px',
-                        justifyContent: 'space-between',
-                        border: '1px solid #dc2626'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div style={{
-                                width: '24px',
-                                height: '24px',
-                                borderRadius: '50%',
-                                backgroundColor: '#dc2626',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'white',
-                                fontSize: '12px',
-                                fontWeight: 'bold'
-                            }}>
-                                25
-                            </div>
-                            <div style={{
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                background: 'linear-gradient(135deg, #dc2626, #ef4444)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'white',
-                                fontWeight: 'bold',
-                                fontSize: '14px'
-                            }}>
-                                YOU
-                            </div>
-                            <div>
-                                <div style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>
-                                    You
+                    {getCurrentUserRank() && getCurrentUserScore() && (
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: '#2a1810',
+                            borderRadius: '12px',
+                            padding: '12px 16px',
+                            marginTop: '16px',
+                            justifyContent: 'space-between',
+                            border: '1px solid #dc2626'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    borderRadius: '50%',
+                                    backgroundColor: '#dc2626',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'white',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold'
+                                }}>
+                                    {getCurrentUserRank()}
                                 </div>
-                                <div style={{ color: '#999', fontSize: '12px' }}>
-                                    70562*****
+                                <div style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    background: 'linear-gradient(135deg, #dc2626, #ef4444)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    fontSize: '14px'
+                                }}>
+                                    YOU
                                 </div>
+                                <div>
+                                    <div style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>
+                                        You
+                                    </div>
+                                    <div style={{ color: '#999', fontSize: '12px' }}>
+                                        Your Position
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Heart size={16} color="#dc2626" fill="#dc2626" />
+                                <span style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold' }}>
+                                    {getCurrentUserScore()}
+                                </span>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Heart size={16} color="#dc2626" fill="#dc2626" />
-                            <span style={{ color: '#FFD700', fontSize: '14px', fontWeight: 'bold' }}>
-                                900
-                            </span>
+                    )}
+
+                    {/* No Data Message */}
+                    {(!leaderBoardData?.users || leaderBoardData.users.length === 0) && (
+                        <div style={{
+                            textAlign: 'center',
+                            color: '#999',
+                            padding: '40px 20px',
+                            fontSize: '16px'
+                        }}>
+                            No leaderboard data available for {activeTab}
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
             <Footer />

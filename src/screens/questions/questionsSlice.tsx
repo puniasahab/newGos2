@@ -15,6 +15,7 @@ interface QuestionState {
     correctAnswerCount: number;
     wrongAnswerCount: number;
     skippedAnswerCount: number;
+    totalStonesGained?: number;
 
 
 }
@@ -23,7 +24,7 @@ interface QuestionState {
 const initialState: QuestionState = {
     question: "",
     correctAnswer: "",
-    currentQuestionIndex: 1,
+    currentQuestionIndex: 0,
     isLoading: false,
     score: 0,
     isQuizCompleted: false,
@@ -77,6 +78,9 @@ export const questionsSlice = createSlice({
         },
         setCorrectAnswer: (state, action: PayloadAction<string>) => {
             state.correctAnswer = action.payload;
+        },
+        setTotalStonesGained: (state, action: PayloadAction<number>) => {
+            state.totalStonesGained = action.payload;
         }
     },
 });
@@ -93,6 +97,7 @@ export const { setQuestion,
      setCorrectAnswerCount,
      setWrongAnswerCount,
      setCorrectAnswer,
-     setSkippedAnswerCount } = questionsSlice.actions;
+     setSkippedAnswerCount,
+    setTotalStonesGained } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

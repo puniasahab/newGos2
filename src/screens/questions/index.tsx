@@ -7,19 +7,21 @@ import Footer from "../../components/footer";
 import { questionApis } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useParams } from "react-router-dom";
-import { getIsJackpotPlayed, getIsRapidFirePlayed, getIsQuickFingerPlayed, getNameAndContestId } from "../../commonFunctions";
+import { getIsJackpotPlayed, getIsRapidFirePlayed, getIsQuickFingerPlayed, getNameAndContestId, setContestId } from "../../commonFunctions";
 // import Countdown from 'react-countdown';
-import { setIsQuizCompleted, 
+import {
+    setIsQuizCompleted,
     setAnswerOptions,
-     setCurrentQuestionId, 
-     setTotalQuestions, 
-     setQuestion,
-     setCorrectAnswerCount,
-     setSkippedAnswerCount,
-     setWrongAnswerCount,
-     setCurrentQuestionIndex,
-     setScore,
-     setCorrectAnswer
+    setCurrentQuestionId,
+    setTotalQuestions,
+    setQuestion,
+    setCorrectAnswerCount,
+    setSkippedAnswerCount,
+    setWrongAnswerCount,
+    setCurrentQuestionIndex,
+    setScore,
+    setCorrectAnswer,
+    setTotalStonesGained
 
 } from "./questionsSlice";
 // @ts-ignore
@@ -41,21 +43,22 @@ const Questions = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
     const [timerKey, setTimerKey] = useState(0); // Key to force timer restart
-   
+
     const { playClickSound, playCorrectSound, playWrongSound } = useSound();
     // const [questionType, setQuestionType] = useState<string>();
 
     // const { nameAndContestId } = useAppSelector((state) => state.home);
-    const { correctAnswer, currentQuestionIndex,  currentQuestionId, answerOptions, 
-        skippedAnswerCount, correctAnswerCount, wrongAnswerCount, 
-        question, 
-        totalQuestions, isQuizCompleted, score,   
+    const { correctAnswer, currentQuestionIndex, currentQuestionId, answerOptions,
+        skippedAnswerCount, correctAnswerCount, wrongAnswerCount,
+        question,
+        totalStonesGained,
+        totalQuestions, isQuizCompleted, score,
     } = useAppSelector((state) => state.questions);
 
     const { opt1, opt2, opt3, opt4 } = answerOptions;
-    const noOfQuestionsPlayed = 1;
-    const totalNoOfQuestions = 10;
-    const totalStonesGained = 100;
+    // const noOfQuestionsPlayed = 1;
+    // const totalNoOfQuestions = 10;
+    // const totalStonesGained = 100;
 
     // Timer duration based on question type
     const getTimerDuration = () => {
@@ -74,13 +77,13 @@ const Questions = () => {
     // Handle timer completion
     const handleTimerComplete = () => {
         if (isAnswerSubmitted) return; // Don't process if answer already submitted
-        
+
         if (type === QuestionType.RAPID_FIRE) {
             // For RAPID_FIRE, when timer ends, complete the entire quiz
             dispatch(setIsQuizCompleted(true));
         } else {
             // For JACKPOT and FASTEST_FINGER, skip current question and move to next
-            dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+            // dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
             handleSkip();
         }
     };
@@ -106,25 +109,29 @@ const Questions = () => {
             confetti({
                 particleCount: 100,
                 spread: 70,
-                origin: { y: 0.6 }  
+                origin: { y: 0.6 }
             })
         } else {
             // Handle wrong answer
             playClickSound()
             playWrongSound();
         }
-        dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+        // dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
         try {
             const status = isAnswerCorrect ? 1 : 0;
             // @ts-ignore
-            const response = await questionApis.submitAnswer(currentQuestionId, status, type, parseInt(getNameAndContestId()?.find((item: {name: string, contestId: number}) => item.name === type)?.contestId || "0" || "0"));
+            const response = await questionApis.submitAnswer(currentQuestionId, status, type, parseInt(getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId || "0" || "0"));
+            const contestIdForLS = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId > 0 ? getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId : 0;
+            setContestId(contestIdForLS);
             setTimeout(() => {
                 setSelectedAnswer(null);
                 setIsAnswerSubmitted(false);
                 setSkipButtonClicked(!skipButtonClicked);
+
+                dispatch(setTotalStonesGained(response.data.session.gain_ston))
                 resetTimerForNewQuestion();
             }, 1200);
-        } catch(error) {
+        } catch (error) {
             setSelectedAnswer(null);
             setIsAnswerSubmitted(false);
         }
@@ -144,7 +151,7 @@ const Questions = () => {
             return isCorrectOption ? '#4CAF50' : '#f44336'; // Green for correct, red for wrong
         }
 
-        if(isWrongAnswerSelected && option === correctAnswer) {
+        if (isWrongAnswerSelected && option === correctAnswer) {
             return "#4CAF50"; // Highlight correct answer if wrong answer was selected
         }
 
@@ -159,10 +166,10 @@ const Questions = () => {
     const handleSkip = () => {
         try {
             const status = 2;
-            const contestId = getNameAndContestId()?.find((item: {name: string, contestId: number}) => item.name === type)?.contestId;
+            const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
             // @ts-ignore
             const response = questionApis.submitAnswer(currentQuestionId, status, type, contestId);
-        } catch(error) {    
+        } catch (error) {
             console.log(error);
         }
         setTimeout(() => {
@@ -172,54 +179,111 @@ const Questions = () => {
             resetTimerForNewQuestion();
         }, 1200);
     }
-    
+
 
 
     useEffect(() => {
         let isContestPLayed = false;
-        if(type === QuestionType.JACKPOT) {
+        if (type === QuestionType.JACKPOT) {
             isContestPLayed = getIsJackpotPlayed(type) ? true : false;
         }
-        else if(type === QuestionType.FASTEST_FINGER) {
+        else if (type === QuestionType.FASTEST_FINGER) {
             isContestPLayed = getIsQuickFingerPlayed(type) ? true : false;
         }
-        else if(type === QuestionType.RAPID_FIRE) {
+        else if (type === QuestionType.RAPID_FIRE) {
             isContestPLayed = getIsRapidFirePlayed(type) ? true : false;
         }
+        console.log("Question", currentQuestionIndex, isContestPLayed)
+        console.log("Checking...", (currentQuestionIndex === 1 && isContestPLayed))
+        const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
+        if (currentQuestionIndex === 0 && isContestPLayed) {
 
-        const contestId = getNameAndContestId()?.find((item: {name: string, contestId: number}) => item.name === type)?.contestId;
-        questionApis.fetchQuestion(contestId, isContestPLayed).then((data) => {
-            dispatch(setIsQuizCompleted(data.data.questionsCompleted));
-            if(!data.data.questionsCompleted) {
-                dispatch(setQuestion(data.data.data.question.translated_question));
-                dispatch(setAnswerOptions({
-                    ...data.data.data.question.answer_data
-                }));
-                dispatch(setCurrentQuestionId(data.data.data.question.id));
-                dispatch(setTotalQuestions(data.data.data.total_questions));
-                dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
+            console.log("Checking inside if...", (currentQuestionIndex === 0 && isContestPLayed))
+
+            questionApis.fetchQuestion(contestId, isContestPLayed).then((data) => {
+                dispatch(setIsQuizCompleted(data.data.questionsCompleted));
+                if (!data.data.questionsCompleted) {
+                    dispatch(setQuestion(data.data.data.question.translated_question));
+                    dispatch(setAnswerOptions({
+                        ...data.data.data.question.answer_data
+                    }));
+                    dispatch(setCurrentQuestionId(data.data.data.question.id));
+                    dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
+                    dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
+                    setLoading(false);
+                    dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+                    // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
+                    resetTimerForNewQuestion();
+                }
+                else {
+                    dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
+                    dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
+                    dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
+                    dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
+                    dispatch(setScore(data.data.userResult.total_stones));
+                    dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
+                    // dispatch(setIsQuizCompleted(true));
+                }
+            }).catch((error) => {
+                console.error('Error fetching questions:', error);
                 setLoading(false);
-                // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
-                resetTimerForNewQuestion();
-            }
-            else {
-                dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
-                dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
-                dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
-                dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
-                dispatch(setScore(data.data.userResult.total_stones));
-                dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
-                // dispatch(setIsQuizCompleted(true));
-            }
-        }).catch((error) => {
-            console.error('Error fetching questions:', error);
-            setLoading(false);
-        });
-       
+            });
+        }
+        else {
+            console.log("Checking inside else...", (currentQuestionIndex === 0 && isContestPLayed))
+
+            questionApis.fetchQuestion(contestId, false).then((data) => {
+                dispatch(setIsQuizCompleted(data.data.questionsCompleted));
+                if (!data.data.questionsCompleted) {
+                    dispatch(setQuestion(data.data.data.question.translated_question));
+                    dispatch(setAnswerOptions({
+                        ...data.data.data.question.answer_data
+                    }));
+                    dispatch(setCurrentQuestionId(data.data.data.question.id));
+                    dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
+                    dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
+                    setLoading(false);
+                    dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+
+                    // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
+                    resetTimerForNewQuestion();
+                }
+                else {
+                    dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
+                    dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
+                    dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
+                    dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
+                    dispatch(setScore(data.data.userResult.total_stones));
+                    dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
+                    // dispatch(setIsQuizCompleted(true));
+                }
+            }).catch((error) => {
+                console.error('Error fetching questions:', error);
+                setLoading(false);
+            });
+        }
+
     }, [skipButtonClicked])
     // const Completionist = () => <span>You are good to go!</span>;
 
-
+    const getPercentageScore = (part: number, total: number) => {
+        if (QuestionType.RAPID_FIRE === type) {
+            if (totalQuestions > 0) {
+                return Math.round((part / currentQuestionIndex) * 100)
+            }
+            else {
+                return "0";
+            }
+        }
+        else {
+            if (totalQuestions > 0) {
+                return Math.round((part / total) * 100);
+            }
+            else {
+                return "0";
+            }
+        }
+    }
 
     return (
         <>
@@ -256,13 +320,13 @@ const Questions = () => {
                         </style>
                     </div>
                 ) : isQuizCompleted ? (
-                    <ResultScreen 
+                    <ResultScreen
                         gameData={{
                             nextRoundTime: "14h 25 min",
-                            currentScore: score || totalStonesGained,
-                            correctPercentage: totalQuestions > 0 ? Math.round((correctAnswerCount / totalQuestions) * 100) : 0,
-                            wrongPercentage: totalQuestions > 0 ? Math.round((wrongAnswerCount / totalQuestions) * 100) : 0,
-                            skippedPercentage: totalQuestions > 0 ? Math.round((skippedAnswerCount / totalQuestions) * 100) : 0,
+                            currentScore: score,
+                            correctPercentage: getPercentageScore(correctAnswerCount, totalQuestions),
+                            wrongPercentage: getPercentageScore(wrongAnswerCount, totalQuestions),
+                            skippedPercentage: getPercentageScore(skippedAnswerCount, totalQuestions),
                             correctCount: correctAnswerCount || 0,
                             wrongCount: wrongAnswerCount || 0,
                             skippedCount: skippedAnswerCount || 0,
@@ -296,7 +360,7 @@ const Questions = () => {
                                     color: 'black',
                                     padding: '8px 16px',
                                     fontWeight: 600
-                                }} className="stat-value">{noOfQuestionsPlayed}/{totalNoOfQuestions}</span>
+                                }} className="stat-value">{currentQuestionIndex}/{totalQuestions}</span>
                             </div>
 
                             <div className="stat-box" style={{
@@ -320,11 +384,11 @@ const Questions = () => {
                             </div>
 
                         </div>
-                            <ProgressBarTimer 
-                                key={type === QuestionType.RAPID_FIRE ? 'rapid-fire-timer' : timerKey} 
-                                duration={getTimerDuration()} 
-                                onComplete={handleTimerComplete}
-                            />
+                        <ProgressBarTimer
+                            key={type === QuestionType.RAPID_FIRE ? 'rapid-fire-timer' : timerKey}
+                            duration={getTimerDuration()}
+                            onComplete={handleTimerComplete}
+                        />
                         {/* {Question} */}
                         <div style={{ borderRadius: '0 20px 0 20px', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', textAlign: 'center', paddingTop: '72px', paddingBottom: '60px', marginLeft: '16px', marginRight: '16px', marginTop: '16px', position: 'relative', backgroundColor: 'white', color: 'black' }}>
                             <h2>{question}</h2>
@@ -368,7 +432,7 @@ const Questions = () => {
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
                                     transition: 'all 0.3s ease'
                                 }}
-                            onClick={() => !isAnswerSubmitted && handleAnswerClick(opt1)}
+                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt1)}
                             >
                                 {opt1}
                             </div>
@@ -381,13 +445,13 @@ const Questions = () => {
                                     fontSize: "20px",
                                     backgroundColor: getOptionBackgroundColor(opt2),
                                     color: getOptionTextColor(opt2),
-                                    
+
                                     // color: 'black',
                                     cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
                                     transition: 'all 0.3s ease'
                                 }}
-                            onClick={() => !isAnswerSubmitted && handleAnswerClick(opt2)}
+                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt2)}
                             >
                                 {opt2}
                             </div>
@@ -407,7 +471,7 @@ const Questions = () => {
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
                                     transition: 'all 0.3s ease'
                                 }}
-                            onClick={() => !isAnswerSubmitted && handleAnswerClick(opt3)}
+                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt3)}
                             >
                                 {opt3}
                             </div>
@@ -426,7 +490,7 @@ const Questions = () => {
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
                                     transition: 'all 0.3s ease'
                                 }}
-                            onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
+                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
                             >
                                 {opt4}
                             </div>
@@ -435,7 +499,7 @@ const Questions = () => {
                         {/* {Skip Button} */}
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px' }}>
                             <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '16px', marginTop: '40px', textAlign: 'center', fontSize: '28px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
-                            onClick = {() => {handleSkip()}}
+                                onClick={() => { handleSkip() }}
                             >
                                 Skip
                             </div>

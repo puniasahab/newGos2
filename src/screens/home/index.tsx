@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
@@ -14,7 +14,7 @@ import { contests } from '../../api';
 import { Check, CheckCircle, Trophy } from 'lucide-react';
 import { QuestionType } from '../../utils/questionsEnum';
 import { setContestsData } from './homeSlice';
-import { setNameAndContestIdInLS } from '../../commonFunctions';
+import { getAuthTokenFromLS, setNameAndContestIdInLS } from '../../commonFunctions';
 
 // Or create the Carousel component at '../../components/carousel.tsx'
 
@@ -22,6 +22,11 @@ const Home = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const toggleReadMore = () => {
+        setIsExpanded(!isExpanded);
+    };
     useEffect(() => {
         const fetchContestData = async () => {
             try {
@@ -49,9 +54,16 @@ const Home = () => {
                 </div>
                 {/* {Contests Section } */}
                 <div style={{ paddingLeft: '16px', paddingRight: '16px', marginTop: '16px', background: 'var(--black-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    <img src={jackpot} alt="Jackpot Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => navigate(`/questions/${QuestionType.JACKPOT}`)} />
-                    <img src={fastest} alt="Fastest Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => navigate(`/questions/${QuestionType.FASTEST_FINGER}`)} />
-                    <img src={rapid} alt="Rapid Contest" style={{ width: '100%' }} onClick={() => navigate(`/questions/${QuestionType.RAPID_FIRE}`)} />
+                    <img src={jackpot} alt="Jackpot Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
+                        if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.JACKPOT}`) } else navigate("/login")
+                    }} />
+                    <img src={fastest} alt="Fastest Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
+                        if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.FASTEST_FINGER}`) } else navigate("/login")
+                    }} />
+                    <img src={rapid} alt="Rapid Contest" style={{ width: '100%' }} onClick={() => {
+                        if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.RAPID_FIRE}`) } else navigate("/login")
+                    }} />
+
 
 
                 </div>
@@ -74,15 +86,54 @@ const Home = () => {
                 <div style={{ background: 'var(--black-color)' }}>
                     {/* {Live people section} */}
                     <img src={jackpotPng} alt="Live People" style={{ width: '100%' }} />
-                    <div style={{ marginBottom: '200px', background: 'var(--background-color)', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ marginBottom: '100px', background: 'var(--background-color)', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
                         <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '32px', color: 'white' }}>About Game of Stones</h1>
+                        <div style={{ width: '80%', borderBottom: '2px solid var(--primary-color)', marginBottom: '16px' }}>
+                            <p style={{ color: 'white', fontSize: '16px', lineHeight: '1.6', textAlign: 'center' }}>
+                                Game of stones is a fun and competitive quiz game where players can test their knowledge and win exciting prizes!
+                                {isExpanded && (
+                                    <span>
+                                        <br /><br />
+                                        Join thousands of players in this thrilling quiz adventure! Answer questions across various categories including science, history, sports, entertainment, and general knowledge. Each correct answer earns you valuable stones that can lead to amazing rewards.
+                                        <br /><br />
+                                        Features:
+                                        <br />• Multiple game modes: Jackpot, Fastest Finger, and Rapid Fire
+                                        <br />• Real-time leaderboards and competitions
+                                        <br />• Daily challenges and special events
+                                        <br />• Exciting prizes and cash rewards
+                                        <br />• Social features to compete with friends
+                                        <br /><br />
+                                        Whether you're a trivia expert or just starting out, Game of Stones offers an engaging experience for all knowledge levels. Challenge yourself, climb the leaderboards, and become the ultimate quiz champion!
+                                    </span>
+                                )}
+                            </p>
+                            <button
+                                onClick={toggleReadMore}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'var(--primary-color)',
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    // textDecoration: 'underline',
+                                    marginTop: '12px',
+                                    padding: '4px 0',
+                                    textAlign: 'center',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
 
+                            >
+                                {isExpanded ? 'Read Less' : 'Read More'}
+                            </button>
+                        </div>
                         {/* <p style={{background: 'var(--black-color)'}}>Something happened here</p> */}
                     </div>
 
                     <div style={{ marginBottom: '200px', background: 'var(--black-color)' }}>
                         <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>About Game of Stones</h1>
-
                     </div>
                 </div>
                 {/* {} */}

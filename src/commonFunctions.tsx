@@ -6,6 +6,14 @@ export const getDeviceIdFromLS = (): string | null => {
     return localStorage.getItem("deviceId");
 };
 
+export const setContestId = (contestId: number) => {
+    localStorage.setItem("contestId", contestId.toString());
+}
+
+export const getContestId = (): number => {
+    const contestId = localStorage.getItem("contestId");
+    return contestId ? parseInt(contestId) : 0;
+}
 // export const setIsContestPlayed = (type: string | undefined, isPlayed: boolean | undefined) => {
 //     localStorage.setItem(`is${type}Played`, JSON.stringify(isPlayed));
 // }

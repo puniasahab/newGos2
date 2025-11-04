@@ -70,6 +70,22 @@ export const profileApi = {
 }
 
 
+// export const leaderboardApi = {
+//     fetchLeaderBoardResults: async (contestId: number, todayValue: boolean, allValue: boolean, monthlyValue: boolean, weeklyValue: boolean): Promise<any> => {
+//         const response = await api.post(endPoints.getLeaderBoardResults,
+//              {
+//                 contest_id: contestId,
+//                 today: new Boolean(todayValue),
+//                 all: new Boolean(allValue),
+//                 monthly: new Boolean(monthlyValue),
+//                 weekly: new Boolean(weeklyValue)
+//             }
+//         )
+//         return response.data;
+//     }
+// }
+
+
 export const contests = {
     // fetching contests details to show on home page
     fetchContests: async () => {
@@ -111,15 +127,15 @@ export const questionApis = {
             console.error("Error submitting answer:", error);
             throw error;
         }   
-    }
+    },
 };
 
 
 export const leaderboardApi = {
     // fetching leaderboard results
-    fetchLeaderboard: async (contestId: string) => {
+    fetchLeaderboard: async (contestId: number, today: boolean, weekly: boolean, monthly: boolean, all: boolean) => {
         try {
-            const response = await api.get(`${endPoints.getLeaderBoardResults}?contest_id=${contestId}`);
+            const response = await api.post(`${endPoints.getLeaderBoardResults}`, { contest_id: contestId, today, weekly, monthly, all });
             return response.data;
         } catch (error) {
             console.error("Error fetching leaderboard:", error);
