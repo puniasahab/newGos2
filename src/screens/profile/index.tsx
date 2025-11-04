@@ -74,7 +74,7 @@ const Profile = () => {
 
     const handleBackClick = () => {
         console.log("Back button clicked");
-        navigate(-1);
+        navigate("/");
     }
     try {
         return (

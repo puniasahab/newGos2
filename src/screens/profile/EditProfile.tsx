@@ -18,11 +18,29 @@ const EditProfile = () => {
         mobile: userProfile.phone
     });
 
+    const [emailError, setEmailError] = useState('');
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
+
+        // Validate email field
+        if (field === 'email') {
+            if (value === '') {
+                setEmailError('');
+            } else if (!validateEmail(value)) {
+                setEmailError('Please enter a valid email address');
+            } else {
+                setEmailError('');
+            }
+        }
     };
 
     const handleVerifyEmail = () => {
@@ -235,7 +253,7 @@ const EditProfile = () => {
                                     padding: '12px 16px',
                                     paddingRight: '80px',
                                     backgroundColor: 'transparent',
-                                    border: '2px solid #333',
+                                    border: `2px solid ${emailError ? '#ff4444' : '#333'}`,
                                     borderRadius: '8px',
                                     color: 'white',
                                     fontSize: '16px',
@@ -243,29 +261,41 @@ const EditProfile = () => {
                                     transition: 'border-color 0.3s ease',
                                     boxSizing: 'border-box'
                                 }}
-                                onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
-                                onBlur={(e) => e.target.style.borderColor = '#333'}
+                                onFocus={(e) => e.target.style.borderColor = emailError ? '#ff4444' : 'var(--primary-color)'}
+                                onBlur={(e) => e.target.style.borderColor = emailError ? '#ff4444' : '#333'}
                             />
                             <button
                                 onClick={handleVerifyEmail}
+                                disabled={!!emailError || formData.email === ''}
                                 style={{
                                     position: 'absolute',
                                     right: '8px',
                                     top: '50%',
                                     transform: 'translateY(-50%)',
-                                    backgroundColor: 'var(--primary-color)',
+                                    backgroundColor: (emailError || formData.email === '') ? '#666' : 'var(--primary-color)',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '6px',
                                     padding: '6px 12px',
                                     fontSize: '12px',
                                     fontWeight: '600',
-                                    cursor: 'pointer'
+                                    cursor: (emailError || formData.email === '') ? 'not-allowed' : 'pointer',
+                                    opacity: (emailError || formData.email === '') ? 0.6 : 1
                                 }}
                             >
                                 Verify
                             </button>
                         </div>
+                        {emailError && (
+                            <p style={{
+                                color: '#ff4444',
+                                fontSize: '12px',
+                                margin: '4px 0 0 0',
+                                fontWeight: '500'
+                            }}>
+                                {emailError}
+                            </p>
+                        )}
                     </div>
 
                     {/* Country Field */}
@@ -331,16 +361,17 @@ const EditProfile = () => {
                             <input
                                 type="text"
                                 value={formData.mobile}
-                                onChange={(e) => handleInputChange('mobile', e.target.value)}
+                                readOnly
                                 style={{
                                     flex: 1,
                                     padding: '12px 16px',
-                                    backgroundColor: 'transparent',
+                                    backgroundColor: '#1a1a1a',
                                     border: 'none',
-                                    color: 'white',
+                                    color: '#999',
                                     fontSize: '16px',
                                     outline: 'none',
-                                    boxSizing: 'border-box'
+                                    boxSizing: 'border-box',
+                                    cursor: 'not-allowed'
                                 }}
                             />
                         </div>

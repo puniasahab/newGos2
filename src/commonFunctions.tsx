@@ -6,6 +6,41 @@ export const getDeviceIdFromLS = (): string | null => {
     return localStorage.getItem("deviceId");
 };
 
+// export const setIsContestPlayed = (type: string | undefined, isPlayed: boolean | undefined) => {
+//     localStorage.setItem(`is${type}Played`, JSON.stringify(isPlayed));
+// }
+
+// export const getIsContestPlayed = (type: string | undefined): { type: boolean } | null => {
+//     const data = localStorage.getItem(`is${type}Played`);
+//     return data ? JSON.parse(data) : null;
+// }
+
+export const setIsJackpotPlayed = (type: string | undefined, isPlayed: boolean | undefined) => {
+    localStorage.setItem(`is${type}Played`, JSON.stringify(isPlayed));
+}
+
+export const setIsQuickFingerPlayed = (type: string | undefined, isPlayed: boolean | undefined) => {
+    localStorage.setItem(`is${type}Played`, JSON.stringify(isPlayed));
+}
+
+export const setIsRapidFirePlayed = (type: string | undefined, isPlayed: boolean | undefined) => {
+    localStorage.setItem(`is${type}Played`, JSON.stringify(isPlayed));
+}
+
+export const getIsJackpotPlayed = (type: string | undefined): { type: boolean } | null => {
+    const data = localStorage.getItem(`is${type}Played`);
+    return data ? JSON.parse(data) : null;
+}
+
+export const getIsQuickFingerPlayed = (type: string | undefined): { type: boolean } | null => {
+    const data = localStorage.getItem(`is${type}Played`);
+    return data ? JSON.parse(data) : null;
+}
+
+export const getIsRapidFirePlayed = (type: string | undefined): { type: boolean } | null => {
+    const data = localStorage.getItem(`is${type}Played`);
+    return data ? JSON.parse(data) : null;
+}
 
 export const setNameAndContestIdInLS = (nameAndContestId: { name: string; contestId: number }[]) => {
     localStorage.setItem("nameAndContestId", JSON.stringify(nameAndContestId));

@@ -6,6 +6,11 @@ const ProgressBarTimer: React.FC<{ duration: number; onComplete?: () => void }> 
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
 
+  // Reset timer when duration changes (new question)
+  useEffect(() => {
+    setTimeLeft(duration);
+  }, [duration]);
+
   useEffect(() => {
     if (timeLeft <= 0) {
       if (onComplete) onComplete();

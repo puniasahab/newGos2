@@ -7,7 +7,7 @@ import Footer from "../../components/footer";
 import { questionApis } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useParams } from "react-router-dom";
-import { getNameAndContestId } from "../../commonFunctions";
+import { getIsJackpotPlayed, getIsRapidFirePlayed, getIsQuickFingerPlayed, getNameAndContestId } from "../../commonFunctions";
 // import Countdown from 'react-countdown';
 import { setIsQuizCompleted, 
     setAnswerOptions,
@@ -25,6 +25,8 @@ import { setIsQuizCompleted,
 // @ts-ignore
 import confetti from "canvas-confetti";
 import ProgressBarTimer from "./ProgressBarTimer";
+import ResultScreen from "../resultScreen";
+import { QuestionType } from "../../utils/questionsEnum";
 
 // interface Question {
 //     contestId?: string;
@@ -36,23 +38,60 @@ const Questions = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const [skipButtonClicked, setSkipButtonClicked] = useState(false);
-     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+    const [timerKey, setTimerKey] = useState(0); // Key to force timer restart
    
     const { playClickSound, playCorrectSound, playWrongSound } = useSound();
     // const [questionType, setQuestionType] = useState<string>();
 
     // const { nameAndContestId } = useAppSelector((state) => state.home);
     const { correctAnswer, currentQuestionIndex,  currentQuestionId, answerOptions, 
-        // skippedAnswerCount, correctAnswerCount, wrongAnswerCount, 
+        skippedAnswerCount, correctAnswerCount, wrongAnswerCount, 
         question, 
-        // totalQuestions, isQuizCompleted,   
+        totalQuestions, isQuizCompleted, score,   
     } = useAppSelector((state) => state.questions);
 
     const { opt1, opt2, opt3, opt4 } = answerOptions;
     const noOfQuestionsPlayed = 1;
     const totalNoOfQuestions = 10;
     const totalStonesGained = 100;
+
+    // Timer duration based on question type
+    const getTimerDuration = () => {
+        switch (type) {
+            case QuestionType.JACKPOT:
+                return 20; // 20 seconds per question
+            case QuestionType.FASTEST_FINGER:
+                return 11; // 11 seconds per question
+            case QuestionType.RAPID_FIRE:
+                return 60; // 60 seconds total for all questions
+            default:
+                return 12; // Default timer
+        }
+    };
+
+    // Handle timer completion
+    const handleTimerComplete = () => {
+        if (isAnswerSubmitted) return; // Don't process if answer already submitted
+        
+        if (type === QuestionType.RAPID_FIRE) {
+            // For RAPID_FIRE, when timer ends, complete the entire quiz
+            dispatch(setIsQuizCompleted(true));
+        } else {
+            // For JACKPOT and FASTEST_FINGER, skip current question and move to next
+            dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+            handleSkip();
+        }
+    };
+
+    // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
+    const resetTimerForNewQuestion = () => {
+        if (type === QuestionType.JACKPOT || type === QuestionType.FASTEST_FINGER) {
+            setTimerKey(prev => prev + 1);
+        }
+        // For RAPID_FIRE, timer continues running and doesn't reset
+    };
 
 
     const handleAnswerClick = async (answer: string) => {
@@ -83,6 +122,7 @@ const Questions = () => {
                 setSelectedAnswer(null);
                 setIsAnswerSubmitted(false);
                 setSkipButtonClicked(!skipButtonClicked);
+                resetTimerForNewQuestion();
             }, 1200);
         } catch(error) {
             setSelectedAnswer(null);
@@ -129,14 +169,26 @@ const Questions = () => {
             setSelectedAnswer(null);
             setIsAnswerSubmitted(false);
             setSkipButtonClicked(!skipButtonClicked);
+            resetTimerForNewQuestion();
         }, 1200);
     }
     
 
+
     useEffect(() => {
+        let isContestPLayed = false;
+        if(type === QuestionType.JACKPOT) {
+            isContestPLayed = getIsJackpotPlayed(type) ? true : false;
+        }
+        else if(type === QuestionType.FASTEST_FINGER) {
+            isContestPLayed = getIsQuickFingerPlayed(type) ? true : false;
+        }
+        else if(type === QuestionType.RAPID_FIRE) {
+            isContestPLayed = getIsRapidFirePlayed(type) ? true : false;
+        }
 
         const contestId = getNameAndContestId()?.find((item: {name: string, contestId: number}) => item.name === type)?.contestId;
-        questionApis.fetchQuestion(contestId).then((data) => {
+        questionApis.fetchQuestion(contestId, isContestPLayed).then((data) => {
             dispatch(setIsQuizCompleted(data.data.questionsCompleted));
             if(!data.data.questionsCompleted) {
                 dispatch(setQuestion(data.data.data.question.translated_question));
@@ -147,6 +199,8 @@ const Questions = () => {
                 dispatch(setTotalQuestions(data.data.data.total_questions));
                 dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
                 setLoading(false);
+                // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
+                resetTimerForNewQuestion();
             }
             else {
                 dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
@@ -155,7 +209,7 @@ const Questions = () => {
                 dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
                 dispatch(setScore(data.data.userResult.total_stones));
                 dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
-                // dispatch(setIsQuizCompleted(true)); --- IGNORE ---
+                // dispatch(setIsQuizCompleted(true));
             }
         }).catch((error) => {
             console.error('Error fetching questions:', error);
@@ -201,6 +255,21 @@ const Questions = () => {
                 `}
                         </style>
                     </div>
+                ) : isQuizCompleted ? (
+                    <ResultScreen 
+                        gameData={{
+                            nextRoundTime: "14h 25 min",
+                            currentScore: score || totalStonesGained,
+                            correctPercentage: totalQuestions > 0 ? Math.round((correctAnswerCount / totalQuestions) * 100) : 0,
+                            wrongPercentage: totalQuestions > 0 ? Math.round((wrongAnswerCount / totalQuestions) * 100) : 0,
+                            skippedPercentage: totalQuestions > 0 ? Math.round((skippedAnswerCount / totalQuestions) * 100) : 0,
+                            correctCount: correctAnswerCount || 0,
+                            wrongCount: wrongAnswerCount || 0,
+                            skippedCount: skippedAnswerCount || 0,
+                            totalQuestions: totalQuestions || 10
+                        }}
+                        isPlayed={true}
+                    />
                 ) : (
                     <>
                         <Header />
@@ -251,12 +320,11 @@ const Questions = () => {
                             </div>
 
                         </div>
-                            <ProgressBarTimer duration={12} onComplete={() => {
-                                // Increment question index before skipping
-                                dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
-                                setSkipButtonClicked(!skipButtonClicked);
-                                // handleSkip();
-                            }} />
+                            <ProgressBarTimer 
+                                key={type === QuestionType.RAPID_FIRE ? 'rapid-fire-timer' : timerKey} 
+                                duration={getTimerDuration()} 
+                                onComplete={handleTimerComplete}
+                            />
                         {/* {Question} */}
                         <div style={{ borderRadius: '0 20px 0 20px', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', textAlign: 'center', paddingTop: '72px', paddingBottom: '60px', marginLeft: '16px', marginRight: '16px', marginTop: '16px', position: 'relative', backgroundColor: 'white', color: 'black' }}>
                             <h2>{question}</h2>
@@ -376,7 +444,6 @@ const Questions = () => {
                     </>
                 )
             }
-
         </>
     )
 }
