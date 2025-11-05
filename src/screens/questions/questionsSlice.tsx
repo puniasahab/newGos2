@@ -16,7 +16,7 @@ interface QuestionState {
     wrongAnswerCount: number;
     skippedAnswerCount: number;
     totalStonesGained?: number;
-
+    mediaUrl?: string;
 
 }
 
@@ -35,7 +35,8 @@ const initialState: QuestionState = {
     totalQuestions: 0,
     correctAnswerCount: 0,
     wrongAnswerCount: 0,
-    skippedAnswerCount: 0
+    skippedAnswerCount: 0,
+    mediaUrl: "",
 }
 
 
@@ -81,7 +82,10 @@ export const questionsSlice = createSlice({
         },
         setTotalStonesGained: (state, action: PayloadAction<number>) => {
             state.totalStonesGained = action.payload;
-        }
+        },
+        setMediaUrl: (state, action: PayloadAction<string>) => {
+            state.mediaUrl = action.payload;
+        },
     },
 });
 
@@ -98,6 +102,8 @@ export const { setQuestion,
      setWrongAnswerCount,
      setCorrectAnswer,
      setSkippedAnswerCount,
-    setTotalStonesGained } = questionsSlice.actions;
+    setTotalStonesGained,
+    setMediaUrl
+} = questionsSlice.actions;
 
 export default questionsSlice.reducer;

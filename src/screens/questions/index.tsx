@@ -21,7 +21,8 @@ import {
     setCurrentQuestionIndex,
     setScore,
     setCorrectAnswer,
-    setTotalStonesGained
+    setTotalStonesGained,
+    setMediaUrl
 
 } from "./questionsSlice";
 // @ts-ignore
@@ -52,7 +53,7 @@ const Questions = () => {
         skippedAnswerCount, correctAnswerCount, wrongAnswerCount,
         question,
         totalStonesGained,
-        totalQuestions, isQuizCompleted, score,
+        totalQuestions, isQuizCompleted, score, mediaUrl
     } = useAppSelector((state) => state.questions);
 
     const { opt1, opt2, opt3, opt4 } = answerOptions;
@@ -212,6 +213,7 @@ const Questions = () => {
                     dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
                     setLoading(false);
                     dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+                    dispatch(setMediaUrl(data.data.data.question.media));
                     // Reset timer for new question (only for JACKPOT and FASTEST_FINGER)
                     resetTimerForNewQuestion();
                 }
@@ -239,6 +241,7 @@ const Questions = () => {
                     dispatch(setAnswerOptions({
                         ...data.data.data.question.answer_data
                     }));
+                    dispatch(setMediaUrl(data.data.data.question.media));
                     dispatch(setCurrentQuestionId(data.data.data.question.id));
                     dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
                     dispatch(setCorrectAnswer(data.data.data.question.correct_answer));
@@ -283,6 +286,14 @@ const Questions = () => {
                 return "0";
             }
         }
+    }
+
+    const getMediaUrlType = (url: string) => {
+        const extension = url.split(".").pop()?.toLowerCase() || "";
+        if (["jpg", "jpeg", "png", "gif", "webp", "svg"].includes(extension)) return "image";
+        if (["mp4", "mov", "webm", "mkv"].includes(extension)) return "video";
+        if (["mp3", "wav", "ogg", "m4a"].includes(extension)) return "audio";
+        return "";
     }
 
     return (
@@ -380,7 +391,7 @@ const Questions = () => {
                                     color: 'black',
                                     padding: '8px 16px',
                                     fontWeight: 600
-                                }} className="stat-value">{totalStonesGained}</span>
+                                }} className="stat-value">{totalStonesGained || 0}</span>
                             </div>
 
                         </div>
@@ -390,36 +401,84 @@ const Questions = () => {
                             onComplete={handleTimerComplete}
                         />
                         {/* {Question} */}
-                        <div style={{ borderRadius: '0 20px 0 20px', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', textAlign: 'center', paddingTop: '72px', paddingBottom: '60px', marginLeft: '16px', marginRight: '16px', marginTop: '16px', position: 'relative', backgroundColor: 'white', color: 'black' }}>
-                            <h2>{question}</h2>
-                            <div className="bg-[linear-gradient(to_right,#ef4444,#7c3aed)]" style={{ position: 'absolute', bottom: '-28px', left: '50%', transform: 'translateX(-50%)', borderRadius: '100%', color: 'white' }}>
-                                {/* <CountdownCircleTimer
-                   isPlaying
-                   size={50}
-                   strokeWidth={4}
-                   duration={12} // Timer duration in seconds
-                //    trailColor="green-500"
-                   colors={['#004777', '#70580fff', '#A30000', '#A30000']} // Colors for different progress stages
-                   colorsTime={[10, 6, 3, 0]} // Time points for color changes
-                onComplete={() => {
-                    // Increment question index before skipping
-                    dispatch(incrementCurrentQuestionIndex());
-                    setSkipButtonClicked(!skipButtonClicked);
-                    handleSkip();
-                    return { shouldRepeat: false };
-                }} // Change skip state when timer ends
-        >
-          {({ remainingTime }) => (
-            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
-              {remainingTime}
-            </div>
-          )}
-        </CountdownCircleTimer> */}
-                            </div>
+                        <div style={{
+                            borderRadius: '0 20px 0 20px',
+                            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
+                            textAlign: 'center',
+                            padding: '20px',
+                            marginLeft: '16px',
+                            marginRight: '16px',
+                            marginTop: '16px',
+                            position: 'relative',
+                            backgroundColor: 'white',
+                            color: 'black',
+                            height: '200px',
+                            width: 'calc(100% - 72px)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: mediaUrl ? 'flex-start' : 'center',
+                            overflow: 'hidden'
+                        }}>
+                            <h2 style={{
+                                fontSize: mediaUrl ?
+                                    (question && question.length > 80 ? '16px' :
+                                        question && question.length > 60 ? '18px' : '20px') :
+                                    (question && question.length > 100 ? '18px' :
+                                        question && question.length > 80 ? '20px' :
+                                            question && question.length > 60 ? '22px' : '24px'),
+                                margin: 0,
+                                marginBottom: mediaUrl ? '16px' : 0,
+                                lineHeight: '1.3',
+                                wordWrap: 'break-word',
+                                hyphens: 'auto',
+                                maxWidth: '100%',
+                                flex: mediaUrl ? '0 0 auto' : '1',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
+                                {question}
+                            </h2>
+                            {mediaUrl &&
+                                <div style={{
+                                    width: getMediaUrlType(mediaUrl) === "video" || getMediaUrlType(mediaUrl) === "audio" ? '60%' : '150px',
+                                    height: '120px',
+                                    borderRadius: '12px',
+                                    overflow: 'hidden',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                                    border: '2px solid #f0f0f0',
+                                    marginTop: 'auto'
+                                }}>
+                                    {getMediaUrlType(mediaUrl) === "image" ?
+                                        (<img
+                                            src={mediaUrl}
+                                            alt="Question Media"
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                display: 'block'
+                                            }}
+                                        />) : getMediaUrlType(mediaUrl) === "video" ? (
+                                    <video
+                                        src={mediaUrl}
+                                        controls
+                                        autoPlay
+                                        // muted
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                            display: 'block'
+                                        }}
+                                    />
+                                    ) : (<audio src={mediaUrl} controls autoPlay style={{ width: '80%' }} ></audio>)}
+                                </div>
+                            }
                         </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '40px', marginBottom: '16px', marginLeft: '16px', marginRight: '16px' }}>
-                            <div
+                            {opt1 && <div
                                 style={{
                                     borderRadius: '0 20px 0 20px',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
@@ -435,8 +494,8 @@ const Questions = () => {
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt1)}
                             >
                                 {opt1}
-                            </div>
-                            <div
+                            </div>}
+                            {opt2 && <div
                                 style={{
                                     borderRadius: '20px 0 20px 0',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
@@ -454,8 +513,8 @@ const Questions = () => {
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt2)}
                             >
                                 {opt2}
-                            </div>
-                            <div
+                            </div>}
+                            {opt3 && <div
                                 style={{
                                     borderRadius: '20px 0 20px 0',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
@@ -474,31 +533,32 @@ const Questions = () => {
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt3)}
                             >
                                 {opt3}
-                            </div>
-                            <div
-                                style={{
-                                    borderRadius: '0 20px 0 20px',
-                                    boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
-                                    textAlign: 'center',
-                                    padding: '12px',
-                                    fontSize: "20px",
-                                    // backgroundColor: 'white',
-                                    // color: 'black',
-                                    backgroundColor: getOptionBackgroundColor(opt4),
-                                    color: getOptionTextColor(opt4),
-                                    cursor: isAnswerSubmitted ? 'default' : 'pointer',
-                                    opacity: isAnswerSubmitted ? 0.8 : 1,
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
-                            >
-                                {opt4}
-                            </div>
+                            </div>}
+                            {opt4 &&
+                                <div
+                                    style={{
+                                        borderRadius: '0 20px 0 20px',
+                                        boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
+                                        textAlign: 'center',
+                                        padding: '12px',
+                                        fontSize: "20px",
+                                        // backgroundColor: 'white',
+                                        // color: 'black',
+                                        backgroundColor: getOptionBackgroundColor(opt4),
+                                        color: getOptionTextColor(opt4),
+                                        cursor: isAnswerSubmitted ? 'default' : 'pointer',
+                                        opacity: isAnswerSubmitted ? 0.8 : 1,
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
+                                >
+                                    {opt4}
+                                </div>}
                         </div>
 
                         {/* {Skip Button} */}
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px' }}>
-                            <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '16px', marginTop: '40px', textAlign: 'center', fontSize: '28px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
+                            <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '12px', marginTop: '40px', textAlign: 'center', fontSize: '28px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
                                 onClick={() => { handleSkip() }}
                             >
                                 Skip
