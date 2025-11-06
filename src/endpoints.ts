@@ -11,4 +11,8 @@ export const endPoints = {
     verifyOtp: '/user-new-verify-otp',
     getProfileData: '/user-profile',
     updateProfileData: '/profile-update',
+    sendMobileOtp: "/send-mobile-otp",
+    sendEmailOtp: "/send-email-otp",
+    verifyEmailOtp: "/verify-email-otp",
+    verifyMobileOtp: "/verify-mobile-otp",
 }

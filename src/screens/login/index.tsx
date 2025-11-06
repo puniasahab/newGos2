@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import homeBanner from '../../assets/homeBanner.png';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { setOpenModal, setPhoneNumber } from './LoginSlice';
+import { setOpenModal, setPhoneNumber, setEmailAdd, setTabSelected } from './LoginSlice';
 import { loginApis } from '../../api';
 import OtpModal from '../../components/otpModal/OtpModal';
-import { setPhoneNumberInLS } from '../../commonFunctions';
+import { setEmailInLS, setPhoneNumberInLS } from '../../commonFunctions';
 
 const Login = () => {
     const dispatch = useAppDispatch();
     const [mobileNumber, setMobileNumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [activeTab, setActiveTab] = useState('email'); // 'email' or 'phone'
+    const [emailError, setEmailError] = useState('');
     //@ts-ignore
     const [isLoading, setIsLoading] = useState(false);
     //@ts-ignore
@@ -27,28 +30,65 @@ const Login = () => {
         }
     };
 
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setEmail(value);
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (value && !emailRegex.test(value)) {
+            setEmailError('Please enter a valid email address');
+        } else {
+            setEmailError('');
+        }
+    };
+
+    const isValidInput = () => {
+        if (activeTab === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return email && emailRegex.test(email);
+        } else {
+            return mobileNumber.length === 10;
+        }
+    };
+
     const handleLogin = async () => {
-        if (mobileNumber.length !== 10) {
-            alert('Please enter a valid 10-digit mobile number');
-            return;
+        if (activeTab === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                setEmailError('Please enter a valid email address');
+                return;
+            }
+            // Handle email login
+            dispatch(setOpenModal(true));
+            dispatch(setEmailAdd(email));
+            setEmailInLS(email);
+            dispatch(setTabSelected("email"));
+            try {
+                const res = await loginApis.sendOtp('', email, '');
+                console.log(res, "Send otp response");
+            } catch (error) {
+                console.error("Error sending OTP:", error);
+            }
+            // You can add email OTP API call here
+            console.log('Email login:', email);
+        } else {
+            if (mobileNumber.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            dispatch(setOpenModal(true));
+            setPhoneNumberInLS(mobileNumber);
+            dispatch(setTabSelected("phone"));
+            dispatch(setPhoneNumber(mobileNumber));
+            try {
+                const res = await loginApis.sendOtp(mobileNumber, '', '');
+                console.log(res, "Send otp response");
+            } catch (error) {
+                console.error("Error sending OTP:", error);
+            }
         }
-        
-        dispatch(setOpenModal(true));
-        setPhoneNumberInLS(mobileNumber);
-        dispatch(setPhoneNumber(mobileNumber));
-        try {
-            const res = await loginApis.sendOtp(mobileNumber, '', '');
-            console.log(res, "Send otp response");
-            // setIsLoading(true);
-        } catch (error) {
-            console.error("Error sending OTP:", error);
-        }
-        
-        // Simulate API call
-        // setTimeout(() => {
-        //     setIsLoading(false);
-        //     navigate('/');
-        // }, 2000);
     };  
 
     return (
@@ -59,10 +99,102 @@ const Login = () => {
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px'
+            padding: '0 20px'
         }}>
+            {/* Tabs at the top */}
+            <div style={{
+                display: 'flex',
+                backgroundColor: '#1a1a1a',
+                borderRadius: '16px',
+                padding: '6px',
+                marginBottom: '40px',
+                border: '1px solid #333',
+                maxWidth: '450px',
+                width: '90%',
+                alignSelf: 'center',
+                marginTop: '20px',
+                position: 'relative',
+                overflow: 'hidden'
+            }}>
+                {/* Animated background indicator */}
+                <div style={{
+                    position: 'absolute',
+                    top: '6px',
+                    left: activeTab === 'email' ? '6px' : 'calc(50% - 3px)',
+                    width: 'calc(50% - 6px)',
+                    height: 'calc(100% - 12px)',
+                    backgroundColor: 'var(--primary-color)',
+                    borderRadius: '12px',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxShadow: '0 4px 12px rgba(220, 36, 48, 0.4)',
+                    transform: 'scale(1)',
+                    zIndex: 1
+                }} />
+                
+                <button
+                    onClick={() => setActiveTab('email')}
+                    style={{
+                        flex: 1,
+                        padding: '16px 24px',
+                        backgroundColor: 'transparent',
+                        color: activeTab === 'email' ? 'white' : '#999',
+                        border: 'none',
+                        borderRadius: '12px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: activeTab === 'email' ? 'scale(1.02)' : 'scale(1)',
+                        position: 'relative',
+                        zIndex: 2,
+                        textShadow: activeTab === 'email' ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+                        outline: 'none',
+                        boxShadow: 'none',
+                        WebkitTapHighlightColor: 'transparent'
+                    }}
+                    onFocus={(e) => e.target.style.outline = 'none'}
+                    onBlur={(e) => e.target.style.outline = 'none'}
+                >
+                    Email
+                </button>
+                <button
+                    onClick={() => setActiveTab('phone')}
+                    style={{
+                        flex: 1,
+                        padding: '16px 24px',
+                        backgroundColor: 'transparent',
+                        color: activeTab === 'phone' ? 'white' : '#999',
+                        border: 'none',
+                        borderRadius: '12px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: activeTab === 'phone' ? 'scale(1.02)' : 'scale(1)',
+                        position: 'relative',
+                        zIndex: 2,
+                        textShadow: activeTab === 'phone' ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none',
+                        outline: 'none',
+                        boxShadow: 'none',
+                        WebkitTapHighlightColor: 'transparent'
+                    }}
+                    onFocus={(e) => e.target.style.outline = 'none'}
+                    onBlur={(e) => e.target.style.outline = 'none'}
+                >
+                    Phone
+                </button>
+            </div>
+             <p style={{
+                        color: '#999',
+                        fontSize: '16px',
+                        margin: '0',
+                        marginBottom: '30px',
+                        marginTop: '-20px',
+                        textAlign: 'center'
+                    }}>
+                        Choose your preferred login method
+                    </p>
+
             {/* Background Logo */}
             <div style={{
                 position: 'absolute',
@@ -89,7 +221,12 @@ const Login = () => {
                 zIndex: 2,
                 width: '100%',
                 maxWidth: '400px',
-                textAlign: 'center'
+                textAlign: 'center',
+                alignSelf: 'center',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
             }}>
                 {/* Logo */}
                 <div style={{ marginBottom: '60px' }}>
@@ -111,87 +248,147 @@ const Login = () => {
                     }}>
                         Welcome to GameStones
                     </h1>
-                    <p style={{
-                        color: '#999',
-                        fontSize: '16px',
-                        margin: '0'
-                    }}>
-                        Enter your mobile number to continue
-                    </p>
+                   
                 </div>
 
-                {/* Mobile Input */}
+                {/* Input Fields with smooth transitions */}
                 <div style={{
-                    marginBottom: '40px'
+                    marginBottom: '40px',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}>
                     <div style={{
-                        display: 'flex',
-                        backgroundColor: 'white',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                        border: '2px solid transparent',
-                        transition: 'border-color 0.3s ease'
+                        transform: activeTab === 'email' ? 'translateX(0%)' : 'translateX(-100%)',
+                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        opacity: activeTab === 'email' ? 1 : 0,
+                        visibility: activeTab === 'email' ? 'visible' : 'hidden',
+                        position: activeTab === 'email' ? 'relative' : 'absolute',
+                        width: '100%',
+                        top: 0,
+                        left: 0
                     }}>
-                        {/* Country Code */}
                         <div style={{
-                            backgroundColor: '#f5f5f5',
-                            padding: '16px 20px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            borderRight: '1px solid #e0e0e0',
-                            fontSize: '16px',
-                            fontWeight: '600',
-                            color: '#333'
+                            backgroundColor: 'white',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                            border: emailError ? '2px solid #f44336' : '2px solid transparent',
+                            transition: 'border-color 0.3s ease'
                         }}>
-                            +91
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={handleEmailChange}
+                                placeholder="Enter your email address"
+                                style={{
+                                    width: '100%',
+                                    padding: '16px 20px',
+                                    border: 'none',
+                                    outline: 'none',
+                                    fontSize: '16px',
+                                    backgroundColor: 'white',
+                                    color: '#333',
+                                    boxSizing: 'border-box'
+                                }}
+                            />
                         </div>
-                        
-                        {/* Mobile Number Input */}
-                        <input
-                            type="text"
-                            value={mobileNumber}
-                            onChange={handleMobileChange}
-                            placeholder="Enter mobile number"
-                            style={{
-                                flex: 1,
-                                padding: '16px 20px',
-                                border: 'none',
-                                outline: 'none',
-                                fontSize: '16px',
-                                backgroundColor: 'white',
-                                color: '#333'
-                            }}
-                        />
+                        {emailError && (
+                            <p style={{
+                                color: '#f44336',
+                                fontSize: '12px',
+                                marginTop: '8px',
+                                textAlign: 'left'
+                            }}>
+                                {emailError}
+                            </p>
+                        )}
+                        <p style={{
+                            color: '#666',
+                            fontSize: '12px',
+                            marginTop: emailError ? '4px' : '8px',
+                            textAlign: 'left'
+                        }}>
+                            We'll send you an OTP to verify your email
+                        </p>
                     </div>
-                    
-                    {/* Helper Text */}
-                    <p style={{
-                        color: '#666',
-                        fontSize: '12px',
-                        marginTop: '8px',
-                        textAlign: 'left'
+
+                    <div style={{
+                        transform: activeTab === 'phone' ? 'translateX(0%)' : 'translateX(100%)',
+                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        opacity: activeTab === 'phone' ? 1 : 0,
+                        visibility: activeTab === 'phone' ? 'visible' : 'hidden',
+                        position: activeTab === 'phone' ? 'relative' : 'absolute',
+                        width: '100%',
+                        top: 0,
+                        left: 0
                     }}>
-                        We'll send you an OTP to verify your number
-                    </p>
+                        <div style={{
+                            display: 'flex',
+                            backgroundColor: 'white',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                            border: '2px solid transparent',
+                            transition: 'border-color 0.3s ease'
+                        }}>
+                            {/* Country Code */}
+                            <div style={{
+                                backgroundColor: '#f5f5f5',
+                                padding: '16px 20px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                borderRight: '1px solid #e0e0e0',
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                color: '#333'
+                            }}>
+                                +91
+                            </div>
+                            
+                            {/* Mobile Number Input */}
+                            <input
+                                type="text"
+                                value={mobileNumber}
+                                onChange={handleMobileChange}
+                                placeholder="Enter mobile number"
+                                style={{
+                                    flex: 1,
+                                    padding: '16px 20px',
+                                    border: 'none',
+                                    outline: 'none',
+                                    fontSize: '16px',
+                                    backgroundColor: 'white',
+                                    color: '#333'
+                                }}
+                            />
+                        </div>
+                        <p style={{
+                            color: '#666',
+                            fontSize: '12px',
+                            marginTop: '8px',
+                            textAlign: 'left'
+                        }}>
+                            We'll send you an OTP to verify your number
+                        </p>
+                    </div>
                 </div>
 
                 {/* Login Button */}
                 <button
                     onClick={handleLogin}
-                    disabled={isLoading || mobileNumber.length !== 10}
+                    disabled={isLoading || !isValidInput()}
                     style={{
                         width: '100%',
                         padding: '16px',
-                        backgroundColor: mobileNumber.length === 10 ? 'var(--primary-color)' : '#666',
+                        backgroundColor: isValidInput() ? 'var(--primary-color)' : '#666',
                         color: 'white',
                         border: 'none',
                         borderRadius: '12px',
                         fontSize: '16px',
                         fontWeight: '600',
-                        cursor: mobileNumber.length === 10 ? 'pointer' : 'not-allowed',
+                        cursor: isValidInput() ? 'pointer' : 'not-allowed',
                         transition: 'all 0.3s ease',
-                        boxShadow: mobileNumber.length === 10 ? '0 4px 15px rgba(220, 36, 48, 0.3)' : 'none',
+                        boxShadow: isValidInput() ? '0 4px 15px rgba(220, 36, 48, 0.3)' : 'none',
                         transform: isLoading ? 'scale(0.98)' : 'scale(1)',
                         marginBottom: '20px'
                     }}
@@ -211,10 +408,10 @@ const Login = () => {
                                 borderRadius: '50%',
                                 animation: 'spin 1s linear infinite'
                             }}></div>
-                            Logging in...
+                            {activeTab === 'email' ? 'Sending OTP...' : 'Logging in...'}
                         </div>
                     ) : (
-                        'Continue'
+                        `Continue with ${activeTab === 'email' ? 'Email' : 'Phone'}`
                     )}
                 </button>
 
@@ -242,6 +439,25 @@ const Login = () => {
                     @keyframes spin {
                         0% { transform: rotate(0deg); }
                         100% { transform: rotate(360deg); }
+                    }
+                    
+                    button:focus {
+                        outline: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    button:active {
+                        outline: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    button::-moz-focus-inner {
+                        border: 0 !important;
+                        outline: none !important;
+                    }
+                    
+                    *:focus {
+                        outline: none !important;
                     }
                 `
             }} />

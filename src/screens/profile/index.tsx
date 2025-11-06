@@ -174,118 +174,171 @@ const Profile = () => {
 
                 {/* Stats Cards */}
                 <div style={{
-                    padding: '0 20px',
+                    padding: '0 12px',
                     paddingTop: '20px',
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
                     position: 'relative',
-                    height: '140px',
-                    marginTop: '-40px'
+                    height: 'auto',
+                    minHeight: '120px',
+                    marginTop: '-40px',
+                    gap: '8px'
                 }}>
                     {/* First Card - Gained Stones */}
                     <div style={{
                         backgroundColor: 'white',
-                        borderRadius: '16px',
-                        // padding: '20px 16px',
-                        marginTop: '-24px',
-                        paddingTop: '20px',
-                        paddingBottom: '12px',
-                        width: '120px',
+                        borderRadius: '12px',
+                        paddingTop: '16px',
+                        paddingBottom: '10px',
+                        paddingLeft: '6px',
+                        paddingRight: '6px',
+                        width: '30%',
+                        maxWidth: '105px',
+                        minWidth: '85px',
                         textAlign: 'center',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-                        position: 'absolute',
-                        left: '10px',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
                         zIndex: 1,
-                        // transform: 'rotate(-8deg)',
-                        border: '1px solid #f0f0f0'
+                        border: '1px solid #f0f0f0',
+                        transform: 'translateY(-12px)'
                     }}>
-                        <div style={{ marginBottom: '12px' }}>
+                        <div style={{ marginBottom: '8px' }}>
                             <div style={{ 
                                 backgroundColor: '#FF4444', 
                                 borderRadius: '50%', 
-                                width: '32px', 
-                                height: '32px', 
+                                width: '26px', 
+                                height: '26px', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center',
-                                margin: '0 auto 8px auto'
+                                margin: '0 auto 6px auto'
                             }}>
-                                <Heart size={18} color="white" fill="white" />
+                                <Heart size={14} color="white" fill="white" />
                             </div>
-                            <span style={{ fontSize: '28px', fontWeight: '800', color: '#333', display: 'block' }}>1000</span>
+                            <span style={{ 
+                                fontSize: window.innerWidth < 375 ? '18px' : window.innerWidth < 400 ? '20px' : '22px', 
+                                fontWeight: '800', 
+                                color: '#333', 
+                                display: 'block',
+                                lineHeight: '1.1'
+                            }}>
+                                {userProfile?.gainedStones || 0}
+                            </span>
                         </div>
-                        <p style={{ fontSize: '11px', color: '#666', margin: 0, fontWeight: '600', lineHeight: '1.2' }}>Gained Stones</p>
+                        <p style={{ 
+                            fontSize: window.innerWidth < 375 ? '12px' : '14px', 
+                            color: '#666', 
+                            margin: 0, 
+                            fontWeight: '600', 
+                            lineHeight: '1.2',
+                            padding: '0 2px'
+                        }}>
+                            Gained Stones
+                        </p>
                     </div>
 
                     {/* Second Card - Total Played */}
                     <div style={{
                         backgroundColor: 'white',
-                        borderRadius: '16px',
-                        // padding: '20px 16px',
-                        marginTop: '-24px',
-                        paddingTop: '20px',
+                        borderRadius: '12px',
+                        paddingTop: '18px',
                         paddingBottom: '12px',
-                        width: '120px',
+                        paddingLeft: '8px',
+                        paddingRight: '8px',
+                        width: '32%',
+                        maxWidth: '115px',
+                        minWidth: '95px',
                         textAlign: 'center',
                         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-                        position: 'absolute',
-                        left: '35%',
-                        // transform: 'translateX(-50%)',
                         zIndex: 3,
-                        border: '1px solid #f0f0f0'
+                        border: '1px solid #f0f0f0',
+                        transform: 'translateY(-20px)'
                     }}>
-                        <div style={{ marginBottom: '12px' }}>
+                        <div style={{ marginBottom: '10px' }}>
                             <div style={{ 
                                 backgroundColor: '#4A90E2', 
                                 borderRadius: '50%', 
-                                width: '32px', 
-                                height: '32px', 
+                                width: '28px', 
+                                height: '28px', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center',
                                 margin: '0 auto 8px auto'
                             }}>
-                                <Gamepad2 size={18} color="white" />
+                                <Gamepad2 size={15} color="white" />
                             </div>
-                            <span style={{ fontSize: '24px', fontWeight: '800', color: '#333', display: 'block' }}>20</span>
+                            <span style={{ 
+                                fontSize: window.innerWidth < 375 ? '20px' : window.innerWidth < 400 ? '22px' : '24px', 
+                                fontWeight: '800', 
+                                color: '#333', 
+                                display: 'block',
+                                lineHeight: '1.1'
+                            }}>
+                                {userProfile?.totalPlayed || 0}
+                            </span>
                         </div>
-                        <p style={{ fontSize: '16px', color: '#666', margin: 0, fontWeight: '600', lineHeight: '1.2' }}>Total Played</p>
+                        <p style={{ 
+                            fontSize: window.innerWidth < 375 ? '12px' : '14px', 
+                            color: '#666', 
+                            margin: 0, 
+                            fontWeight: '600', 
+                            lineHeight: '1.2',
+                            padding: '0 4px'
+                        }}>
+                            Total Played
+                        </p>
                     </div>
 
                     {/* Third Card - Referral Count */}
                     <div style={{
                         backgroundColor: 'white',
-                        borderRadius: '16px',
-                        // padding: '20px 16px',
-                        marginTop: '-24px',
-                        paddingTop: '20px',
-                        paddingBottom: '12px',
-                        width: '120px',
+                        borderRadius: '12px',
+                        paddingTop: '16px',
+                        paddingBottom: '10px',
+                        paddingLeft: '6px',
+                        paddingRight: '6px',
+                        width: '30%',
+                        maxWidth: '105px',
+                        minWidth: '85px',
                         textAlign: 'center',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-                        position: 'absolute',
-                        right: '10px',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
                         zIndex: 2,
-                        // transform: 'rotate(8deg)',
-                        border: '1px solid #f0f0f0'
+                        border: '1px solid #f0f0f0',
+                        transform: 'translateY(-12px)'
                     }}>
-                        <div style={{ marginBottom: '12px' }}>
+                        <div style={{ marginBottom: '8px' }}>
                             <div style={{ 
                                 backgroundColor: '#FF6B6B', 
                                 borderRadius: '50%', 
-                                width: '32px', 
-                                height: '32px', 
+                                width: '26px', 
+                                height: '26px', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center',
-                                margin: '0 auto 8px auto'
+                                margin: '0 auto 6px auto'
                             }}>
-                                <Users size={18} color="white" />
+                                <Users size={14} color="white" />
                             </div>
-                            <span style={{ fontSize: '24px', fontWeight: '800', color: '#333', display: 'block' }}>10</span>
+                            <span style={{ 
+                                fontSize: window.innerWidth < 375 ? '18px' : window.innerWidth < 400 ? '20px' : '22px', 
+                                fontWeight: '800', 
+                                color: '#333', 
+                                display: 'block',
+                                lineHeight: '1.1'
+                            }}>
+                                {userProfile?.referralCount || 0}
+                            </span>
                         </div>
-                        <p style={{ fontSize: '16px', color: '#666', margin: 0, fontWeight: '600', lineHeight: '1.2' }}>Referral Count</p>
+                        <p style={{ 
+                            fontSize: window.innerWidth < 375 ? '12px' : '14px', 
+                            color: '#666', 
+                            margin: 0, 
+                            fontWeight: '600', 
+                            lineHeight: '1.2',
+                            padding: '0 2px'
+                        }}>
+                            Referral Count
+                        </p>
                     </div>
                 </div>
 

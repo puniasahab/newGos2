@@ -13,6 +13,7 @@ interface UserProfile {
     totalPlayed: number;
     referralCount: number;
     dailyGameStones: number;
+    isMobileVerified?: boolean;
 }
 
 interface ProfileState {
@@ -20,6 +21,7 @@ interface ProfileState {
     isLoading: boolean;
     error: string | null;
     isEditMode: boolean;
+    openModal: boolean;
 }
 
 const initialState: ProfileState = {
@@ -34,11 +36,13 @@ const initialState: ProfileState = {
         gainedStones: 0,
         totalPlayed: 0,
         referralCount: 0,
-        dailyGameStones: 0
+        dailyGameStones: 0,
+        isMobileVerified: false,
     },
     isLoading: false,
     error: null,
-    isEditMode: false
+    isEditMode: false,
+    openModal: false,
 };
 
 const profileSlice = createSlice({
@@ -68,6 +72,9 @@ const profileSlice = createSlice({
         },
         setEmailVerified: (state, action: PayloadAction<boolean>) => {
             state.userProfile.isEmailVerified = action.payload;
+        },
+        setMobileVerified: (state, action: PayloadAction<boolean>) => {
+            state.userProfile.isMobileVerified = action.payload;
         },
         setGainedStones: (state, action: PayloadAction<number>) => {
             state.userProfile.gainedStones = action.payload;
@@ -103,7 +110,10 @@ const profileSlice = createSlice({
             state.userProfile = initialState.userProfile;
             state.error = null;
             state.isEditMode = false;
-        }
+        },
+        setOpenModal: (state, action: PayloadAction<boolean>) => {
+            state.openModal = action.payload;
+        },
     }
 });
 
@@ -126,7 +136,9 @@ export const {
     setIsLoading,
     setError,
     setEditMode,
-    resetProfile
+    resetProfile,
+    setOpenModal,
+    setMobileVerified,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

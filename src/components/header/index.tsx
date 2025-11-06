@@ -4,6 +4,7 @@ import './header.css';
 import homeBanneer from '../../assets/homeBanner.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuthTokenFromLS } from '../../commonFunctions';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -156,8 +157,14 @@ const Header = () => {
                         transition: 'all 0.3s ease',
                         boxShadow: '0 2px 8px rgba(220, 36, 48, 0.3)'
                     }}
-                    onClick = {() => navigate("/profile")}
-                    >
+                    onClick = {() => {
+                        if(getAuthTokenFromLS()) {
+                            navigate("/profile");
+                        }
+                        else {
+                            navigate("/login");
+                        }
+                    }}>
                         View Profile
                     </button>
                 </div>

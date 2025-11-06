@@ -51,10 +51,30 @@ export const loginApis = {
        const response = await api.post(endPoints.sendOtp, {mobile, email, referral_code});
        return response.data;
     },
-    verifyOtp: async (mobile: string, otp: string): Promise<any> => {
-       const response = await api.post(endPoints.verifyOtp, {mobile, otp});
+    verifyOtp: async (mobile: string, otp: string, tabSelected: string): Promise<any> => {
+        const sendData = tabSelected === 'email' ? { email: mobile, otp } : { mobile, otp };
+       const response = await api.post(endPoints.verifyOtp, sendData);
        return response.data;
     }
+}
+
+export const otpApis = {
+    sendMobileOtp: async (mobile: string): Promise<any> => {
+         const response = await api.post(endPoints.sendMobileOtp, {mobile});
+         return response.data;
+    },
+    sendEmailOtp: async (email: string): Promise<any> => {  
+        const response = await api.post(endPoints.sendEmailOtp, {email});
+        return response.data;
+   },
+   verifyMobileOtp: async (mobile: string, otp: string): Promise<any> => {
+        const response = await api.post(endPoints.verifyMobileOtp, {mobile, otp});
+        return response.data;
+   },
+   verifyEmailOtp: async (email: string, otp: string): Promise<any> => {
+        const response = await api.post(endPoints.verifyEmailOtp, {email, otp});
+        return response.data;
+   }
 }
 
 export const profileApi = {

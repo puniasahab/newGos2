@@ -45,7 +45,7 @@ const handleModalClose = (dispatch: any) => {
 
 const OtpModal: React.FC<OtpModalProps> = () => {
     const dispatch = useAppDispatch();
-    const { phoneNumber, openModal } = useAppSelector((state) => state.login);
+    const { phoneNumber, openModal, email, tabSelected } = useAppSelector((state) => state.login);
     const navigate = useNavigate();
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
@@ -82,8 +82,10 @@ const OtpModal: React.FC<OtpModalProps> = () => {
         try {
             // Clear any existing error messages when submitting
             setShowErrorMessage(false);
-            
-            loginApis.verifyOtp(phone, otp)
+            if(tabSelected === 'email'){
+                phone = email;
+            }
+            loginApis.verifyOtp(phone, otp, tabSelected)
                 .then((response: any) => {
                     if (response.success) {
                         // alert('OTP verified successfully: ' + response.message);

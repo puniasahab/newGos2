@@ -10,6 +10,15 @@ export const setContestId = (contestId: number) => {
     localStorage.setItem("contestId", contestId.toString());
 }
 
+
+export const setEmailInLS = (email: string) => {
+    localStorage.setItem("email", email);
+}
+
+export const getEmailFromLS = (): string | null => {
+    return localStorage.getItem("email");
+}
+
 export const getContestId = (): number => {
     const contestId = localStorage.getItem("contestId");
     return contestId ? parseInt(contestId) : 0;

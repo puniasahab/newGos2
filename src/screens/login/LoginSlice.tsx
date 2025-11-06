@@ -11,6 +11,7 @@ interface LoginState {
     error: string | null;
     openModal: boolean;
     email: string;
+    tabSelected: 'phone' | 'email';
 }
 
 
@@ -21,6 +22,7 @@ const initialState: LoginState = {
     error: null,
     openModal: false,
     email: '',
+    tabSelected: 'email',
 }
 
 
@@ -50,11 +52,14 @@ export const loginSlice = createSlice({
         setOpenModal: (state, action) => {
             state.openModal = action.payload;
         },
-        setEmail: (state, action) => {
+        setEmailAdd: (state, action) => {
             state.email = action.payload;
-        }
+        },
+        setTabSelected: (state, action) => {
+            state.tabSelected = action.payload;
+        },
     }
 });
 
-export const { setLogin, setLogout, setUser, setPhoneNumber, setOpenModal, setEmail } = loginSlice.actions;
+export const { setLogin, setLogout, setUser, setPhoneNumber, setOpenModal, setEmailAdd, setTabSelected } = loginSlice.actions;
 export default loginSlice.reducer;

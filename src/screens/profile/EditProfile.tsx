@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { ArrowLeft, Camera } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Camera, MoreVertical, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { updateUserProfile, setEmailVerified } from './ProfileSlice';
+import { updateUserProfile, setEmailVerified , setMobileVerified } from './ProfileSlice';
 import Footer from '../../components/footer';
-import { profileApi } from '../../api';
+import { setUserProfile } from './ProfileSlice';
+import { otpApis, profileApi } from '../../api';
+import OtpModal from '../../components/otpModal/OtpModal';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -19,6 +21,8 @@ const EditProfile = () => {
     });
 
     const [emailError, setEmailError] = useState('');
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [hasApiData, setHasApiData] = useState(false);
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,10 +47,65 @@ const EditProfile = () => {
         }
     };
 
+    const handleMobileChange = (value: string) => {
+        // Only allow numbers and limit to 10 digits
+        const numericValue = value.replace(/[^0-9]/g, '');
+        if (numericValue.length <= 10) {
+            setFormData(prev => ({
+                ...prev,
+                mobile: numericValue
+            }));
+        }
+    };
+
     const handleVerifyEmail = () => {
-        // Simulate email verification
-        dispatch(setEmailVerified(true));
-        console.log('Email verified');
+        // Send OTP and open modal
+        otpApis.sendEmailOtp(formData.email)
+            .then(() => {
+                // Set Redux state for OTP modal
+               
+                console.log('Email OTP sent');
+            })
+            .catch((error) => {
+                console.error('Error sending email OTP:', error);
+            });
+    };
+
+    const verifyEmailWithOtp = (otp: string) => {
+        otpApis.verifyEmailOtp(formData.email, otp)
+            .then(() => {
+                dispatch(setEmailVerified(true));
+                console.log('Email verified with OTP');
+            })
+            .catch((error) => {
+                console.error('Error verifying email with OTP:', error);
+            });
+    };
+
+    const verifyMobileWithOtp = (otp: string) => {
+        otpApis.verifyMobileOtp(formData.mobile, otp)
+            .then(() => {
+                dispatch(setMobileVerified(true));
+                console.log('Mobile verified with OTP');
+            })
+            .catch((error) => {
+                console.error('Error verifying mobile with OTP:', error);
+            });
+    }
+
+    const handleVerifyMobile = () => {
+        // Simulate mobile verification
+        console.log('Mobile verified');
+        // You can add mobile verification logic here
+    };
+
+    const handleLogout = () => {
+        // Clear user session/data
+        localStorage.clear();
+        sessionStorage.clear();
+        console.log('User logged out');
+        navigate('/');
+        setShowDropdown(false);
     };
 
 
@@ -81,6 +140,76 @@ const EditProfile = () => {
         navigate('/profile');
     };
 
+
+     useEffect(() => {
+            console.log("Profile component mounted successfully");
+            console.log("Current userProfile in useEffect:", userProfile);
+            
+            const fetchUserProfileData = async () => {
+                try {
+                    const res = await profileApi.getProfileData();
+                    console.log("Profile Data", res.data);
+                    /**
+                     *  id: string;
+        name: string;
+        email: string;
+        phone: string;
+        country: string;
+        avatar?: string;
+        isEmailVerified: boolean;
+        gainedStones: number;
+        totalPlayed: number;
+        referralCount: number;
+        dailyGameStones: number;
+                     */
+                    const userProfileData = {
+                        id: res.data.user.id,
+                        name: res.data.user.full_name || "New User",
+                        email: res.data.user.email,
+                        phone: res.data.user.mobile,
+                        country: 'India',
+                        avatar: res.data.user.profile_photo_url || "https://images.unsplash.com/photo-1494790108755-2616b612b830?w=150&h=150&fit=crop&crop=face",
+                        isEmailVerified: res.data.user.email_verified_at ? true : false,
+                        gainedStones: res.data.overall_stats?.total_gained_stones || 0,
+                        totalPlayed: res.data.overall_stats?.total_contests_played || 0,
+                        referralCount: res.data.overall?.referrerCount || 0,
+                        dailyGameStones: res.data.overall_stats?.today_gained_stones || 0,
+                        
+                    }
+                    dispatch(setUserProfile(userProfileData));
+                    
+                    // Update form data with API data
+                    setFormData({
+                        name: userProfileData.name,
+                        email: userProfileData.email,
+                        country: userProfileData.country,
+                        mobile: userProfileData.phone
+                    });
+                    
+                    // Set flag indicating we have API data
+                    setHasApiData(true);
+                    
+                    console.log("USER PROFILE", userProfileData);
+    
+                    console.log("Dispatching setUserProfile with data:", userProfileData);
+                }
+                catch(err) {
+                    console.log("Error fetching user profile data:", err);
+                }
+            }
+            // Temporarily comment out the API call to test if this is causing the issue
+            // const fetchUserProfileData = async () => {
+            //     try {
+            //         const res = await profileApi.getProfileData();
+            //         console.log("Profile Data:", res);
+            //     } catch (error) {
+            //         console.error("Error fetching profile data:", error);
+            //     }
+            // }
+            fetchUserProfileData();
+    
+        }, [])
+
     return (
         <div style={{ backgroundColor: 'black', minHeight: '100vh' }}>
             {/* Header */}
@@ -88,24 +217,92 @@ const EditProfile = () => {
                 backgroundColor: 'black',
                 padding: '16px 20px',
                 paddingTop: '50px',
-                borderBottom: '1px solid #333'
+                borderBottom: '1px solid #333',
+                position: 'relative'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <ArrowLeft 
-                        size={24} 
-                        color="var(--primary-color)" 
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => navigate(-1)}
-                    />
-                    <h1 style={{
-                        color: 'white',
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        margin: 0
-                    }}>
-                        Edit Profile
-                    </h1>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <ArrowLeft 
+                            size={24} 
+                            color="var(--primary-color)" 
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => navigate(-1)}
+                        />
+                        <h1 style={{
+                            color: 'white',
+                            fontSize: '20px',
+                            fontWeight: '600',
+                            margin: 0
+                        }}>
+                            Edit Profile
+                        </h1>
+                    </div>
+                    
+                    {/* Three dots menu */}
+                    <div style={{ position: 'relative' }}>
+                        <MoreVertical 
+                            size={24} 
+                            color="white" 
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setShowDropdown(!showDropdown)}
+                        />
+                        
+                        {/* Dropdown */}
+                        {showDropdown && (
+                            <div style={{
+                                position: 'absolute',
+                                top: '100%',
+                                right: '0',
+                                marginTop: '8px',
+                                backgroundColor: '#1a1a1a',
+                                border: '1px solid #333',
+                                borderRadius: '8px',
+                                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                                zIndex: 1000,
+                                minWidth: '140px'
+                            }}>
+                                <button
+                                    onClick={handleLogout}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px 16px',
+                                        backgroundColor: 'transparent',
+                                        border: 'none',
+                                        color: 'white',
+                                        fontSize: '14px',
+                                        fontWeight: '500',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        borderRadius: '8px',
+                                        transition: 'background-color 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#333'}
+                                    onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
+                                >
+                                    <LogOut size={16} />
+                                    Logout
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
+                
+                {/* Click outside to close dropdown */}
+                {showDropdown && (
+                    <div 
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 999
+                        }}
+                        onClick={() => setShowDropdown(false)}
+                    />
+                )}
             </div>
 
             {/* Content */}
@@ -227,6 +424,7 @@ const EditProfile = () => {
                                 transition: 'border-color 0.3s ease',
                                 boxSizing: 'border-box'
                             }}
+                            placeholder='Enter your name'
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
                         />
@@ -251,7 +449,7 @@ const EditProfile = () => {
                                 style={{
                                     width: '100%',
                                     padding: '12px 16px',
-                                    paddingRight: '80px',
+                                    paddingRight: (!hasApiData && (formData.email === "" || formData.email === undefined || !formData.email || formData.email === "Not Verified")) ? '80px' : '16px',
                                     backgroundColor: 'transparent',
                                     border: `2px solid ${emailError ? '#ff4444' : '#333'}`,
                                     borderRadius: '8px',
@@ -261,30 +459,31 @@ const EditProfile = () => {
                                     transition: 'border-color 0.3s ease',
                                     boxSizing: 'border-box'
                                 }}
+                                placeholder="Enter your email"
                                 onFocus={(e) => e.target.style.borderColor = emailError ? '#ff4444' : 'var(--primary-color)'}
                                 onBlur={(e) => e.target.style.borderColor = emailError ? '#ff4444' : '#333'}
                             />
-                            <button
+                            {hasApiData && (userProfile.email === "" || userProfile.email === undefined || !userProfile.email || userProfile.email === "Not Verified") && <button
                                 onClick={handleVerifyEmail}
-                                disabled={!!emailError || formData.email === ''}
+                                // disabled={userProfile.email !== '' && userProfile.email?.length > 0}
                                 style={{
                                     position: 'absolute',
                                     right: '8px',
                                     top: '50%',
                                     transform: 'translateY(-50%)',
-                                    backgroundColor: (emailError || formData.email === '') ? '#666' : 'var(--primary-color)',
+                                    backgroundColor: (formData.email === '') ? '#666' : 'var(--primary-color)',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '6px',
                                     padding: '6px 12px',
                                     fontSize: '12px',
                                     fontWeight: '600',
-                                    cursor: (emailError || formData.email === '') ? 'not-allowed' : 'pointer',
-                                    opacity: (emailError || formData.email === '') ? 0.6 : 1
+                                    cursor: (emailError || formData.email === '' || formData.email === "Not Verified") ? 'not-allowed' : 'pointer',
+                                    opacity: (emailError || formData.email === '' || formData.email === "Not Verified") ? 0.6 : 1
                                 }}
                             >
                                 Verify
-                            </button>
+                            </button>}
                         </div>
                         {emailError && (
                             <p style={{
@@ -325,6 +524,7 @@ const EditProfile = () => {
                                 transition: 'border-color 0.3s ease',
                                 boxSizing: 'border-box'
                             }}
+                            placeholder='Enter your country'
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
                         />
@@ -347,7 +547,8 @@ const EditProfile = () => {
                             border: '2px solid #333',
                             borderRadius: '8px',
                             overflow: 'hidden',
-                            boxSizing: 'border-box'
+                            boxSizing: 'border-box',
+                            position: 'relative'
                         }}>
                             <div style={{
                                 backgroundColor: '#1a1a1a',
@@ -361,19 +562,46 @@ const EditProfile = () => {
                             <input
                                 type="text"
                                 value={formData.mobile}
-                                readOnly
+                                onChange={(e) => hasApiData ? handleMobileChange(e.target.value) : undefined}
+                                readOnly={!hasApiData}
                                 style={{
                                     flex: 1,
                                     padding: '12px 16px',
-                                    backgroundColor: '#1a1a1a',
+                                    paddingRight: hasApiData && formData.mobile ? '80px' : '16px',
+                                    backgroundColor: hasApiData ? 'transparent' : '#1a1a1a',
                                     border: 'none',
-                                    color: '#999',
+                                    color: hasApiData ? 'white' : '#999',
                                     fontSize: '16px',
                                     outline: 'none',
                                     boxSizing: 'border-box',
-                                    cursor: 'not-allowed'
+                                    cursor: hasApiData ? 'text' : 'not-allowed'
                                 }}
+                                placeholder='Enter your mobile number'
+                                onFocus={hasApiData ? (e) => e.target.style.borderColor = 'var(--primary-color)' : undefined}
+                                onBlur={hasApiData ? (e) => e.target.style.borderColor = '#333' : undefined}
                             />
+                            {hasApiData && (userProfile.phone === "" || userProfile.phone === undefined || !userProfile.phone || userProfile.phone === "Not Verified") && (
+                                <button
+                                    onClick={handleVerifyMobile}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '8px',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        backgroundColor: 'var(--primary-color)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        padding: '6px 12px',
+                                        fontSize: '12px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        zIndex: 2
+                                    }}
+                                >
+                                    Verify
+                                </button>
+                            )}
                         </div>
                     </div>
 
