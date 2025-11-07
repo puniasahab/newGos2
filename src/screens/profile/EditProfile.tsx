@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, MoreVertical, LogOut, Edit2 } from 'lucide-react';
+import { ArrowLeft, MoreVertical, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { updateUserProfile, setOpenModal, setUserEmail, setUserPhone, setTabSelected } from './ProfileSlice';

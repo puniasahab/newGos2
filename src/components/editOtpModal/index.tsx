@@ -40,7 +40,7 @@ const handleModalClose = (dispatch: any) => {
 const EditOtpModal: React.FC<OtpModalProps> = ({ tabSelected }) => {
     const dispatch = useAppDispatch();
     const {openModal, userProfile } = useAppSelector((state) => state.profile);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { phone, email } = userProfile;
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);

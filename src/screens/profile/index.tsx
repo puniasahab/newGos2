@@ -5,12 +5,12 @@ import Footer from '../../components/footer';
 import { profileApi } from '../../api';
 import { useEffect } from 'react';
 import { setUserProfile } from './ProfileSlice';
-import EditOtpModal from '../../components/editOtpModal';
+// import EditOtpModal from '../../components/editOtpModal';
 
 const Profile = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { userProfile, tabSelected } = useAppSelector((state) => state.profile);
+    const { userProfile } = useAppSelector((state) => state.profile);
 
     console.log("Profile component rendering, userProfile:", userProfile);
 
