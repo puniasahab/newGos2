@@ -4,7 +4,7 @@ import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import OtpInput from './OtpInput';
 import { otpApis } from '../../api';
 import { setOpenModal } from '../../screens/profile/ProfileSlice';
