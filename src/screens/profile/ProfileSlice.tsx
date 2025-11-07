@@ -22,6 +22,7 @@ interface ProfileState {
     error: string | null;
     isEditMode: boolean;
     openModal: boolean;
+    tabSelected?: 'phone' | 'email';
 }
 
 const initialState: ProfileState = {
@@ -43,6 +44,7 @@ const initialState: ProfileState = {
     error: null,
     isEditMode: false,
     openModal: false,
+    tabSelected: "email",
 };
 
 const profileSlice = createSlice({
@@ -114,6 +116,9 @@ const profileSlice = createSlice({
         setOpenModal: (state, action: PayloadAction<boolean>) => {
             state.openModal = action.payload;
         },
+        setTabSelected: (state, action: PayloadAction<'phone' | 'email'>) => {
+            state.tabSelected = action.payload;
+        }
     }
 });
 
@@ -139,6 +144,7 @@ export const {
     resetProfile,
     setOpenModal,
     setMobileVerified,
+    setTabSelected,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

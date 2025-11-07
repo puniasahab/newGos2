@@ -19,7 +19,7 @@ interface OtpModalProps {
     onClose: () => void;
     children?: React.ReactNode;
 
-}
+};
 
 const style = {
   position: 'absolute',
@@ -79,7 +79,9 @@ const OtpModal: React.FC<OtpModalProps> = () => {
     // };
     
     const handleOtpSubmit = async (otp: string, phone: string) => {
-        try {
+        
+        
+            try {
             // Clear any existing error messages when submitting
             setShowErrorMessage(false);
             if(tabSelected === 'email'){
@@ -125,7 +127,9 @@ const OtpModal: React.FC<OtpModalProps> = () => {
             setTimeout(() => {
                 setShowErrorMessage(false);
             }, 5000);
+        
         }
+        
     }
 
     const handleOtpSend = async (phone: string | null) => {

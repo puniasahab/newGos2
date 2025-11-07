@@ -1,17 +1,34 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Camera, MoreVertical, LogOut } from 'lucide-react';
+import { ArrowLeft, MoreVertical, LogOut, Edit2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { updateUserProfile, setEmailVerified , setMobileVerified } from './ProfileSlice';
+import { updateUserProfile, setOpenModal, setUserEmail, setUserPhone, setTabSelected } from './ProfileSlice';
 import Footer from '../../components/footer';
 import { setUserProfile } from './ProfileSlice';
 import { otpApis, profileApi } from '../../api';
-import OtpModal from '../../components/otpModal/OtpModal';
+import EditOtpModal from '../../components/editOtpModal';
+// import { setTabSelected } from '../login/LoginSlice';
+
+const avatars = [
+  // 6 male
+  "https://cdn-icons-png.flaticon.com/512/4140/4140047.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140051.png",
+//   "https://cdn-icons-png.flaticon.com/512/4140/4140037.png",
+  "https://cdn-icons-png.flaticon.com/512/2202/2202112.png",
+  "https://cdn-icons-png.flaticon.com/512/219/219983.png",
+  "https://cdn-icons-png.flaticon.com/512/219/219969.png",
+
+  // 4 female
+  "https://cdn-icons-png.flaticon.com/512/4140/4140040.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140060.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140050.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+];
 
 const EditProfile = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { userProfile } = useAppSelector((state) => state.profile);
+    const { userProfile, openModal, tabSelected } = useAppSelector((state) => state.profile);
     
     const [formData, setFormData] = useState({
         name: userProfile.name,
@@ -23,6 +40,8 @@ const EditProfile = () => {
     const [emailError, setEmailError] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [hasApiData, setHasApiData] = useState(false);
+    const [selectedAvatar, setSelectedAvatar] = useState<string>('');
+    const [showAvatarPicker, setShowAvatarPicker] = useState(false);
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,6 +79,9 @@ const EditProfile = () => {
 
     const handleVerifyEmail = () => {
         // Send OTP and open modal
+        dispatch(setTabSelected("email"));
+        dispatch(setOpenModal(true));
+        dispatch(setUserEmail(formData.email));
         otpApis.sendEmailOtp(formData.email)
             .then(() => {
                 // Set Redux state for OTP modal
@@ -71,29 +93,40 @@ const EditProfile = () => {
             });
     };
 
-    const verifyEmailWithOtp = (otp: string) => {
-        otpApis.verifyEmailOtp(formData.email, otp)
-            .then(() => {
-                dispatch(setEmailVerified(true));
-                console.log('Email verified with OTP');
-            })
-            .catch((error) => {
-                console.error('Error verifying email with OTP:', error);
-            });
-    };
+    // const verifyEmailWithOtp = (otp: string) => {
+    //     otpApis.verifyEmailOtp(formData.email, otp)
+    //         .then(() => {
+    //             dispatch(setEmailVerified(true));
+    //             console.log('Email verified with OTP');
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error verifying email with OTP:', error);
+    //         });
+    // };
 
-    const verifyMobileWithOtp = (otp: string) => {
-        otpApis.verifyMobileOtp(formData.mobile, otp)
-            .then(() => {
-                dispatch(setMobileVerified(true));
-                console.log('Mobile verified with OTP');
-            })
-            .catch((error) => {
-                console.error('Error verifying mobile with OTP:', error);
-            });
-    }
+    // const verifyMobileWithOtp = (otp: string) => {
+    //     otpApis.verifyMobileOtp(formData.mobile, otp)
+    //         .then(() => {
+    //             dispatch(setMobileVerified(true));
+    //             console.log('Mobile verified with OTP');
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error verifying mobile with OTP:', error);
+    //         });
+    // }
 
     const handleVerifyMobile = () => {
+        dispatch(setTabSelected("phone"));
+        dispatch(setUserPhone(formData.mobile));
+        dispatch(setOpenModal(true));
+        otpApis.sendMobileOtp(formData.mobile)
+            .then(() => {
+                // Set Redux state for OTP modal
+                console.log('Mobile OTP sent');
+            })
+            .catch((error) => {
+                console.error('Error sending mobile OTP:', error);
+            });
         // Simulate mobile verification
         console.log('Mobile verified');
         // You can add mobile verification logic here
@@ -118,6 +151,7 @@ const EditProfile = () => {
                 // date_of_birth: formData.dob,
                 mobile: formData.mobile,
                 email: formData.email,
+                profile_photo_url: selectedAvatar,
                 // profile_photo_url: profileImage,
             }
             const res = await profileApi.updateProfileData(updatedData);
@@ -211,6 +245,7 @@ const EditProfile = () => {
         }, [])
 
     return (
+        <>
         <div style={{ backgroundColor: 'black', minHeight: '100vh' }}>
             {/* Header */}
             <div style={{
@@ -316,41 +351,72 @@ const EditProfile = () => {
                 }}>
                     {/* Add Avatar */}
                     <div style={{ textAlign: 'center' }}>
-                        <div style={{
-                            width: '100px',
-                            height: '100px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #00D4FF, #4ECDC4)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginBottom: '12px',
-                            cursor: 'pointer',
-                            border: '3px solid #333'
-                        }}>
-                            <div style={{
-                                width: '60px',
-                                height: '60px',
+                        <div 
+                            style={{
+                                width: '100px',
+                                height: '100px',
                                 borderRadius: '50%',
-                                backgroundColor: '#FF6B7D',
+                                background: selectedAvatar ? 'transparent' : 'linear-gradient(135deg, #00D4FF, #4ECDC4)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '12px',
+                                cursor: 'pointer',
+                                border: '3px solid #333',
+                                overflow: 'hidden',
+                                position: 'relative'
+                            }}
+                            onClick={() => setShowAvatarPicker(true)}
+                        >
+                            {selectedAvatar ? (
+                                <img
+                                    src={selectedAvatar}
+                                    alt="Selected Avatar"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover'
+                                    }}
+                                />
+                            ) : (
+                                <div style={{
+                                    width: '60px',
+                                    height: '60px',
+                                    borderRadius: '50%',
+                                    backgroundColor: '#FF6B7D',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <span style={{ fontSize: '24px' }}>👩‍💼</span>
+                                </div>
+                            )}
+                            {/* <div style={{
+                                position: 'absolute',
+                                bottom: '5px',
+                                right: '5px',
+                                width: '24px',
+                                height: '24px',
+                                backgroundColor: 'var(--primary-color)',
+                                borderRadius: '50%',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center'
-                            }}>
-                                <span style={{ fontSize: '24px' }}>👩‍💼</span>
-                            </div>
+                            }}> */}
+                                {/* <Edit2 size={12} style={{ color: 'white' }} /> */}
+                            {/* </div> */}
                         </div>
                         <p style={{
                             color: 'white',
                             fontSize: '14px',
                             margin: 0
                         }}>
-                            Add Avatar
+                            {selectedAvatar ? 'Change Avatar' : 'Add Avatar'}
                         </p>
                     </div>
 
                     {/* Add Image */}
-                    <div style={{ textAlign: 'center' }}>
+                    {/* <div style={{ textAlign: 'center' }}>
                         <div style={{
                             width: '100px',
                             height: '100px',
@@ -392,7 +458,7 @@ const EditProfile = () => {
                         }}>
                             Add Image
                         </p>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Form Fields */}
@@ -628,7 +694,127 @@ const EditProfile = () => {
             </div>
 
             <Footer />
+
+            {/* Avatar Picker Modal */}
+            {showAvatarPicker && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                        padding: '20px'
+                    }}
+                    onClick={() => setShowAvatarPicker(false)}
+                >
+                    <div
+                        style={{
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            borderRadius: '20px',
+                            padding: '30px',
+                            maxWidth: '400px',
+                            width: '100%',
+                            maxHeight: '80vh',
+                            overflowY: 'auto'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3 style={{
+                            color: 'white',
+                            textAlign: 'center',
+                            marginBottom: '25px',
+                            fontSize: '20px',
+                            fontWeight: '600'
+                        }}>
+                            Choose Your Avatar
+                        </h3>
+                        
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '15px',
+                            marginBottom: '25px'
+                        }}>
+                            {avatars.map((avatar, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        width: '80px',
+                                        height: '80px',
+                                        borderRadius: '50%',
+                                        overflow: 'hidden',
+                                        cursor: 'pointer',
+                                        border: selectedAvatar === avatar ? '3px solid #00D4FF' : '3px solid transparent',
+                                        transition: 'all 0.3s ease',
+                                        transform: selectedAvatar === avatar ? 'scale(1.1)' : 'scale(1)',
+                                        boxShadow: selectedAvatar === avatar ? '0 8px 20px rgba(0, 212, 255, 0.4)' : 'none'
+                                    }}
+                                    onClick={() => setSelectedAvatar(avatar)}
+                                >
+                                    <img
+                                        src={avatar}
+                                        alt={`Avatar ${index + 1}`}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={{
+                            display: 'flex',
+                            gap: '15px',
+                            justifyContent: 'center'
+                        }}>
+                            <button
+                                onClick={() => setShowAvatarPicker(false)}
+                                style={{
+                                    padding: '12px 24px',
+                                    backgroundColor: 'transparent',
+                                    color: 'white',
+                                    border: '2px solid white',
+                                    borderRadius: '8px',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => setShowAvatarPicker(false)}
+                                style={{
+                                    padding: '12px 24px',
+                                    backgroundColor: '#00D4FF',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: '0 4px 15px rgba(0, 212, 255, 0.3)'
+                                }}
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
+        {openModal && <EditOtpModal open={openModal} tabSelected={tabSelected} onClose = {() => dispatch(setOpenModal(false))}/>}
+        </>
     );
 };
 

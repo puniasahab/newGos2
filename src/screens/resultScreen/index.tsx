@@ -130,7 +130,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
             </div> */}
             <Header />
             {/* Next Round Timer */}
-            <div style={{
+            {/* <div style={{
                 textAlign: 'center',
                 marginTop: '20px',
                 marginBottom: '30px'
@@ -143,13 +143,14 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                 }}>
                     New Rounds Unlock In: {gameData.nextRoundTime}
                 </p>
-            </div>
+            </div> */}
 
             {/* Trophy Section */}
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginBottom: '30px'
+                marginBottom: '30px',
+                marginTop: '30px',
             }}>
                 <div style={{
                     position: 'relative',
@@ -164,6 +165,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         height: '200px',
                         background: 'radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%)',
                         borderRadius: '50%'
+
                     }}></div>
                     
                     {/* Trophy Icon */}
@@ -174,6 +176,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         height: '120px',
                         display: 'flex',
                         alignItems: 'center',
+
                         justifyContent: 'center',
                         position: 'relative',
                         zIndex: 2
@@ -196,7 +199,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
             }}>
                 <h2 style={{
                     color: 'var(--primary-color)',
-                    fontSize: '28px',
+                    fontSize: '20px',
                     fontWeight: '700',
                     margin: '0 0 8px 0'
                 }}>
@@ -208,7 +211,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     margin: 0,
                     lineHeight: '1.4'
                 }}>
-                    You've completed all your rounds<br />for today!
+                    You've completed this round<br />for today!
                 </p>
             </div>
 
@@ -412,6 +415,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     style={{
                         width: '100%',
                         padding: '18px',
+                        marginTop: '-16px',
                         backgroundColor: 'white',
                         color: 'var(--primary-color)',
                         border: 'none',

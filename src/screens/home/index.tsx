@@ -100,8 +100,8 @@ const Home = () => {
                                         <br />• Multiple game modes: Jackpot, Fastest Finger, and Rapid Fire
                                         <br />• Real-time leaderboards and competitions
                                         <br />• Daily challenges and special events
-                                        <br />• Exciting prizes and cash rewards
-                                        <br />• Social features to compete with friends
+                                        {/* <br />• Exciting prizes and cash rewards */}
+                                        {/* <br />• Social features to compete with friends */}
                                         <br /><br />
                                         Whether you're a trivia expert or just starting out, Game of Stones offers an engaging experience for all knowledge levels. Challenge yourself, climb the leaderboards, and become the ultimate quiz champion!
                                     </span>

@@ -5,11 +5,12 @@ import Footer from '../../components/footer';
 import { profileApi } from '../../api';
 import { useEffect } from 'react';
 import { setUserProfile } from './ProfileSlice';
+import EditOtpModal from '../../components/editOtpModal';
 
 const Profile = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { userProfile } = useAppSelector((state) => state.profile);
+    const { userProfile, tabSelected } = useAppSelector((state) => state.profile);
 
     console.log("Profile component rendering, userProfile:", userProfile);
 
@@ -78,6 +79,7 @@ const Profile = () => {
     }
     try {
         return (
+            <>
             <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
                 {/* Header */}
                 <div style={{
@@ -158,15 +160,15 @@ const Profile = () => {
                                 fontWeight: '700',
                                 margin: '0 0 8px 0'
                             }}>
-                                {userProfile?.name || 'Loading...'}
+                                {userProfile?.name || 'New User'}
                             </h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                                 <span style={{ color: 'white', fontSize: '16px' }}>📞</span>
-                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.phone || 'Loading...'}</span>
+                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.phone || 'Not Available'}</span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <span style={{ color: 'white', fontSize: '16px' }}>✉️</span>
-                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.email || 'Loading...'}</span>
+                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.email || 'Not Available'}</span>
                             </div>
                         </div>
                     </div>
@@ -403,6 +405,7 @@ const Profile = () => {
 
                 <Footer />
             </div>
+            </>
         );
     } catch (error) {
         console.error("Error rendering Profile component:", error);
