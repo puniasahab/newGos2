@@ -27,9 +27,13 @@ const ProgressBarTimer: React.FC<{ duration: number; onComplete?: () => void }> 
   const progress = (timeLeft / duration) * 100;
 
   return (
+    <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",}}>
     <div
       style={{
-        width: "100%",
+        width: "90%",
         height: "30px",
         backgroundColor: "#444",
         borderRadius: "20px",
@@ -57,6 +61,7 @@ const ProgressBarTimer: React.FC<{ duration: number; onComplete?: () => void }> 
       >
         {timeLeft} seconds left
       </span>
+    </div>
     </div>
   );
 };

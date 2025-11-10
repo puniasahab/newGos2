@@ -6,7 +6,7 @@ import { useParams} from 'react-router-dom'
 import { setIsRapidFirePlayed, setIsJackpotPlayed, setIsQuickFingerPlayed } from '../../commonFunctions';
 import { QuestionType } from '../../utils/questionsEnum';
 import { useAppDispatch } from '../../hooks/redux';
-import { setCurrentQuestionIndex } from '../questions/questionsSlice';
+import { setCurrentQuestionIndex, setTotalStonesGained } from '../questions/questionsSlice';
 
 interface GameData {
     nextRoundTime: string;
@@ -65,7 +65,8 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
         } else if(type === QuestionType.RAPID_FIRE) {
             setIsRapidFirePlayed(type, isPlayed);
         }
-        dispatch(setCurrentQuestionIndex(0));
+        // dispatch(setCurrentQuestionIndex(0));
+        dispatch(setTotalStonesGained(0));
         navigate('/');
     };
 
@@ -77,7 +78,8 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
         } else if(type === QuestionType.RAPID_FIRE) {
             setIsRapidFirePlayed(type, isPlayed);
         }
-        dispatch(setCurrentQuestionIndex(1));
+        // dispatch(setCurrentQuestionIndex(1));
+        dispatch(setTotalStonesGained(0));
         navigate('/leaderboard');
     };
 

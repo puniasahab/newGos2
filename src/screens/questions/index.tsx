@@ -223,7 +223,7 @@ const Questions = () => {
                     dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
                     dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
                     dispatch(setScore(data.data.userResult.total_stones));
-                    dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
+                    // dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
                     // dispatch(setIsQuizCompleted(true));
                 }
             }).catch((error) => {
@@ -257,7 +257,7 @@ const Questions = () => {
                     dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
                     dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
                     dispatch(setScore(data.data.userResult.total_stones));
-                    dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
+                    // dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
                     // dispatch(setIsQuizCompleted(true));
                 }
             }).catch((error) => {
@@ -271,6 +271,7 @@ const Questions = () => {
 
     const getPercentageScore = (part: number, total: number) => {
         if (QuestionType.RAPID_FIRE === type) {
+            console.log("Current Question Index", currentQuestionIndex);
             if (totalQuestions > 0) {
                 return Math.round((part / currentQuestionIndex) * 100)
             }

@@ -2,6 +2,7 @@
 
 import { getAuthTokenFromLS } from '../../commonFunctions';
 import './footer.css';
+import { Home, Gamepad2, User } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
@@ -29,6 +30,7 @@ const Footer = () => {
 
     return (
         <footer className="footer">
+           
             <div className="footer-nav">
                 {/* Home Icon */}
                 <div className="nav-item" onClick={handleHomeClick}>

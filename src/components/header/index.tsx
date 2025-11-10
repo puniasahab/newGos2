@@ -2,21 +2,42 @@
 import { AlignJustify, Bell, Globe, Share2, User, Settings, LogOut, X } from 'lucide-react';
 import './header.css';
 import homeBanneer from '../../assets/homeBanner.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuthTokenFromLS } from '../../commonFunctions';
+import { profileApi } from '../../api';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [profileData, setProfileData] = useState<{name: string, phone: string}>({
+        name: '',
+        phone: '',
+    })
     const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+
+
+
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            const res = await profileApi.getProfileData();
+            setProfileData({
+                name: res.data.user.full_name || "New User",
+                phone: res.data.user.mobile || "Phone Number NA"
+            });
+            console.log("fetching profile data!!", res);
+        }
+
+        fetchProfileData();
+    }, [isMenuOpen])
 
     return (
         <>
@@ -132,7 +153,7 @@ const Header = () => {
                         fontWeight: '600',
                         margin: '0 0 8px 0'
                     }}>
-                        John Doe
+                        {profileData.name}
                     </h3>
 
                     {/* User Phone */}
@@ -141,7 +162,7 @@ const Header = () => {
                         fontSize: '14px',
                         margin: '0 0 20px 0'
                     }}>
-                        +91 98765*****
+                        {profileData.phone}
                     </p>
 
                     {/* Profile Button */}
@@ -205,7 +226,7 @@ const Header = () => {
                 </div>
 
                 {/* Logout Button */}
-                <div style={{ padding: '20px', borderTop: '1px solid #333' }}>
+                {/* <div style={{ padding: '20px', borderTop: '1px solid #333' }}>
                     <div
                         style={{
                             display: 'flex',
@@ -226,7 +247,7 @@ const Header = () => {
                         <LogOut size={20} color="var(--primary-color)" style={{ marginRight: '15px' }} />
                         <span style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Logout</span>
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     )
