@@ -1,5 +1,5 @@
 
-import { AlignJustify, Bell, Globe, Share2, User, Settings, LogOut, X } from 'lucide-react';
+import { AlignJustify, Bell, Globe, Share2, User, Settings, X } from 'lucide-react';
 import './header.css';
 import homeBanneer from '../../assets/homeBanner.png';
 import { useState, useEffect } from 'react';

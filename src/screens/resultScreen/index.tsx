@@ -6,6 +6,7 @@ import { useParams} from 'react-router-dom'
 import { setIsRapidFirePlayed, setIsJackpotPlayed, setIsQuickFingerPlayed } from '../../commonFunctions';
 import { QuestionType } from '../../utils/questionsEnum';
 import { useAppDispatch } from '../../hooks/redux';
+// @ts-ignore
 import { setCurrentQuestionIndex, setTotalStonesGained } from '../questions/questionsSlice';
 
 interface GameData {
