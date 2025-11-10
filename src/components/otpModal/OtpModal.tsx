@@ -176,7 +176,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
               <CloseIcon />
             </IconButton>
             <Typography sx = {{textAlign: 'center', color: '#930000', fontWeight: 'bold', fontSize: '22px'}}>Enter OTP</Typography>
-            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>We have sent a code to <strong>{phoneNumber}</strong></Typography>
+            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>We have sent a code to <strong>{tabSelected === 'email' ? email : phoneNumber}</strong></Typography>
 
             {showSuccessMessage && (
                 <Typography sx={{ 

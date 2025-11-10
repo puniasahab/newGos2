@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 
-const ProgressBarTimer: React.FC<{ duration: number; onComplete?: () => void }> = ({
+const ProgressBarTimer: React.FC<{ 
+  duration: number; 
+  onComplete?: () => void;
+  shouldResetOnDurationChange?: boolean;
+}> = ({
   duration,
   onComplete,
+  shouldResetOnDurationChange = true,
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
 
-  // Reset timer when duration changes (new question)
+  // Reset timer when duration changes (new question) - only if shouldResetOnDurationChange is true
   useEffect(() => {
-    setTimeLeft(duration);
-  }, [duration]);
+    if (shouldResetOnDurationChange) {
+      setTimeLeft(duration);
+    }
+  }, [duration, shouldResetOnDurationChange]);
 
   useEffect(() => {
     if (timeLeft <= 0) {

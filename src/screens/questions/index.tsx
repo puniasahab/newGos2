@@ -400,6 +400,7 @@ const Questions = () => {
                             key={type === QuestionType.RAPID_FIRE ? 'rapid-fire-timer' : timerKey}
                             duration={getTimerDuration()}
                             onComplete={handleTimerComplete}
+                            shouldResetOnDurationChange={type !== QuestionType.RAPID_FIRE}
                         />
                         {/* {Question} */}
                         <div style={{
@@ -442,7 +443,7 @@ const Questions = () => {
                             </h2>
                             {mediaUrl &&
                                 <div style={{
-                                    width: getMediaUrlType(mediaUrl) === "video" || getMediaUrlType(mediaUrl) === "audio" ? '60%' : '150px',
+                                    width: getMediaUrlType(mediaUrl) === "video" || getMediaUrlType(mediaUrl) === "audio" ? '90%' : '90%',
                                     height: '120px',
                                     borderRadius: '12px',
                                     overflow: 'hidden',
@@ -478,7 +479,7 @@ const Questions = () => {
                             }
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '40px', marginBottom: '16px', marginLeft: '16px', marginRight: '16px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '40px', marginBottom: '4px', marginLeft: '16px', marginRight: '16px' }}>
                             {opt1 && <div
                                 style={{
                                     borderRadius: '0 20px 0 20px',
@@ -558,12 +559,14 @@ const Questions = () => {
                         </div>
 
                         {/* {Skip Button} */}
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px' }}>
-                            <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '12px', marginTop: '40px', textAlign: 'center', fontSize: '28px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
+                        <div style={{backgroundColor: 'black'}}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px', backgroundColor: 'black'}}>
+                            <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '40px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
                                 onClick={() => { handleSkip() }}
                             >
                                 Skip
                             </div>
+                        </div>
                         </div>
                         <Footer />
                     </>

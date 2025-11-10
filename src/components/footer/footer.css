@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     background-color: #1a1a1a;
-    border-top: 1px solid #333;
+    /* border-top: 100px solid #333; */
     padding: 12px 0;
     z-index: 1000;
 }
