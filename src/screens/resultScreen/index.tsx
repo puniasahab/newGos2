@@ -1,4 +1,5 @@
 import { Trophy, Check, X, Hand } from 'lucide-react';
+import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 import Header from '../../components/header';
@@ -83,6 +84,16 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
         dispatch(setTotalStonesGained(0));
         navigate('/leaderboard');
     };
+
+    useEffect(() => {
+        if(type === QuestionType.JACKPOT) {
+            setIsJackpotPlayed(type, isPlayed);
+        } else if(type === QuestionType.FASTEST_FINGER) {
+            setIsQuickFingerPlayed(type, isPlayed);
+        } else if(type === QuestionType.RAPID_FIRE) {
+            setIsRapidFirePlayed(type, isPlayed);
+        }
+    }, [])
 
 
 

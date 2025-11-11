@@ -81,11 +81,28 @@ const Questions = () => {
             try {
                 const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
                 // Submit with duration = 60 seconds for RAPID_FIRE timer completion
-                await questionApis.submitAnswer(currentQuestionId, 2, type, contestId, 60); // status 2 = timeout/skip
+                const res = await questionApis.submitAnswer(currentQuestionId, 2, type, contestId, 60);
+                if (res.success) {
+                    // const isContestPLayed = getIsRapidFirePlayed(type) ? true : false;
+                    setTimeout(async () => {
+                        await questionApis.fetchQuestion(contestId, false).then((data) => {
+                            dispatch(setIsQuizCompleted(true));
+                            dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
+                            dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
+                            dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
+                            dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
+                            dispatch(setScore(data.data.userResult.total_stones));
+                            console.log("Fetched Question after RAPID_FIRE timer completion", res);
+                            // Handle the fetched question data
+                        })
+                    }, 800);
+
+                    return;
+                }
+                // status 2 = timeout/skip
             } catch (error) {
                 console.error("Error submitting timer completion for RAPID_FIRE:", error);
             }
-            // dispatch(setIsQuizCompleted(true));
         } else {
             // For JACKPOT and FASTEST_FINGER, skip current question and move to next
             // dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
@@ -271,13 +288,51 @@ const Questions = () => {
         }
 
     }, [skipButtonClicked])
+
+    // Prevent browser refresh and back navigation during quiz
+    useEffect(() => {
+        // Prevent page refresh/close
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (!isQuizCompleted && !loading) {
+                e.preventDefault();
+                e.returnValue = 'Are you sure you want to leave? Your quiz progress will be lost.';
+                return 'Are you sure you want to leave? Your quiz progress will be lost.';
+            }
+        };
+
+        // Prevent back navigation
+        const handlePopState = () => {
+            if (!isQuizCompleted && !loading) {
+                // Push the current state back to prevent navigation
+                window.history.pushState(null, '', window.location.pathname);
+                // Optionally show a warning
+                alert('Navigation is disabled during the quiz. Please complete or skip questions to proceed.');
+            }
+        };
+
+        // Add event listeners
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('popstate', handlePopState);
+
+        // Push initial state to history to prevent back navigation
+        if (!isQuizCompleted && !loading) {
+            window.history.pushState(null, '', window.location.pathname);
+        }
+
+        // Cleanup event listeners
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [isQuizCompleted, loading]);
+
     // const Completionist = () => <span>You are good to go!</span>;
 
     const getPercentageScore = (part: number, total: number) => {
         if (QuestionType.RAPID_FIRE === type) {
             console.log("Current Question Index", currentQuestionIndex);
             if (totalQuestions > 0) {
-                return ((part / (currentQuestionIndex + 1)) * 100).toFixed(2);
+                return ((part / (correctAnswerCount + wrongAnswerCount + skippedAnswerCount)) * 100).toFixed(2);
             }
             else {
                 return "0";
@@ -418,7 +473,7 @@ const Questions = () => {
                             position: 'relative',
                             backgroundColor: 'white',
                             color: 'black',
-                            height: '200px',
+                            height: '180px',
                             width: 'calc(100% - 72px)',
                             display: 'flex',
                             flexDirection: 'column',
@@ -434,7 +489,7 @@ const Questions = () => {
                                         question && question.length > 80 ? '20px' :
                                             question && question.length > 60 ? '22px' : '24px'),
                                 margin: 0,
-                                marginBottom: mediaUrl ? '16px' : 0,
+                                marginBottom: mediaUrl ? '8px' : 0,
                                 lineHeight: '1.3',
                                 wordWrap: 'break-word',
                                 hyphens: 'auto',
@@ -448,7 +503,7 @@ const Questions = () => {
                             {mediaUrl &&
                                 <div style={{
                                     width: getMediaUrlType(mediaUrl) === "video" || getMediaUrlType(mediaUrl) === "audio" ? '90%' : '90%',
-                                    height: '120px',
+                                    height: '110px',
                                     borderRadius: '12px',
                                     overflow: 'hidden',
                                     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
@@ -466,36 +521,45 @@ const Questions = () => {
                                                 display: 'block'
                                             }}
                                         />) : getMediaUrlType(mediaUrl) === "video" ? (
-                                    <video
-                                        src={mediaUrl}
-                                        controls
-                                        autoPlay
-                                        // muted
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            display: 'block'
-                                        }}
-                                    />
-                                    ) : (<audio src={mediaUrl} controls autoPlay style={{ width: '80%' }} ></audio>)}
+                                            <video
+                                                src={mediaUrl}
+                                                controls
+                                                autoPlay
+                                                // muted
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    objectFit: 'cover',
+                                                    display: 'block'
+                                                }}
+                                            />
+                                        ) : (<audio src={mediaUrl} controls autoPlay style={{ width: '80%' }} ></audio>)}
                                 </div>
                             }
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '40px', marginBottom: '4px', marginLeft: '16px', marginRight: '16px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '20px', marginBottom: '4px', marginLeft: '16px', marginRight: '16px' }}>
                             {opt1 && <div
                                 style={{
                                     borderRadius: '0 20px 0 20px',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
                                     textAlign: 'center',
-                                    padding: '12px',
-                                    fontSize: "20px",
+                                    padding: '4px',
+                                    fontSize: opt1.length > 50 ? "14px" : opt1.length > 30 ? "16px" : opt1.length > 20 ? "18px" : "20px",
                                     backgroundColor: getOptionBackgroundColor(opt1),
                                     color: getOptionTextColor(opt1),
                                     cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    height: '48px',
+                                    minHeight: '48px',
+                                    maxHeight: '48px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden',
+                                    wordWrap: 'break-word',
+                                    lineHeight: '1.2'
                                 }}
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt1)}
                             >
@@ -506,15 +570,22 @@ const Questions = () => {
                                     borderRadius: '20px 0 20px 0',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
                                     textAlign: 'center',
-                                    padding: '12px',
-                                    fontSize: "20px",
+                                    padding: '4px',
+                                    fontSize: opt2.length > 50 ? "14px" : opt2.length > 30 ? "16px" : opt2.length > 20 ? "18px" : "20px",
                                     backgroundColor: getOptionBackgroundColor(opt2),
                                     color: getOptionTextColor(opt2),
-
-                                    // color: 'black',
                                     cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    height: '48px',
+                                    minHeight: '48px',
+                                    maxHeight: '48px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden',
+                                    wordWrap: 'break-word',
+                                    lineHeight: '1.2'
                                 }}
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt2)}
                             >
@@ -525,16 +596,22 @@ const Questions = () => {
                                     borderRadius: '20px 0 20px 0',
                                     boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
                                     textAlign: 'center',
-                                    padding: '12px',
-                                    fontSize: "20px",
-                                    // backgroundColor: 'white',
-                                    // color: 'black',
+                                    padding: '4px',
+                                    fontSize: opt3.length > 50 ? "14px" : opt3.length > 30 ? "16px" : opt3.length > 20 ? "18px" : "20px",
                                     cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                     backgroundColor: getOptionBackgroundColor(opt3),
                                     color: getOptionTextColor(opt3),
-                                    // cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                     opacity: isAnswerSubmitted ? 0.8 : 1,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    height: '48px',
+                                    minHeight: '48px',
+                                    maxHeight: '48px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden',
+                                    wordWrap: 'break-word',
+                                    lineHeight: '1.2'
                                 }}
                                 onClick={() => !isAnswerSubmitted && handleAnswerClick(opt3)}
                             >
@@ -546,15 +623,22 @@ const Questions = () => {
                                         borderRadius: '0 20px 0 20px',
                                         boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
                                         textAlign: 'center',
-                                        padding: '12px',
-                                        fontSize: "20px",
-                                        // backgroundColor: 'white',
-                                        // color: 'black',
+                                        padding: '4px',
+                                        fontSize: opt4.length > 50 ? "14px" : opt4.length > 30 ? "16px" : opt4.length > 20 ? "18px" : "20px",
                                         backgroundColor: getOptionBackgroundColor(opt4),
                                         color: getOptionTextColor(opt4),
                                         cursor: isAnswerSubmitted ? 'default' : 'pointer',
                                         opacity: isAnswerSubmitted ? 0.8 : 1,
-                                        transition: 'all 0.3s ease'
+                                        transition: 'all 0.3s ease',
+                                        height: '48px',
+                                        minHeight: '48px',
+                                        maxHeight: '48px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        overflow: 'hidden',
+                                        wordWrap: 'break-word',
+                                        lineHeight: '1.2'
                                     }}
                                     onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
                                 >
@@ -563,14 +647,14 @@ const Questions = () => {
                         </div>
 
                         {/* {Skip Button} */}
-                        <div style={{backgroundColor: 'black'}}>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px', backgroundColor: 'black'}}>
-                            <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '40px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
-                                onClick={() => { handleSkip() }}
-                            >
-                                Skip
+                        <div style={{ backgroundColor: 'black' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px', backgroundColor: 'black' }}>
+                                <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '16px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
+                                    onClick={() => { handleSkip() }}
+                                >
+                                    Skip
+                                </div>
                             </div>
-                        </div>
                         </div>
                         <Footer />
                     </>
