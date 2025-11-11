@@ -31,9 +31,6 @@ import ProgressBarTimer from "./ProgressBarTimer";
 import ResultScreen from "../resultScreen";
 import { QuestionType } from "../../utils/questionsEnum";
 
-// interface Question {
-//     contestId?: string;
-// }
 
 const Questions = () => {
     const dispatch = useAppDispatch();
