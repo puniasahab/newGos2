@@ -15,7 +15,7 @@ import { Check, CheckCircle, Trophy } from 'lucide-react';
 import { QuestionType } from '../../utils/questionsEnum';
 import { setContestsData } from './homeSlice';
 import { getAuthTokenFromLS, setNameAndContestIdInLS } from '../../commonFunctions';
-import { setCurrentQuestionIndex, setTotalStonesGained } from '../questions/questionsSlice';
+import { setCurrentQuestionIndex, setIsQuizCompleted, setTotalStonesGained } from '../questions/questionsSlice';
 
 // Or create the Carousel component at '../../components/carousel.tsx'
 
@@ -46,6 +46,7 @@ const Home = () => {
         fetchContestData();
         dispatch(setCurrentQuestionIndex(0));
         dispatch(setTotalStonesGained(0));
+        dispatch(setIsQuizCompleted(false));
     }, [])
     return (
         <div className="min-h-screen background-white bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex justify-center" style={{ maxHeight: '100vh', backgroundColor: 'var(--background-color)', }}>

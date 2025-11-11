@@ -64,8 +64,8 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                 return userRanks.weekly_data?.rank || null;
             case "Monthly":
                 return userRanks.monthly_data?.rank || null;
-            case "All Time":
-                return userRanks.all_time_data?.rank || null;
+            // case "All Time":
+            //     return userRanks.all_time_data?.rank || null;
             default:
                 return null;
         }
@@ -81,8 +81,8 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                 return userRanks.weekly_data?.gain_ston || null;
             case "Monthly":
                 return userRanks.monthly_data?.gain_ston || null;
-            case "All Time":
-                return userRanks.all_time_data?.gain_ston || null;
+            // case "All Time":
+            //     return userRanks.all_time_data?.gain_ston || null;
             default:
                 return null;
         }
@@ -284,6 +284,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                         alignItems: "center",
                         background: "black",
                         padding: "10px",
+                        gap: '10px',
                     }}
                 >
                     <span style={tabStyle("Daily")} onClick={() => handleTabClick("Daily")}>
@@ -298,12 +299,12 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                     >
                         Monthly
                     </span>
-                    <span
+                    {/* <span
                         style={tabStyle("All Time")}
                         onClick={() => handleTabClick("All Time")}
                     >
                         All Time
-                    </span>
+                    </span> */}
                 </div>
 
                 {/* Winner Crown Section */}
