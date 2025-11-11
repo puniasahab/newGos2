@@ -76,12 +76,19 @@ const Questions = () => {
     };
 
     // Handle timer completion
-    const handleTimerComplete = () => {
+    const handleTimerComplete = async () => {
         if (isAnswerSubmitted) return; // Don't process if answer already submitted
 
         if (type === QuestionType.RAPID_FIRE) {
-            // For RAPID_FIRE, when timer ends, complete the entire quiz
-            dispatch(setIsQuizCompleted(true));
+            // For RAPID_FIRE, when timer ends, send duration to API and complete the entire quiz
+            try {
+                const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
+                // Submit with duration = 60 seconds for RAPID_FIRE timer completion
+                await questionApis.submitAnswer(currentQuestionId, 2, type, contestId, 60); // status 2 = timeout/skip
+            } catch (error) {
+                console.error("Error submitting timer completion for RAPID_FIRE:", error);
+            }
+            // dispatch(setIsQuizCompleted(true));
         } else {
             // For JACKPOT and FASTEST_FINGER, skip current question and move to next
             // dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
@@ -273,7 +280,7 @@ const Questions = () => {
         if (QuestionType.RAPID_FIRE === type) {
             console.log("Current Question Index", currentQuestionIndex);
             if (totalQuestions > 0) {
-                return Math.round((part / currentQuestionIndex) * 100)
+                return ((part / (currentQuestionIndex + 1)) * 100).toFixed(2);
             }
             else {
                 return "0";
@@ -281,7 +288,7 @@ const Questions = () => {
         }
         else {
             if (totalQuestions > 0) {
-                return Math.round((part / total) * 100);
+                return ((part / total) * 100).toFixed(2);
             }
             else {
                 return "0";

@@ -292,12 +292,12 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     </p>
                     <div style={{
                         position: 'absolute',
-                        bottom: '16px',
-                        right: '16px',
+                        bottom: '8px',
+                        right: '8px',
                         backgroundColor: 'rgba(0, 255, 0, 0.2)',
                         borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
+                        width: '28px',
+                        height: '28px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -332,12 +332,12 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     </p>
                     <div style={{
                         position: 'absolute',
-                        bottom: '16px',
-                        right: '16px',
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        bottom: '8px',
+                        right: '8px',
+                        backgroundColor: 'red',
                         borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
+                        width: '28px',
+                        height: '28px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -372,12 +372,12 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     </p>
                     <div style={{
                         position: 'absolute',
-                        bottom: '16px',
-                        right: '16px',
+                        bottom: '8px',
+                        right: '8px',
                         backgroundColor: 'rgba(255, 165, 0, 0.2)',
                         borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
+                        width: '28px',
+                        height: '28px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
