@@ -22,7 +22,7 @@ const initialState: LoginState = {
     error: null,
     openModal: false,
     email: '',
-    tabSelected: 'email',
+    tabSelected: 'phone',
 }
 
 

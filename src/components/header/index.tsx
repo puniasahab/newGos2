@@ -193,7 +193,7 @@ const Header = () => {
                 {/* Menu Options */}
                 <div style={{ flex: 1, padding: '20px 0' }}>
                     {[
-                        { icon: User, label: 'My Account', onClick: () => console.log('My Account') },
+                        // { icon: User, label: 'My Account', onClick: () => console.log('My Account') },
                         { icon: Settings, label: 'Settings', onClick: () => console.log('Settings') },
                         { icon: Bell, label: 'Notifications', onClick: () => console.log('Notifications') },
                         { icon: Globe, label: 'Language', onClick: () => console.log('Language') },
@@ -204,7 +204,7 @@ const Header = () => {
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                padding: '15px 20px',
+                                padding: '10px 20px',
                                 cursor: 'pointer',
                                 transition: 'background-color 0.3s ease',
                                 borderLeft: '3px solid transparent'

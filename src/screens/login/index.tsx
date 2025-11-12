@@ -11,7 +11,7 @@ const Login = () => {
     const dispatch = useAppDispatch();
     const [mobileNumber, setMobileNumber] = useState('');
     const [email, setEmail] = useState('');
-    const [activeTab, setActiveTab] = useState('email'); // 'email' or 'phone'
+    const [activeTab, setActiveTab] = useState('phone'); // 'email' or 'phone'
     const [emailError, setEmailError] = useState('');
     //@ts-ignore
     const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +102,7 @@ const Login = () => {
             padding: '0 20px'
         }}>
             {/* Tabs at the top */}
-            <div style={{
+            {/* <div style={{
                 display: 'flex',
                 backgroundColor: '#1a1a1a',
                 borderRadius: '16px',
@@ -115,9 +115,9 @@ const Login = () => {
                 marginTop: '20px',
                 position: 'relative',
                 overflow: 'hidden'
-            }}>
+            }}> */}
                 {/* Animated background indicator */}
-                <div style={{
+                {/* <div style={{
                     position: 'absolute',
                     top: '6px',
                     left: activeTab === 'email' ? '6px' : 'calc(50% - 3px)',
@@ -129,8 +129,8 @@ const Login = () => {
                     boxShadow: '0 4px 12px rgba(220, 36, 48, 0.4)',
                     transform: 'scale(1)',
                     zIndex: 1
-                }} />
-                
+                }} /> */}
+{/*                 
                 <button
                     onClick={() => setActiveTab('email')}
                     style={{
@@ -156,8 +156,8 @@ const Login = () => {
                     onBlur={(e) => e.target.style.outline = 'none'}
                 >
                     Email
-                </button>
-                <button
+                </button> */}
+                {/* <button
                     onClick={() => setActiveTab('phone')}
                     style={{
                         flex: 1,
@@ -182,9 +182,9 @@ const Login = () => {
                     onBlur={(e) => e.target.style.outline = 'none'}
                 >
                     Phone
-                </button>
-            </div>
-             <p style={{
+                </button> */}
+            {/* </div> */}
+             {/* <p style={{
                         color: '#999',
                         fontSize: '16px',
                         margin: '0',
@@ -193,7 +193,7 @@ const Login = () => {
                         textAlign: 'center'
                     }}>
                         Choose your preferred login method
-                    </p>
+                    </p> */}
 
             {/* Background Logo */}
             <div style={{
@@ -257,7 +257,7 @@ const Login = () => {
                     position: 'relative',
                     overflow: 'hidden'
                 }}>
-                    <div style={{
+                    {/* <div style={{
                         transform: activeTab === 'email' ? 'translateX(0%)' : 'translateX(-100%)',
                         transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                         opacity: activeTab === 'email' ? 1 : 0,
@@ -310,7 +310,7 @@ const Login = () => {
                         }}>
                             We'll send you an OTP to verify your email
                         </p>
-                    </div>
+                    </div> */}
 
                     <div style={{
                         transform: activeTab === 'phone' ? 'translateX(0%)' : 'translateX(100%)',
@@ -332,7 +332,7 @@ const Login = () => {
                             transition: 'border-color 0.3s ease'
                         }}>
                             {/* Country Code */}
-                            <div style={{
+                            {/* <div style={{
                                 backgroundColor: '#f5f5f5',
                                 padding: '16px 20px',
                                 display: 'flex',
@@ -343,7 +343,7 @@ const Login = () => {
                                 color: '#333'
                             }}>
                                 +91
-                            </div>
+                            </div> */}
                             
                             {/* Mobile Number Input */}
                             <input

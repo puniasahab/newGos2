@@ -198,7 +198,7 @@ const EditProfile = () => {
                      */
                     const userProfileData = {
                         id: res.data.user.id,
-                        name: res.data.user.full_name || "New User",
+                        name: res.data.user.full_name,
                         email: res.data.user.email,
                         phone: res.data.user.mobile,
                         country: 'India',
