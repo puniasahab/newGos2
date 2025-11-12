@@ -11,7 +11,9 @@ const Login = () => {
     const dispatch = useAppDispatch();
     const [mobileNumber, setMobileNumber] = useState('');
     const [email, setEmail] = useState('');
+    //@ts-ignore
     const [activeTab, setActiveTab] = useState('phone'); // 'email' or 'phone'
+    //@ts-ignore
     const [emailError, setEmailError] = useState('');
     //@ts-ignore
     const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +31,7 @@ const Login = () => {
             setMobileNumber(value);
         }
     };
-
+    // @ts-ignore
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
