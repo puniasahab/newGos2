@@ -1,0 +1,162 @@
+/* RTL Language Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .flex {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .space-x-6 > * + * {
+  margin-left: 0;
+  margin-right: 1.5rem;
+}
+
+[dir="rtl"] .space-x-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+/* Header RTL adjustments */
+[dir="rtl"] .header-menu {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-icons {
+  flex-direction: row-reverse;
+}
+
+/* Language selector RTL */
+[dir="rtl"] .language-selector {
+  right: auto;
+  left: 0;
+}
+
+/* Game UI RTL adjustments */
+[dir="rtl"] .game-stats {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .options-grid {
+  direction: rtl;
+}
+
+/* Form RTL adjustments */
+[dir="rtl"] .form-input {
+  text-align: right;
+  padding-left: 12px;
+  padding-right: 16px;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+/* Button RTL adjustments */
+[dir="rtl"] .button-with-icon {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .button-with-icon .icon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* Menu RTL adjustments */
+[dir="rtl"] .menu-item {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .menu-item .icon {
+  margin-left: 15px;
+  margin-right: 0;
+}
+
+/* Modal RTL adjustments */
+[dir="rtl"] .modal {
+  text-align: right;
+}
+
+[dir="rtl"] .modal-header {
+  flex-direction: row-reverse;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  [dir="rtl"] .mobile-menu {
+    left: auto;
+    right: 0;
+  }
+  
+  [dir="rtl"] .mobile-header {
+    flex-direction: row-reverse;
+  }
+}
+
+/* Animation adjustments for RTL */
+[dir="rtl"] .slide-in-left {
+  animation: slideInRight 0.3s ease-in-out;
+}
+
+[dir="rtl"] .slide-in-right {
+  animation: slideInLeft 0.3s ease-in-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Typography adjustments for Arabic */
+[dir="rtl"] {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Arabic UI Text', 'Geeza Pro';
+}
+
+[dir="rtl"] .number {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Fix for mixed content (numbers in Arabic text) */
+[dir="rtl"] .score-display,
+[dir="rtl"] .timer-display,
+[dir="rtl"] .question-number {
+  direction: ltr;
+  display: inline-block;
+  text-align: left;
+}
+
+/* Language selector specific styles */
+.language-selector-dropdown {
+  direction: ltr;
+}
+
+[dir="rtl"] .language-selector-dropdown {
+  right: 0;
+  left: auto;
+}
+
+/* Ensure proper text alignment for different languages */
+.text-content[lang="ar"] {
+  text-align: right;
+  direction: rtl;
+}
+
+.text-content[lang="en"],
+.text-content[lang="pl"] {
+  text-align: left;
+  direction: ltr;
+}

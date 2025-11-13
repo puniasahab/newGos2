@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { Crown, Heart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 // import { getContestId } from '../../utils/commonFunctions';
 import {
     setDailyData, setGameMode,
@@ -41,6 +42,7 @@ interface LeaderboardProps {
 const Leaderboard: React.FC<LeaderboardProps> = () => {
     // const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
     //@ts-ignore
     const [leaderBoardData, setLeaderBoardData] = useState<any>({});
     // const [activeTab, setActiveTab] = useState('overall');
@@ -264,7 +266,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                             textAlign: 'center',
                             margin: 0
                         }}>
-                            Loading...
+                            {t('common.loading')}
                         </p>
                         <style dangerouslySetInnerHTML={{
                             __html: `
@@ -288,16 +290,16 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                     }}
                 >
                     <span style={tabStyle("Daily")} onClick={() => handleTabClick("Daily")}>
-                        Daily
+                        {t('leaderboard.daily')}
                     </span>
                     <span style={tabStyle("Weekly")} onClick={() => handleTabClick("Weekly")}>
-                        Weekly
+                        {t('leaderboard.weekly')}
                     </span>
                     <span
                         style={tabStyle("Monthly")}
                         onClick={() => handleTabClick("Monthly")}
                     >
-                        Monthly
+                        {t('leaderboard.monthly')}
                     </span>
                     {/* <span
                         style={tabStyle("All Time")}
@@ -354,7 +356,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                     }}>
                                         {generateAvatar(getTop3Players()[1].user_mobile, getTop3Players()[1].user_email, 1)}
                                     </div>
-                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 2</div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>{t('leaderboard.player')} 2</div>
                                     <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
                                         {formatPhoneNumber(getTop3Players()[1].user_mobile)}
                                     </div>
@@ -403,7 +405,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                     }}>
                                         {generateAvatar(getTop3Players()[0].user_mobile, getTop3Players()[0].user_email, 0)}
                                     </div>
-                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 1</div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>{t('leaderboard.player')} 1</div>
                                     <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
                                         {formatPhoneNumber(getTop3Players()[0].user_mobile)}
                                     </div>
@@ -448,7 +450,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                     }}>
                                         {generateAvatar(getTop3Players()[2].user_mobile, getTop3Players()[2].user_email, 2)}
                                     </div>
-                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>Player 3</div>
+                                    <div style={{ color: 'white', fontSize: '12px', marginBottom: '4px' }}>{t('leaderboard.player')} 3</div>
                                     <div style={{ color: '#ccc', fontSize: '10px', marginBottom: '8px' }}>
                                         {formatPhoneNumber(getTop3Players()[2].user_mobile)}
                                     </div>
@@ -470,7 +472,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                         </>
                     ) : (
                         <div style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
-                            No leaderboard data available for {activeTab}
+                            {t('leaderboard.noLeaderboardData')} {activeTab}
                         </div>
                     )}
                 </div>
@@ -518,7 +520,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                 </div>
                                 <div>
                                     <div style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>
-                                        Player {index + 4}
+                                        {t('leaderboard.player')} {index + 4}
                                     </div>
                                     <div style={{ color: '#999', fontSize: '12px' }}>
                                         {formatPhoneNumber(player.user_mobile)}
@@ -577,10 +579,10 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                                 </div>
                                 <div>
                                     <div style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>
-                                        You
+                                        {t('leaderboard.you')}
                                     </div>
                                     <div style={{ color: '#999', fontSize: '12px' }}>
-                                        Your Position
+                                        {t('leaderboard.yourPosition')}
                                     </div>
                                 </div>
                             </div>
@@ -601,7 +603,7 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
                             padding: '40px 20px',
                             fontSize: '16px'
                         }}>
-                            No leaderboard data available for {activeTab}
+                            {t('leaderboard.noLeaderboardData')} {activeTab}
                         </div>
                     )}
                 </div>

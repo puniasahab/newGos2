@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
  import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { setOpenModal } from "../../screens/login/LoginSlice"
@@ -44,6 +45,7 @@ const handleModalClose = (dispatch: any) => {
 }
 
 const OtpModal: React.FC<OtpModalProps> = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const { phoneNumber, openModal, email, tabSelected } = useAppSelector((state) => state.login);
     const navigate = useNavigate();
@@ -175,8 +177,10 @@ const OtpModal: React.FC<OtpModalProps> = () => {
             >
               <CloseIcon />
             </IconButton>
-            <Typography sx = {{textAlign: 'center', color: '#930000', fontWeight: 'bold', fontSize: '22px'}}>Enter OTP</Typography>
-            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>We have sent a code to <strong>{tabSelected === 'email' ? email : phoneNumber}</strong></Typography>
+            <Typography sx = {{textAlign: 'center', color: '#930000', fontWeight: 'bold', fontSize: '22px'}}>{t('auth.enterOtp')}</Typography>
+            <Typography sx = {{textAlign: 'center', fontSize: '14px', color: '#666'}}>
+                {t('auth.otpSentTo')} <strong>{tabSelected === 'email' ? email : phoneNumber}</strong>
+            </Typography>
 
             {showSuccessMessage && (
                 <Typography sx={{ 
@@ -186,7 +190,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
                     marginTop: '10px',
                     fontWeight: 'bold'
                 }}>
-                    OTP Sent Successfully
+                    {t('auth.otpSent')}
                 </Typography>
             )}
             
@@ -198,7 +202,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
                     marginTop: '10px',
                     fontWeight: 'bold'
                 }}>
-                    Invalid OTP
+                    {t('auth.invalidOtp')}
                 </Typography>
             )}
             
@@ -214,7 +218,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
               {!canResend ? (
                 <Typography sx={{ fontSize: '14px', color: '#666' }}>
-                  Resend code in {timer} seconds
+                  {t('auth.resendCodeIn', { timer })}
                 </Typography>
               ) : (
                 <Typography 
@@ -227,7 +231,7 @@ const OtpModal: React.FC<OtpModalProps> = () => {
                   }}
                   onClick={handleOtpSend.bind(null, phoneNumber)}
                 >
-                  Resend OTP
+                  {t('auth.resendOtp')}
                 </Typography>
               )}
             </div>

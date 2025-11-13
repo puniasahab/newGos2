@@ -1,13 +1,16 @@
 
-import { AlignJustify, Bell, Globe, Share2, User, Settings, X } from 'lucide-react';
+import { AlignJustify, Bell, Share2, User, X, Shield, FileText } from 'lucide-react';
 import './header.css';
 import homeBanneer from '../../assets/homeBanner.png';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuthTokenFromLS } from '../../commonFunctions';
 import { profileApi } from '../../api';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../LanguageSelector';
 
 const Header = () => {
+    const { t } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [profileData, setProfileData] = useState<{name: string, phone: string}>({
         name: '',
@@ -30,8 +33,8 @@ const Header = () => {
         const fetchProfileData = async () => {
             const res = await profileApi.getProfileData();
             setProfileData({
-                name: res.data.user.full_name || "New User",
-                phone: res.data.user.mobile || "Phone Number NA"
+                name: res.data.user.full_name || t('profile.newUser'),
+                phone: res.data.user.mobile || t('profile.phoneNumberNA')
             });
             console.log("fetching profile data!!", res);
         }
@@ -60,9 +63,9 @@ const Header = () => {
                     </div>
                     
                     {/* Right side - Icons */}
-                    <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-6" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                         <Bell size={24} color="var(--primary-color)" className="cursor-pointer hover:opacity-80 transition-opacity" />
-                        <Globe size={24} color="var(--primary-color)" className="cursor-pointer hover:opacity-80 transition-opacity" style={{marginRight: '20px', marginLeft: '16px'}}/>
+                        <LanguageSelector />
                     </div>
                     </div>
                 </div>
@@ -186,18 +189,15 @@ const Header = () => {
                             navigate("/login");
                         }
                     }}>
-                        View Profile
+                        {t('navigation.viewProfile')}
                     </button>
                 </div>
 
                 {/* Menu Options */}
                 <div style={{ flex: 1, padding: '20px 0' }}>
                     {[
-                        // { icon: User, label: 'My Account', onClick: () => console.log('My Account') },
-                        { icon: Settings, label: 'Settings', onClick: () => console.log('Settings') },
-                        { icon: Bell, label: 'Notifications', onClick: () => console.log('Notifications') },
-                        { icon: Globe, label: 'Language', onClick: () => console.log('Language') },
-                        { icon: Share2, label: 'Share App', onClick: () => console.log('Share App') },
+                        { icon: Shield, label: t('navigation.privacyPolicy'), onClick: () => {navigate("/privacy-policy")} },
+                        { icon: FileText, label: t('navigation.termsAndConditions'), onClick: () => {navigate("/terms-and-conditions")} },
                     ].map((item, index) => (
                         <div
                             key={index}

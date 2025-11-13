@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ProgressBarTimer: React.FC<{ 
   duration: number; 
@@ -9,6 +10,7 @@ const ProgressBarTimer: React.FC<{
   onComplete,
   shouldResetOnDurationChange = true,
 }) => {
+  const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(duration);
 
   // Reset timer when duration changes (new question) - only if shouldResetOnDurationChange is true
@@ -66,7 +68,7 @@ const ProgressBarTimer: React.FC<{
           fontWeight: "bold",
         }}
       >
-        {timeLeft} seconds left
+        {timeLeft} {t('timer.secondsLeft')}
       </span>
     </div>
     </div>

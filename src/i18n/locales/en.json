@@ -1,0 +1,331 @@
+{
+  "common": {
+    "skip": "Skip",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "phone": "Phone",
+    "mobile": "Mobile Number",
+    "name": "Name",
+    "fullName": "Full Name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "sendOtp": "Send OTP",
+    "verifyOtp": "Verify OTP",
+    "enterOtp": "Enter OTP",
+    "resendOtp": "Resend OTP",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "otpSent": "OTP sent successfully",
+    "otpVerified": "OTP verified successfully",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "otpSentTo": "We have sent a code to",
+    "invalidOtp": "Invalid OTP",
+    "resendCodeIn": "Resend code in {{timer}} seconds",
+    "welcomeToGameStones": "Welcome to GameStones",
+    "enterEmailAddress": "Enter your email address",
+    "enterMobileNumber": "Enter mobile number",
+    "otpVerificationEmail": "We'll send you an OTP to verify your email",
+    "otpVerificationPhone": "We'll send you an OTP to verify your number",
+    "continueWithEmail": "Continue with Email",
+    "continueWithPhone": "Continue with Phone",
+    "sendingOtp": "Sending OTP...",
+    "loggingIn": "Logging in...",
+    "chooseLoginMethod": "Choose your preferred login method",
+    "termsAgreement": "By continuing, you agree to our",
+    "and": "and",
+    "validMobileNumber": "Please enter a valid 10-digit mobile number"
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "leaderboard": "Leaderboard",
+    "notifications": "Notifications",
+    "language": "Language",
+    "shareApp": "Share App",
+    "viewProfile": "View Profile",
+    "logout": "Logout",
+    "myAccount": "My Account",
+    "privacyPolicy": "Privacy Policy",
+    "termsAndConditions": "Terms and Conditions"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "introduction": {
+      "title": "Our Privacy Policy",
+      "content": "Your privacy is important to us. It is Game of Stones' policy to respect your privacy regarding any information we may collect from you across our website, http://gameofstones.com, and other sites we own and operate."
+    },
+    "section1": {
+      "title": "1. INTRODUCTION",
+      "content": "This Privacy Policy explains how Game of Stones (\"Platform\"), operated by ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Company,\" \"we,\" \"our,\" or \"us\"), collects, processes, stores, and protects user data. By using our Platform, you agree to the terms outlined in this policy."
+    },
+    "section2": {
+      "title": "2. DATA COLLECTION",
+      "content1": "2.1. Users must register using a valid mobile number for authentication and account creation.",
+      "content2": "2.2. Additional details such as gender, age, and payment information may be collected for personalization and compliance purposes.",
+      "content3": "2.3. The Platform may collect data related to user activity, gameplay, device information, and location (if permitted) to enhance service functionality.",
+      "content4": "2.4. All data is securely stored using industry-standard encryption protocols."
+    },
+    "section3": {
+      "title": "3. PURPOSE OF DATA USAGE",
+      "content1": "3.1. The data collected is used for the following purposes:",
+      "bullet1": "Game participation & winnings distribution.",
+      "bullet2": "Tax compliance, including TDS reporting and documentation.",
+      "bullet3": "Fraud prevention and ensuring fair gameplay.",
+      "bullet4": "Marketing & user experience enhancement, including personalized recommendations and promotional communications (subject to opt-in preferences).",
+      "bullet5": "Technical improvements and troubleshooting to enhance Platform performance."
+    },
+    "section4": {
+      "title": "4. DATA SHARING & PROTECTION",
+      "content1": "4.1. User data is not shared with third parties except in the following circumstances:",
+      "bullet1": "When required by tax authorities or legal enforcement agencies.",
+      "bullet2": "For payment processing through secure third-party gateways.",
+      "bullet3": "To comply with legal and regulatory obligations.",
+      "content2": "4.2. All personal data is stored on secure servers with encryption to prevent unauthorized access.",
+      "content3": "4.3. The Company implements access controls and security protocols to safeguard user information."
+    },
+
+
+
+
+    "section5": {
+      "title": "5. USER RIGHTS & DATA ACCESS",
+      "content1": "Update or modify personal details via account settings.",
+      "content2": "Opt-out of marketing communications through notification preferences.",
+      "content3": "Access information regarding their stored data, subject to verification.",
+      "content4": "Requests for data modifications or deletion may take up to 30 days to process, subject to compliance requirements."
+    },
+    "section6": {
+      "title": "6. COOKIES & TRACKING TECHNOLOGIES",
+      "content1": "The Platform uses cookies and tracking technologies for:",
+      "bullet1": "Session management and seamless gameplay experience.",
+      "bullet2": "User analytics to improve services.",
+      "bullet3": "Fraud detection and security enhancements.",
+      "content2": "Users can disable cookies through browser settings, but this may impact certain functionalities of the Platform."
+    },
+    "section7": {
+      "title": "7. DATA RETENTION POLICY",
+      "content1": "User data is retained for as long as necessary to fulfil its purpose, including regulatory and legal requirements.",
+      "content2": "Winnings and tax-related records may be stored for up to 7 years as per applicable tax laws.",
+      "content3": "Inactive accounts may be deleted or anonymized after a period of 24 months."
+    },
+    "section8": {
+      "title": "8. POLICY UPDATES & NOTIFICATIONS",
+      "content1": "The Company reserves the right to update, modify, or amend this Privacy Policy at its discretion.",
+      "content2": "Users will be notified of significant changes via in-app notifications and/or email.",
+      "content3": "Continued use of the Platform after policy changes constitutes acceptance of the revised terms."
+    },
+    "section9": {
+      "title": "9. CONTACT INFORMATION",
+      "content": "For any privacy-related queries or requests, users may contact:",
+      "companyName": "ARSHYA INFO SOLUTIONS PRIVATE LIMITED",
+      "address": "Address: 032, 4th Floor, EMERALD PLAZA, Sector 65, Gurugram, Haryana 122018",
+      "email": "Email: support@arshiyainfosolutions.com"
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "section1": {
+      "title": "1. INTRODUCTION",
+      "content": "Welcome to Game of Stones (\"Platform\"), operated by ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Company,\" \"we,\" \"our,\" or \"us\"). These Terms & Conditions (\"Agreement\") govern the use of our services and participation in contests available on the Platform. By accessing or using the Platform, you (\"User,\" \"you,\" or \"your\") agree to comply with and be bound by these Terms & Conditions. If you do not agree, please refrain from using the Platform."
+    },
+    "section2": {
+      "title": "2. USER ELIGIBILITY & REGISTRATION",
+      "content": "Users must be at least 18 years of age to participate. By registering, the User confirms meeting this requirement. Registration requires a valid mobile number, which may be verified by the Company. Users may voluntarily provide additional details such as gender and age after login. The User is responsible for maintaining the confidentiality of account credentials and any activities conducted under the account."
+    },
+    "section3": {
+      "title": "3. RESPONSIBLE GAMING & FAIR PLAY",
+      "content": "The Platform promotes responsible gaming and encourages a balanced approach to online gameplay while discouraging addiction. Users are prohibited from creating or operating multiple accounts. The Company reserves the right to suspend, restrict, or terminate accounts involved in fraudulent, manipulative, or unfair practices, including but not limited to the use of automated scripts, bots, or third-party tools, collusion with other users, and misrepresentation or identity fraud. The Company may conduct audits or investigations into suspected violations."
+    },
+    "section4": {
+      "title": "4. LIABILITY & DISCLAIMERS",
+      "content": "The Platform is provided on an \"as-is\" and \"as-available\" basis, and the Company makes no warranties, expressed or implied, regarding uninterrupted access, error-free performance, or guarantee of winnings. The Company is not responsible for technical failures such as server downtime, connectivity issues, or software malfunctions, unauthorized access resulting from user negligence, or third-party disruptions affecting contest participation or transactions. Users participate at their own risk, and the Company disclaims any liability for financial losses incurred during gameplay."
+    },
+    "section5": {
+      "title": "5. GOVERNING LAW & DISPUTE RESOLUTION",
+      "content": "This Agreement is governed by and construed in accordance with the laws of India. Any disputes arising from or related to these Terms & Conditions shall be resolved through binding arbitration in Gurugram, Haryana, under the Arbitration and Conciliation Act, 1996. The arbitrator's decision shall be final and binding on both parties. Users waive the right to participate in any class-action lawsuit against the Company."
+    },
+    "section6": {
+      "title": "6. AMENDMENTS & MODIFICATIONS",
+      "content": "The Company reserves the right to update, modify, or amend these Terms & Conditions at its sole discretion. Any changes will be communicated through the Platform, and continued use of the services implies acceptance of the revised terms. Users are encouraged to review these Terms & Conditions periodically to stay informed."
+    },
+    "section7": {
+      "title": "7. CONTACT INFORMATION",
+      "content": "For any queries, grievances, or support requests, users may contact us at:",
+      "companyName": "ARSHYA INFO SOLUTIONS PRIVATE LIMITED",
+      "address": "Address: 031, 4th Floor, EMERALD PLAZA, Sector 65, Gurugram, Haryana 122018",
+      "email": "Email: support@arshiyainfosolutions.com"
+    }
+  },
+  "game": {
+    "played": "Played",
+    "score": "Score",
+    "question": "Question",
+    "answer": "Answer",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "skipped": "Skipped",
+    "timeLeft": "Time Left",
+    "secondsLeft": "seconds left",
+    "complete": "Complete",
+    "completed": "Completed",
+    "start": "Start",
+    "playAgain": "Play Again",
+    "gameRules": "Game Rules",
+    "contest": "Contest",
+    "contests": "Contests",
+    "rapidFire": "Rapid Fire",
+    "jackpot": "Jackpot",
+    "fastestFinger": "Fastest Finger",
+    "totalQuestions": "Total Questions",
+    "currentQuestion": "Current Question",
+    "questionMedia": "Question Media",
+    "nextRound": "Next Round",
+    "gameStones": "GameStones",
+    "answerWithinTimeLimit": "Answer within the time limit",
+    "eachCorrectAnswerEarnsPoint": "Each correct answer earns point",
+    "highestScorerWinsJackpot": "Highest scorer wins the jackpot",
+    "aboutGameOfStones": "About Game of Stones",
+    "gameOfStonesDescription": "Game of stones is a fun and competitive quiz game where players can test their knowledge and win exciting prizes!",
+    "gameOfStonesExtendedDescription": "Join thousands of players in this thrilling quiz adventure! Answer questions across various categories including science, history, sports, entertainment, and general knowledge. Each correct answer earns you valuable stones that can lead to amazing rewards.",
+    "gameFeatures": "Features:",
+    "multipleGameModes": "Multiple game modes: Jackpot, Fastest Finger, and Rapid Fire",
+    "realTimeLeaderboards": "Real-time leaderboards and competitions",
+    "dailyChallenges": "Daily challenges and special events",
+    "gameOfStonesConclusion": "Whether you're a trivia expert or just starting out, Game of Stones offers an engaging experience for all knowledge levels. Challenge yourself, climb the leaderboards, and become the ultimate quiz champion!",
+    "readMore": "Read More",
+    "readLess": "Read Less"
+  },
+  "results": {
+    "result": "Result",
+    "results": "Results",
+    "totalScore": "Total Score",
+    "correctAnswers": "Correct Answers",
+    "wrongAnswers": "Wrong Answers",
+    "skippedAnswers": "Skipped Answers",
+    "percentage": "Percentage",
+    "correctPercentage": "Correct Percentage",
+    "wrongPercentage": "Wrong Percentage",
+    "skippedPercentage": "Skipped Percentage",
+    "stones": "Stones",
+    "points": "Points",
+    "totalStones": "Total Stones",
+    "nextRoundTime": "Next Round Time",
+    "congratulations": "Congratulations!",
+    "wellDone": "Well Done!",
+    "betterLuckNextTime": "Better Luck Next Time!",
+    "newRoundsUnlockIn": "New Rounds Unlock In:",
+    "completedRoundForToday": "You've completed this round\nfor today!",
+    "gameSummary": "Game Summary",
+    "currentScore": "Current Score",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "skipped": "Skipped",
+    "viewLeaderboard": "View Leaderboard",
+    "homePage": "HOME PAGE"
+  },
+  "profile": {
+    "editProfile": "Edit Profile",
+    "personalInfo": "Personal Information",
+    "contactInfo": "Contact Information",
+    "gameStats": "Game Statistics",
+    "achievements": "Achievements",
+    "updateProfile": "Update Profile",
+    "profileUpdated": "Profile updated successfully",
+    "avatar": "Avatar",
+    "changeAvatar": "Change Avatar",
+    "selectAvatar": "Select Avatar",
+    "verify": "Verify",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "newUser": "New User",
+    "phoneNumberNA": "Phone Number NA",
+    "myProfile": "My Profile",
+    "notAvailable": "Not Available",
+    "gainedStones": "Gained Stones",
+    "totalPlayed": "Total Played",
+    "referralCount": "Referral Count",
+    "dailyGameStones": "Daily Game Stones",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgainLater": "Please try again later",
+    "goHome": "Go Home",
+    "addAvatar": "Add Avatar",
+    "addImage": "Add Image",
+    "name": "Name",
+    "email": "Email",
+    "country": "Country",
+    "mobile": "Mobile",
+    "enterYourName": "Enter your name",
+    "enterYourEmail": "Enter your email",
+    "enterYourCountry": "Enter your country",
+    "enterYourMobileNumber": "Enter your mobile number",
+    "pleaseEnterValidEmail": "Please enter a valid email address",
+    "confirm": "CONFIRM",
+    "logout": "Logout",
+    "chooseYourAvatar": "Choose Your Avatar",
+    "cancel": "Cancel"
+  },
+  "leaderboard": {
+    "rank": "Rank",
+    "player": "Player",
+    "position": "Position",
+    "today": "Today",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "allTime": "All Time",
+    "topPlayers": "Top Players",
+    "yourRank": "Your Rank",
+    "noData": "No data available",
+    "daily": "Daily",
+    "you": "You",
+    "yourPosition": "Your Position",
+    "noLeaderboardData": "No leaderboard data available for"
+  },
+  "messages": {
+    "welcomeBack": "Welcome back!",
+    "letsPlay": "Let's play!",
+    "goodLuck": "Good luck!",
+    "timeUp": "Time's up!",
+    "correctAnswer": "Correct answer!",
+    "wrongAnswer": "Wrong answer!",
+    "questionsCompleted": "Questions completed!",
+    "gameCompleted": "Game completed!",
+    "navigationDisabled": "Navigation is disabled during the quiz. Please complete or skip questions to proceed.",
+    "confirmLeave": "Are you sure you want to leave? Your quiz progress will be lost.",
+    "connectionError": "Connection error. Please check your internet connection.",
+    "tryAgain": "Please try again"
+  },
+  "timer": {
+    "duration": "Duration",
+    "remaining": "Remaining",
+    "expired": "Time Expired",
+    "minutes": "minutes",
+    "seconds": "seconds",
+    "hour": "hour",
+    "hours": "hours"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "networkError": "Network error",
+    "serverError": "Server error",
+    "invalidInput": "Invalid input",
+    "requiredField": "This field is required",
+    "minLength": "Minimum length required",
+    "maxLength": "Maximum length exceeded"
+  }
+}

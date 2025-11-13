@@ -5,9 +5,11 @@ import Footer from '../../components/footer';
 import { profileApi } from '../../api';
 import { useEffect } from 'react';
 import { setUserProfile } from './ProfileSlice';
+import { useTranslation } from 'react-i18next';
 // import EditOtpModal from '../../components/editOtpModal';
 
 const Profile = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { userProfile } = useAppSelector((state) => state.profile);
@@ -37,8 +39,8 @@ const Profile = () => {
                  */
                 const userProfileData = {
                     id: res.data.user.id,
-                    name: res.data.user.full_name || "New User",
-                    email: res.data.user.email || "Not Verified",
+                    name: res.data.user.full_name || t('profile.newUser'),
+                    email: res.data.user.email || t('profile.notAvailable'),
                     phone: res.data.user.mobile,
                     country: 'India',
                     avatar: res.data.user.profile_photo_url || "https://images.unsplash.com/photo-1494790108755-2616b612b830?w=150&h=150&fit=crop&crop=face",
@@ -110,7 +112,7 @@ const Profile = () => {
                                 fontWeight: '600',
                                 margin: 0
                             }}>
-                                My Profile
+                                {t('profile.myProfile')}
                             </h1>
                         </div>
                         <div style={{ display: 'flex', gap: '16px' }}>
@@ -160,15 +162,15 @@ const Profile = () => {
                                 fontWeight: '700',
                                 margin: '0 0 8px 0'
                             }}>
-                                {userProfile?.name || 'New User'}
+                                {userProfile?.name || t('profile.newUser')}
                             </h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                                 <span style={{ color: 'white', fontSize: '16px' }}>📞</span>
-                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.phone || 'Not Available'}</span>
+                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.phone || t('profile.notAvailable')}</span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <span style={{ color: 'white', fontSize: '16px' }}>✉️</span>
-                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.email || 'Not Available'}</span>
+                                <span style={{ color: 'white', fontSize: '16px' }}>{userProfile?.email || t('profile.notAvailable')}</span>
                             </div>
                         </div>
                     </div>
@@ -235,7 +237,7 @@ const Profile = () => {
                             lineHeight: '1.2',
                             padding: '0 2px'
                         }}>
-                            Gained Stones
+                            {t('profile.gainedStones')}
                         </p>
                     </div>
 
@@ -287,7 +289,7 @@ const Profile = () => {
                             lineHeight: '1.2',
                             padding: '0 4px'
                         }}>
-                            Total Played
+                            {t('profile.totalPlayed')}
                         </p>
                     </div>
 
@@ -339,7 +341,7 @@ const Profile = () => {
                             lineHeight: '1.2',
                             padding: '0 2px'
                         }}>
-                            Referral Count
+                            {t('profile.referralCount')}
                         </p>
                     </div>
                 </div>
@@ -382,7 +384,7 @@ const Profile = () => {
                                 margin: '0 0 16px 0',
                                 textAlign: 'center'
                             }}>
-                                Daily Game Stones
+                                {t('profile.dailyGameStones')}
                             </h3>
                             <div style={{
                                 display: 'flex',
@@ -412,10 +414,10 @@ const Profile = () => {
         return (
             <div style={{ backgroundColor: 'black', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ color: 'white', textAlign: 'center' }}>
-                    <h2>Something went wrong</h2>
-                    <p>Please try again later</p>
+                    <h2>{t('profile.somethingWentWrong')}</h2>
+                    <p>{t('profile.tryAgainLater')}</p>
                     <button onClick={() => navigate('/')} style={{ padding: '10px 20px', marginTop: '20px' }}>
-                        Go Home
+                        {t('profile.goHome')}
                     </button>
                 </div>
             </div>

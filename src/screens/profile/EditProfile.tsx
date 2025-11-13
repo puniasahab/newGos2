@@ -7,6 +7,7 @@ import Footer from '../../components/footer';
 import { setUserProfile } from './ProfileSlice';
 import { otpApis, profileApi } from '../../api';
 import EditOtpModal from '../../components/editOtpModal';
+import { useTranslation } from 'react-i18next';
 // import { setTabSelected } from '../login/LoginSlice';
 
 const avatars = [
@@ -26,6 +27,7 @@ const avatars = [
 ];
 
 const EditProfile = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { userProfile, openModal, tabSelected } = useAppSelector((state) => state.profile);
@@ -59,7 +61,7 @@ const EditProfile = () => {
             if (value === '') {
                 setEmailError('');
             } else if (!validateEmail(value)) {
-                setEmailError('Please enter a valid email address');
+                setEmailError(t('profile.pleaseEnterValidEmail'));
             } else {
                 setEmailError('');
             }
@@ -269,7 +271,7 @@ const EditProfile = () => {
                             fontWeight: '600',
                             margin: 0
                         }}>
-                            Edit Profile
+                            {t('profile.editProfile')}
                         </h1>
                     </div>
                     
@@ -317,7 +319,7 @@ const EditProfile = () => {
                                     onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
                                 >
                                     <LogOut size={16} />
-                                    Logout
+                                    {t('profile.logout')}
                                 </button>
                             </div>
                         )}
@@ -411,7 +413,7 @@ const EditProfile = () => {
                             fontSize: '14px',
                             margin: 0
                         }}>
-                            {selectedAvatar ? 'Change Avatar' : 'Add Avatar'}
+                            {selectedAvatar ? t('profile.changeAvatar') : t('profile.addAvatar')}
                         </p>
                     </div>
 
@@ -472,7 +474,7 @@ const EditProfile = () => {
                             display: 'block',
                             marginBottom: '8px'
                         }}>
-                            Name*
+                            {t('profile.name')}*
                         </label>
                         <input
                             type="text"
@@ -490,7 +492,7 @@ const EditProfile = () => {
                                 transition: 'border-color 0.3s ease',
                                 boxSizing: 'border-box'
                             }}
-                            placeholder='Enter your name'
+                            placeholder={t('profile.enterYourName')}
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
                         />
@@ -505,7 +507,7 @@ const EditProfile = () => {
                             display: 'block',
                             marginBottom: '8px'
                         }}>
-                            Email*
+                            {t('profile.email')}*
                         </label>
                         <div style={{ position: 'relative' }}>
                             <input
@@ -525,7 +527,7 @@ const EditProfile = () => {
                                     transition: 'border-color 0.3s ease',
                                     boxSizing: 'border-box'
                                 }}
-                                placeholder="Enter your email"
+                                placeholder={t('profile.enterYourEmail')}
                                 onFocus={(e) => e.target.style.borderColor = emailError ? '#ff4444' : 'var(--primary-color)'}
                                 onBlur={(e) => e.target.style.borderColor = emailError ? '#ff4444' : '#333'}
                             />
@@ -548,7 +550,7 @@ const EditProfile = () => {
                                     opacity: (emailError || formData.email === '' || formData.email === "Not Verified") ? 0.6 : 1
                                 }}
                             >
-                                Verify
+                                {t('profile.verify')}
                             </button>}
                         </div>
                         {emailError && (
@@ -572,7 +574,7 @@ const EditProfile = () => {
                             display: 'block',
                             marginBottom: '8px'
                         }}>
-                            Country*
+                            {t('profile.country')}*
                         </label>
                         <input
                             type="text"
@@ -590,7 +592,7 @@ const EditProfile = () => {
                                 transition: 'border-color 0.3s ease',
                                 boxSizing: 'border-box'
                             }}
-                            placeholder='Enter your country'
+                            placeholder={t('profile.enterYourCountry')}
                             onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
                             onBlur={(e) => e.target.style.borderColor = '#333'}
                         />
@@ -605,7 +607,7 @@ const EditProfile = () => {
                             display: 'block',
                             marginBottom: '8px'
                         }}>
-                            Mobile
+                            {t('profile.mobile')}
                         </label>
                         <div style={{
                             display: 'flex',
@@ -642,7 +644,7 @@ const EditProfile = () => {
                                     boxSizing: 'border-box',
                                     cursor: hasApiData ? 'text' : 'not-allowed'
                                 }}
-                                placeholder='Enter your mobile number'
+                                placeholder={t('profile.enterYourMobileNumber')}
                                 onFocus={hasApiData ? (e) => e.target.style.borderColor = 'var(--primary-color)' : undefined}
                                 onBlur={hasApiData ? (e) => e.target.style.borderColor = '#333' : undefined}
                             />
@@ -665,7 +667,7 @@ const EditProfile = () => {
                                         zIndex: 2
                                     }}
                                 >
-                                    Verify
+                                    {t('profile.verify')}
                                 </button>
                             )}
                         </div>
@@ -688,7 +690,7 @@ const EditProfile = () => {
                             boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)'
                         }}
                     >
-                        CONFIRM
+                        {t('profile.confirm')}
                     </button>
                 </div>
             </div>
@@ -732,7 +734,7 @@ const EditProfile = () => {
                             fontSize: '20px',
                             fontWeight: '600'
                         }}>
-                            Choose Your Avatar
+                            {t('profile.chooseYourAvatar')}
                         </h3>
                         
                         <div style={{
@@ -789,7 +791,7 @@ const EditProfile = () => {
                                     transition: 'all 0.3s ease'
                                 }}
                             >
-                                Cancel
+                                {t('profile.cancel')}
                             </button>
                             <button
                                 onClick={() => setShowAvatarPicker(false)}
@@ -806,7 +808,7 @@ const EditProfile = () => {
                                     boxShadow: '0 4px 15px rgba(0, 212, 255, 0.3)'
                                 }}
                             >
-                                Confirm
+                                {t('profile.confirm')}
                             </button>
                         </div>
                     </div>
