@@ -224,7 +224,16 @@
     "nextRoundTime": "Czas następnej rundy",
     "congratulations": "Gratulacje!",
     "wellDone": "Świetnie!",
-    "betterLuckNextTime": "Więcej szczęścia następnym razem!"
+    "betterLuckNextTime": "Więcej szczęścia następnym razem!",
+    "newRoundsUnlockIn": "Nowe rundy odblokowują się za:",
+    "completedRoundForToday": "Ukończyłeś rundę\nna dzisiaj!",
+    "gameSummary": "Podsumowanie gry",
+    "currentScore": "Aktualny wynik",
+    "correct": "Poprawne",
+    "wrong": "Błędne",
+    "skipped": "Pominięte",
+    "viewLeaderboard": "Zobacz tabelę wyników",
+    "homePage": "STRONA GŁÓWNA"
   },
   "profile": {
     "editProfile": "Edytuj profil",
