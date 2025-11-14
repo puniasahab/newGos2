@@ -313,7 +313,8 @@
     "minutes": "دقائق",
     "seconds": "ثواني",
     "hour": "ساعة",
-    "hours": "ساعات"
+    "hours": "ساعات",
+    "secondsLeft": "ثواني متبقية"
   },
   "errors": {
     "somethingWentWrong": "حدث خطأ ما",

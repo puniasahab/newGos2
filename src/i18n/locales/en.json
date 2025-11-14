@@ -317,7 +317,8 @@
     "minutes": "minutes",
     "seconds": "seconds",
     "hour": "hour",
-    "hours": "hours"
+    "hours": "hours",
+    "secondsLeft": "seconds left"
   },
   "errors": {
     "somethingWentWrong": "Something went wrong",

@@ -298,7 +298,8 @@
     "minutes": "minuty",
     "seconds": "sekundy",
     "hour": "godzina",
-    "hours": "godziny"
+    "hours": "godziny",
+    "secondsLeft": "sekund pozostało"
   },
   "errors": {
     "somethingWentWrong": "Coś poszło nie tak",
