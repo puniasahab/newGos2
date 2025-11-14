@@ -98,10 +98,10 @@ const Questions = () => {
                     setTimeout(async () => {
                         await questionApis.fetchQuestion(contestId, false, currentLanguage).then((data) => {
                             dispatch(setIsQuizCompleted(true));
-                            dispatch(setSkippedAnswerCount(data.data.skip_answer_count));
-                            dispatch(setCorrectAnswerCount(data.data.correct_answer_count));
+                            dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
+                            dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
                             dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
-                            dispatch(setWrongAnswerCount(data.data.wrong_answer_count));
+                            dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
                             dispatch(setScore(data.data.userResult.total_stones));
                             console.log("Fetched Question after RAPID_FIRE timer completion", res);
                             // Handle the fetched question data
@@ -250,11 +250,11 @@ const Questions = () => {
                     resetTimerForNewQuestion();
                 }
                 else {
-                    dispatch(setSkippedAnswerCount(data.data.skip_answer_count));
-                    dispatch(setCorrectAnswerCount(data.data.correct_answer_count));
+                    dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
+                    dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
                     dispatch(setTotalQuestions(data.data.totalNoOfQuestions));
-                    dispatch(setWrongAnswerCount(data.data.wrong_answer_count));
-                    dispatch(setScore(data.data.gain_ston));
+                    dispatch(setWrongAnswerCount(data.data.userResult.wrong_answers));
+                    dispatch(setScore(data.data.userResult.total_stones));
                     // dispatch(setCurrentQuestionIndex(data.data.userResult.current_question_index));
                     // dispatch(setIsQuizCompleted(true));
                 }
