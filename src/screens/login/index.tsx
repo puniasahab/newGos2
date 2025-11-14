@@ -6,8 +6,10 @@ import { setOpenModal, setPhoneNumber, setEmailAdd, setTabSelected } from './Log
 import { loginApis } from '../../api';
 import OtpModal from '../../components/otpModal/OtpModal';
 import { setEmailInLS, setPhoneNumberInLS } from '../../commonFunctions';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const [mobileNumber, setMobileNumber] = useState('');
     const [email, setEmail] = useState('');
@@ -39,7 +41,7 @@ const Login = () => {
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (value && !emailRegex.test(value)) {
-            setEmailError('Please enter a valid email address');
+            setEmailError(t('auth.invalidEmail'));
         } else {
             setEmailError('');
         }
@@ -58,7 +60,7 @@ const Login = () => {
         if (activeTab === 'email') {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email || !emailRegex.test(email)) {
-                setEmailError('Please enter a valid email address');
+                setEmailError(t('auth.invalidEmail'));
                 return;
             }
             // Handle email login
@@ -76,7 +78,7 @@ const Login = () => {
             console.log('Email login:', email);
         } else {
             if (mobileNumber.length !== 10) {
-                alert('Please enter a valid 10-digit mobile number');
+                alert(t('auth.validMobileNumber'));
                 return;
             }
             
@@ -248,7 +250,7 @@ const Login = () => {
                         margin: '0',
                         marginBottom: '8px'
                     }}>
-                        Welcome to GameStones
+                        {t('auth.welcomeToGameStones')}
                     </h1>
                    
                 </div>
@@ -352,7 +354,7 @@ const Login = () => {
                                 type="text"
                                 value={mobileNumber}
                                 onChange={handleMobileChange}
-                                placeholder="Enter mobile number"
+                                placeholder={t('auth.enterMobileNumber')}
                                 style={{
                                     flex: 1,
                                     padding: '16px 20px',
@@ -370,7 +372,7 @@ const Login = () => {
                             marginTop: '8px',
                             textAlign: 'left'
                         }}>
-                            We'll send you an OTP to verify your number
+                            {t('auth.otpVerificationPhone')}
                         </p>
                     </div>
                 </div>
@@ -410,10 +412,10 @@ const Login = () => {
                                 borderRadius: '50%',
                                 animation: 'spin 1s linear infinite'
                             }}></div>
-                            {activeTab === 'email' ? 'Sending OTP...' : 'Logging in...'}
+                            {activeTab === 'email' ? t('auth.sendingOtp') : t('auth.loggingIn')}
                         </div>
                     ) : (
-                        `Continue with ${activeTab === 'email' ? 'Email' : 'Phone'}`
+                        `${t('auth.continueWithPhone')}`
                     )}
                 </button>
 
@@ -424,13 +426,13 @@ const Login = () => {
                     lineHeight: '1.5',
                     margin: '0'
                 }}>
-                    By continuing, you agree to our{' '}
+                    {t('auth.termsAgreement')}{' '}
                     <span style={{ color: 'var(--primary-color)', cursor: 'pointer' }}>
-                        Terms & Conditions
+                        {t('navigation.termsAndConditions')}
                     </span>{' '}
-                    and{' '}
+                    {t('auth.and')}{' '}
                     <span style={{ color: 'var(--primary-color)', cursor: 'pointer' }}>
-                        Privacy Policy
+                        {t('navigation.privacyPolicy')}
                     </span>
                 </p>
             </div>

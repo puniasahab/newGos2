@@ -40,11 +40,15 @@ const OtpInput: React.FC<OtpInputProps> = ({ numInputs = 4, onComplete }) => {
         <input
           key={index}
           type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
           maxLength={1}
           value={digit}
           onChange={(e) => handleChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
           ref={(el) => { inputRefs.current[index] = el; }}
+          aria-label={`OTP digit ${index + 1} of ${numInputs}`}
+          autoComplete="one-time-code"
           style={{ width: '40px', height: '40px', textAlign: 'center', fontSize: '20px', border: 'none', borderBottom: '2px solid #930000', outline: 'none', backgroundColor: 'transparent', color: 'black' }}
         />
       ))}

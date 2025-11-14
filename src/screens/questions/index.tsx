@@ -8,6 +8,7 @@ import { questionApis } from "../../api";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useParams } from "react-router-dom";
 import { getIsJackpotPlayed, getIsRapidFirePlayed, getIsQuickFingerPlayed, getNameAndContestId, setContestId } from "../../commonFunctions";
+import { useTranslation } from 'react-i18next';
 // import Countdown from 'react-countdown';
 import {
     setIsQuizCompleted,
@@ -33,7 +34,17 @@ import { QuestionType } from "../../utils/questionsEnum";
 
 
 const Questions = () => {
+    const { t, i18n } = useTranslation();
     const dispatch = useAppDispatch();
+    
+    // Get current selected language
+    const currentLanguage = i18n.language;
+    
+    // You can use currentLanguage for:
+    // 1. Conditional rendering based on language
+    // 2. API calls with language parameter
+    // 3. Language-specific formatting
+    console.log('Current language in Questions:', currentLanguage);
     const { type } = useParams();
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -85,7 +96,7 @@ const Questions = () => {
                 if (res.success) {
                     // const isContestPLayed = getIsRapidFirePlayed(type) ? true : false;
                     setTimeout(async () => {
-                        await questionApis.fetchQuestion(contestId, false).then((data) => {
+                        await questionApis.fetchQuestion(contestId, false, currentLanguage).then((data) => {
                             dispatch(setIsQuizCompleted(true));
                             dispatch(setSkippedAnswerCount(data.data.userResult.skipped_answers));
                             dispatch(setCorrectAnswerCount(data.data.userResult.correct_answers));
@@ -222,7 +233,7 @@ const Questions = () => {
 
             console.log("Checking inside if...", (currentQuestionIndex === 0 && isContestPLayed))
 
-            questionApis.fetchQuestion(contestId, isContestPLayed).then((data) => {
+            questionApis.fetchQuestion(contestId, isContestPLayed, currentLanguage).then((data) => {
                 dispatch(setIsQuizCompleted(data.data.questionsCompleted));
                 if (!data.data.questionsCompleted) {
                     dispatch(setQuestion(data.data.data.question.translated_question));
@@ -255,7 +266,7 @@ const Questions = () => {
         else {
             console.log("Checking inside else...", (currentQuestionIndex === 0 && isContestPLayed))
 
-            questionApis.fetchQuestion(contestId, false).then((data) => {
+            questionApis.fetchQuestion(contestId, false, currentLanguage).then((data) => {
                 dispatch(setIsQuizCompleted(data.data.questionsCompleted));
                 if (!data.data.questionsCompleted) {
                     dispatch(setQuestion(data.data.data.question.translated_question));
@@ -294,8 +305,8 @@ const Questions = () => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             if (!isQuizCompleted && !loading) {
                 e.preventDefault();
-                e.returnValue = 'Are you sure you want to leave? Your quiz progress will be lost.';
-                return 'Are you sure you want to leave? Your quiz progress will be lost.';
+                e.returnValue = t('messages.confirmLeave');
+                return t('messages.confirmLeave');
             }
         };
 
@@ -305,7 +316,7 @@ const Questions = () => {
                 // Push the current state back to prevent navigation
                 window.history.pushState(null, '', window.location.pathname);
                 // Optionally show a warning
-                alert('Navigation is disabled during the quiz. Please complete or skip questions to proceed.');
+                alert(t('messages.navigationDisabled'));
             }
         };
 
@@ -424,7 +435,7 @@ const Questions = () => {
                                     color: 'white',
                                     padding: '8px 16px',
                                     fontWeight: 500
-                                }}>Played</span>
+                                }}>{t('game.played')}</span>
                                 <span style={{
                                     backgroundColor: 'white',
                                     color: 'black',
@@ -444,7 +455,7 @@ const Questions = () => {
                                     color: 'white',
                                     padding: '8px 16px',
                                     fontWeight: 500
-                                }}>Score</span>
+                                }}>{t('game.score')}</span>
                                 <span style={{
                                     backgroundColor: 'white',
                                     color: 'black',
@@ -651,7 +662,7 @@ const Questions = () => {
                                 <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '16px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
                                     onClick={() => { handleSkip() }}
                                 >
-                                    Skip
+                                    {t('common.skip')}
                                 </div>
                             </div>
                         </div>

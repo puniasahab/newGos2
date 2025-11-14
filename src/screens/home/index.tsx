@@ -16,11 +16,12 @@ import { QuestionType } from '../../utils/questionsEnum';
 import { setContestsData } from './homeSlice';
 import { getAuthTokenFromLS, setNameAndContestIdInLS } from '../../commonFunctions';
 import { setCurrentQuestionIndex, setIsQuizCompleted, setTotalStonesGained } from '../questions/questionsSlice';
+import { useTranslation } from 'react-i18next';
 
 // Or create the Carousel component at '../../components/carousel.tsx'
 
 const Home = () => {
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [isExpanded, setIsExpanded] = useState(false);
@@ -73,42 +74,42 @@ const Home = () => {
                 </div>
                 {/* {Game Rules Section} */}
                 <div className="px-4 py-6" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', background: 'var(--black-color)' }}>
-                    <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>Game Rules</h1>
+                    <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>{t('game.gameRules')}</h1>
                     <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-16px' }}>
                         <Check size={24} color="var(--primary-color)" />
-                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px',  }}>Answer within the time limit</p>
+                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px',  }}>{t('game.answerWithinTimeLimit')}</p>
                     </div>
                     <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-16px'  }}>
                         <CheckCircle size={24} color="var(--primary-color)" />
-                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px', }}>Each correct answer earns point</p>
+                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px', }}>{t('game.eachCorrectAnswerEarnsPoint')}</p>
                     </div>
                     <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Trophy size={24} color="var(--primary-color)" />
-                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px' }}>Highest scorer wins the jackpot</p>
+                        <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px' }}>{t('game.highestScorerWinsJackpot')}</p>
                     </div>
                 </div>
                 <div style={{ background: 'var(--black-color)' }}>
                     {/* {Live people section} */}
                     <img src={jackpotPng} alt="Live People" style={{ width: '100%' }} />
                     <div style={{ marginBottom: '100px', background: 'var(--background-color)', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-                        <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '32px', color: 'white' }}>About Game of Stones</h1>
+                        <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '32px', color: 'white' }}>{t('game.aboutGameOfStones')}</h1>
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <div style={{ width: '80%', marginBottom: '16px', paddingBottom: '16px' }}>
                                 <p style={{ color: 'white', fontSize: '18px', lineHeight: '1.6', textAlign: 'center', margin: '0' }}>
-                                    Game of stones is a fun and competitive quiz game where players can test their knowledge and win exciting prizes!
+                                    {t('game.gameOfStonesDescription')}
                                     {isExpanded && (
                                         <span>
                                             <br /><br />
-                                            Join thousands of players in this thrilling quiz adventure! Answer questions across various categories including science, history, sports, entertainment, and general knowledge. Each correct answer earns you valuable stones that can lead to amazing rewards.
+                                            {t('game.gameOfStonesExtendedDescription')}
                                             <br /><br />
-                                            Features:
-                                            <br />• Multiple game modes: Jackpot, Fastest Finger, and Rapid Fire
-                                            <br />• Real-time leaderboards and competitions
-                                            <br />• Daily challenges and special events
+                                            {t('game.gameFeatures')}
+                                            <br />• {t('game.multipleGameModes')}
+                                            <br />• {t('game.realTimeLeaderboards')}
+                                            <br />• {t('game.dailyChallenges')}
                                             {/* <br />• Exciting prizes and cash rewards */}
                                             {/* <br />• Social features to compete with friends */}
                                             <br /><br />
-                                            Whether you're a trivia expert or just starting out, Game of Stones offers an engaging experience for all knowledge levels. Challenge yourself, climb the leaderboards, and become the ultimate quiz champion!
+                                            {t('game.gameOfStonesConclusion')}
                                         </span>
                                     )}
                                 </p>
@@ -128,14 +129,14 @@ const Home = () => {
                                     textDecoration: 'underline'
                                 }}
                             >
-                                {isExpanded ? 'Read Less' : 'Read More'}
+                                {isExpanded ? t('game.readLess') : t('game.readMore')}
                             </button>
                         </div>
                         {/* <p style={{background: 'var(--black-color)'}}>Something happened here</p> */}
                     </div>
 
                     <div style={{ marginBottom: '200px', background: 'var(--black-color)' }}>
-                        <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>About Game of Stones</h1>
+                        <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>{t('game.aboutGameOfStones')}</h1>
                     </div>
                 </div>
                 {/* {} */}

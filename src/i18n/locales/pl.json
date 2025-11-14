@@ -1,0 +1,303 @@
+{
+  "common": {
+    "skip": "Pomiń",
+    "next": "Następny",
+    "back": "Wstecz",
+    "submit": "Wyślij",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "success": "Sukces",
+    "ok": "OK",
+    "yes": "Tak",
+    "no": "Nie"
+  },
+  "auth": {
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "mobile": "Numer telefonu komórkowego",
+    "name": "Imię",
+    "fullName": "Pełne imię",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "sendOtp": "Wyślij kod OTP",
+    "verifyOtp": "Zweryfikuj kod OTP",
+    "enterOtp": "Wprowadź kod OTP",
+    "resendOtp": "Wyślij ponownie kod OTP",
+    "invalidEmail": "Proszę wprowadzić prawidłowy adres e-mail",
+    "invalidPhone": "Proszę wprowadzić prawidłowy numer telefonu",
+    "otpSent": "Kod OTP został wysłany pomyślnie",
+    "otpVerified": "Kod OTP został zweryfikowany pomyślnie",
+    "loginSuccess": "Logowanie zakończone sukcesem",
+    "loginFailed": "Logowanie nie powiodło się",
+    "otpSentTo": "Wysłaliśmy kod na",
+    "invalidOtp": "Nieprawidłowy kod OTP",
+    "resendCodeIn": "Wyślij ponownie kod za {{timer}} sekund",
+    "welcomeToGameStones": "Witamy w GameStones",
+    "enterEmailAddress": "Wprowadź swój adres e-mail",
+    "enterMobileNumber": "Wprowadź numer telefonu komórkowego",
+    "otpVerificationEmail": "Wyślemy Ci kod OTP w celu weryfikacji Twojego e-maila",
+    "otpVerificationPhone": "Wyślemy Ci kod OTP w celu weryfikacji Twojego numeru",
+    "continueWithEmail": "Kontynuuj z e-mailem",
+    "continueWithPhone": "Kontynuuj z telefonem",
+    "sendingOtp": "Wysyłanie kodu OTP...",
+    "loggingIn": "Logowanie...",
+    "chooseLoginMethod": "Wybierz preferowaną metodę logowania",
+    "termsAgreement": "Kontynuując, zgadzasz się na nasze",
+    "and": "i",
+    "validMobileNumber": "Proszę wprowadzić prawidłowy 10-cyfrowy numer telefonu komórkowego"
+  },
+  "navigation": {
+    "home": "Strona główna",
+    "profile": "Profil",
+    "settings": "Ustawienia",
+    "leaderboard": "Tabela wyników",
+    "notifications": "Powiadomienia",
+    "language": "Język",
+    "shareApp": "Udostępnij aplikację",
+    "viewProfile": "Zobacz profil",
+    "logout": "Wyloguj się",
+    "myAccount": "Moje konto",
+    "privacyPolicy": "Polityka prywatności",
+    "termsAndConditions": "Regulamin"
+  },
+  "privacy": {
+    "title": "Polityka Prywatności",
+    "introduction": {
+      "title": "Nasza Polityka Prywatności",
+      "content": "Twoja prywatność jest dla nas ważna. Polityką Gry Kamieni jest szanowanie Twojej prywatności w odniesieniu do wszelkich informacji, które możemy zbierać od Ciebie na naszej stronie internetowej, http://gameofstones.com, oraz innych stronach, które posiadamy i prowadzimy."
+    },
+    "section1": {
+      "title": "1. WPROWADZENIE",
+      "content": "Niniejsza Polityka Prywatności wyjaśnia, w jaki sposób Gra Kamieni (\"Platforma\"), prowadzona przez ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Firma\", \"my\", \"nasze\" lub \"nas\"), zbiera, przetwarza, przechowuje i chroni dane użytkowników. Korzystając z naszej Platformy, zgadzasz się na warunki określone w tej polityce."
+    },
+    "section2": {
+      "title": "2. ZBIERANIE DANYCH",
+      "content1": "2.1. Użytkownicy muszą zarejestrować się używając ważnego numeru telefonu komórkowego do uwierzytelnienia i utworzenia konta.",
+      "content2": "2.2. Dodatkowe szczegóły takie jak płeć, wiek i informacje o płatnościach mogą być zbierane w celu personalizacji i zgodności.",
+      "content3": "2.3. Platforma może zbierać dane związane z aktywnością użytkownika, rozgrywką, informacjami o urządzeniu i lokalizacją (jeśli pozwolono) w celu poprawy funkcjonalności usługi.",
+      "content4": "2.4. Wszystkie dane są bezpiecznie przechowywane przy użyciu standardowych w branży protokołów szyfrowania."
+    },
+    "section3": {
+      "title": "3. CEL WYKORZYSTANIA DANYCH",
+      "content1": "3.1. Zebrane dane są wykorzystywane do następujących celów:",
+      "bullet1": "Uczestnictwo w grach i dystrybucja wygranych.",
+      "bullet2": "Zgodność podatkowa, w tym raportowanie i dokumentacja TDS.",
+      "bullet3": "Zapobieganie oszustwom i zapewnienie uczciwej gry.",
+      "bullet4": "Marketing i poprawa doświadczenia użytkownika, w tym spersonalizowane rekomendacje i komunikacja promocyjna (pod warunkiem preferencji opt-in).",
+      "bullet5": "Ulepszenia techniczne i rozwiązywanie problemów w celu poprawy wydajności Platformy."
+    },
+    "section4": {
+      "title": "4. UDOSTĘPNIANIE I OCHRONA DANYCH",
+      "content1": "4.1. Dane użytkowników nie są udostępniane stronom trzecim, z wyjątkiem następujących okoliczności:",
+      "bullet1": "Gdy wymagają tego organy podatkowe lub agencje egzekwowania prawa.",
+      "bullet2": "Do przetwarzania płatności przez bezpieczne bramki stron trzecich.",
+      "bullet3": "W celu przestrzegania zobowiązań prawnych i regulacyjnych.",
+      "content2": "4.2. Wszystkie dane osobowe są przechowywane na bezpiecznych serwerach z szyfrowaniem, aby zapobiec nieautoryzowanemu dostępowi.",
+      "content3": "4.3. Firma wdraża kontrole dostępu i protokoły bezpieczeństwa w celu ochrony informacji użytkowników."
+    },
+    "section5": {
+      "title": "5. PRAWA UŻYTKOWNIKA I DOSTĘP DO DANYCH",
+      "content1": "Aktualizuj lub modyfikuj dane osobowe za pomocą ustawień konta.",
+      "content2": "Rezygnuj z komunikacji marketingowej poprzez preferencje powiadomień.",
+      "content3": "Dostęp do informacji dotyczących przechowywanych danych, z zastrzeżeniem weryfikacji.",
+      "content4": "Żądania modyfikacji lub usunięcia danych mogą potrwać do 30 dni, z zastrzeżeniem wymogów zgodności."
+    },
+    "section6": {
+      "title": "6. PLIKI COOKIE I TECHNOLOGIE ŚLEDZENIA",
+      "content1": "Platforma używa plików cookie i technologii śledzenia w celu:",
+      "bullet1": "Zarządzania sesjami i płynnego doświadczenia gry.",
+      "bullet2": "Analizy użytkowników w celu poprawy usług.",
+      "bullet3": "Wykrywania oszustw i ulepszeń bezpieczeństwa.",
+      "content2": "Użytkownicy mogą wyłączyć pliki cookie w ustawieniach przeglądarki, ale może to wpłynąć na niektóre funkcjonalności Platformy."
+    },
+    "section7": {
+      "title": "7. POLITYKA PRZECHOWYWANIA DANYCH",
+      "content1": "Dane użytkowników są przechowywane tak długo, jak jest to konieczne do realizacji ich celu, w tym wymogów regulacyjnych i prawnych.",
+      "content2": "Rekordy wygranych i związane z podatkami mogą być przechowywane do 7 lat zgodnie z obowiązującymi przepisami podatkowymi.",
+      "content3": "Nieaktywne konta mogą zostać usunięte lub zanonimizowane po okresie 24 miesięcy."
+    },
+    "section8": {
+      "title": "8. AKTUALIZACJE POLITYKI I POWIADOMIENIA",
+      "content1": "Firma zastrzega sobie prawo do aktualizacji, modyfikacji lub zmiany niniejszej Polityki Prywatności według własnego uznania.",
+      "content2": "Użytkownicy będą powiadamiani o istotnych zmianach za pomocą powiadomień w aplikacji i/lub e-mail.",
+      "content3": "Dalsze korzystanie z Platformy po zmianach polityki oznacza akceptację zmienionych warunków."
+    },
+    "section9": {
+      "title": "9. INFORMACJE KONTAKTOWE",
+      "content": "W przypadku wszelkich zapytań lub żądań związanych z prywatnością użytkownicy mogą skontaktować się:",
+      "companyName": "ARSHYA INFO SOLUTIONS PRIVATE LIMITED",
+      "address": "Adres: 032, 4. piętro, EMERALD PLAZA, Sektor 65, Gurugram, Haryana 122018",
+      "email": "E-mail: support@arshiyainfosolutions.com"
+    }
+  },
+  "terms": {
+    "title": "Regulamin",
+    "section1": {
+      "title": "1. WPROWADZENIE",
+      "content": "Witamy w Grze Kamieni (\"Platforma\"), prowadzonej przez ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Firma\", \"my\", \"nasze\" lub \"nas\"). Niniejszy Regulamin (\"Umowa\") reguluje korzystanie z naszych usług i udział w konkursach dostępnych na Platformie. Uzyskując dostęp lub korzystając z Platformy, Ty (\"Użytkownik\", \"ty\" lub \"twoje\") zgadzasz się przestrzegać i być związany niniejszym Regulaminem. Jeśli się nie zgadzasz, proszę powstrzymaj się od korzystania z Platformy."
+    },
+    "section2": {
+      "title": "2. UPRAWNIENIA UŻYTKOWNIKA I REJESTRACJA",
+      "content": "Użytkownicy muszą mieć co najmniej 18 lat, aby uczestniczyć. Rejestrując się, Użytkownik potwierdza spełnienie tego wymogu. Rejestracja wymaga ważnego numeru telefonu komórkowego, który może zostać zweryfikowany przez Firmę. Użytkownicy mogą dobrowolnie podać dodatkowe szczegóły, takie jak płeć i wiek po zalogowaniu. Użytkownik jest odpowiedzialny za zachowanie poufności danych logowania do konta i wszelkich działań prowadzonych pod kontem."
+    },
+    "section3": {
+      "title": "3. ODPOWIEDZIALNE GRANIE I UCZCIWA GRA",
+      "content": "Platforma promuje odpowiedzialne granie i zachęca do zrównoważonego podejścia do gier online, jednocześnie zniechęcając do uzależnienia. Użytkownikom nie wolno tworzyć ani prowadzić wielu kont. Firma zastrzega sobie prawo do zawieszenia, ograniczenia lub zakończenia kont zaangażowanych w oszukańcze, manipulacyjne lub nieuczciwe praktyki, w tym między innymi używanie automatycznych skryptów, botów lub narzędzi stron trzecich, zmowę z innymi użytkownikami oraz fałszywe przedstawianie się lub oszustwo tożsamości. Firma może przeprowadzać audyty lub dochodzenia w przypadku podejrzanych naruszeń."
+    },
+    "section4": {
+      "title": "4. ODPOWIEDZIALNOŚĆ I ZASTRZEŻENIA",
+      "content": "Platforma jest świadczona na zasadzie \"jak jest\" i \"jak dostępna\", a Firma nie udziela żadnych gwarancji, wyrażonych ani dorozumianych, dotyczących nieprzerwnego dostępu, bezawaryjnej wydajności lub gwarancji wygranych. Firma nie ponosi odpowiedzialności za awarie techniczne, takie jak przestoje serwerów, problemy z łącznością lub usterki oprogramowania, nieautoryzowany dostęp wynikający z zaniedbania użytkownika lub zakłócenia stron trzecich wpływające na udział w konkursie lub transakcje. Użytkownicy uczestniczą na własne ryzyko, a Firma zrzeka się wszelkiej odpowiedzialności za straty finansowe poniesione podczas gry."
+    },
+    "section5": {
+      "title": "5. PRAWO WŁAŚCIWE I ROZWIĄZYWANIE SPORÓW",
+      "content": "Niniejsza Umowa podlega i jest interpretowana zgodnie z prawem Indii. Wszelkie spory wynikające z lub związane z niniejszym Regulaminem będą rozwiązywane poprzez wiążący arbitraż w Gurugram, Haryana, zgodnie z ustawą o arbitrażu i pojednaniu z 1996 roku. Decyzja arbitra będzie ostateczna i wiążąca dla obu stron. Użytkownicy zrzekają się prawa do uczestnictwa w jakimkolwiek pozwie zbiorowym przeciwko Firmie."
+    },
+    "section6": {
+      "title": "6. ZMIANY I MODYFIKACJE",
+      "content": "Firma zastrzega sobie prawo do aktualizacji, modyfikacji lub zmiany niniejszego Regulaminu według własnego uznania. Wszelkie zmiany będą komunikowane przez Platformę, a dalsze korzystanie z usług oznacza akceptację zmienionych warunków. Użytkownicy są zachęcani do regularnego przeglądania niniejszego Regulaminu, aby być na bieżąco."
+    },
+    "section7": {
+      "title": "7. INFORMACJE KONTAKTOWE",
+      "content": "W przypadku wszelkich zapytań, skarg lub próśb o wsparcie użytkownicy mogą skontaktować się z nami pod adresem:",
+      "companyName": "ARSHYA INFO SOLUTIONS PRIVATE LIMITED",
+      "address": "Adres: 031, 4. piętro, EMERALD PLAZA, Sektor 65, Gurugram, Haryana 122018",
+      "email": "E-mail: support@arshiyainfosolutions.com"
+    }
+  },
+  "game": {
+    "played": "Rozegrane",
+    "score": "Wynik",
+    "question": "Pytanie",
+    "answer": "Odpowiedź",
+    "correct": "Poprawne",
+    "wrong": "Błędne",
+    "skipped": "Pominięte",
+    "timeLeft": "Pozostały czas",
+    "secondsLeft": "sekund pozostało",
+    "complete": "Ukończone",
+    "completed": "Ukończone",
+    "start": "Start",
+    "playAgain": "Zagraj ponownie",
+    "gameRules": "Zasady gry",
+    "contest": "Konkurs",
+    "contests": "Konkursy",
+    "rapidFire": "Szybki ogień",
+    "jackpot": "Jackpot",
+    "fastestFinger": "Najszybszy palec",
+    "totalQuestions": "Łączna liczba pytań",
+    "currentQuestion": "Bieżące pytanie",
+    "questionMedia": "Media pytania",
+    "nextRound": "Następna runda",
+    "gameStones": "Kamienie Gry",
+    "answerWithinTimeLimit": "Odpowiedz w wyznaczonym czasie",
+    "eachCorrectAnswerEarnsPoint": "Każda poprawna odpowiedź daje punkt",
+    "highestScorerWinsJackpot": "Najwyższy wynik wygrywa jackpot",
+    "aboutGameOfStones": "O Grze Kamieni",
+    "gameOfStonesDescription": "Gra kamieni to zabawna i konkurencyjna gra quiz, w której gracze mogą przetestować swoją wiedzę i wygrać ekscytujące nagrody!",
+    "gameOfStonesExtendedDescription": "Dołącz do tysięcy graczy w tej emocjonującej przygodzie quizowej! Odpowiadaj na pytania z różnych kategorii, w tym nauki, historii, sportu, rozrywki i wiedzy ogólnej. Każda poprawna odpowiedź daje ci cenne kamienie, które mogą prowadzić do niesamowitych nagród.",
+    "gameFeatures": "Funkcje:",
+    "multipleGameModes": "Wiele trybów gry: Jackpot, Najszybszy Palec i Szybki Ogień",
+    "realTimeLeaderboards": "Tabele wyników w czasie rzeczywistym i konkursy",
+    "dailyChallenges": "Dzienne wyzwania i specjalne wydarzenia",
+    "gameOfStonesConclusion": "Niezależnie od tego, czy jesteś ekspertem od quizów, czy dopiero zaczynasz, Gra Kamieni oferuje angażujące doświadczenie dla wszystkich poziomów wiedzy. Rzuć sobie wyzwanie, wspinaj się po tabelach wyników i zostań ostatecznym mistrzem quizu!",
+    "readMore": "Czytaj więcej",
+    "readLess": "Czytaj mniej"
+  },
+  "results": {
+    "result": "Wynik",
+    "results": "Wyniki",
+    "totalScore": "Łączny wynik",
+    "correctAnswers": "Poprawne odpowiedzi",
+    "wrongAnswers": "Błędne odpowiedzi",
+    "skippedAnswers": "Pominięte odpowiedzi",
+    "percentage": "Procent",
+    "correctPercentage": "Procent poprawnych",
+    "wrongPercentage": "Procent błędnych",
+    "skippedPercentage": "Procent pominiętych",
+    "stones": "Kamienie",
+    "points": "Punkty",
+    "totalStones": "Łączna liczba kamieni",
+    "nextRoundTime": "Czas następnej rundy",
+    "congratulations": "Gratulacje!",
+    "wellDone": "Świetnie!",
+    "betterLuckNextTime": "Więcej szczęścia następnym razem!"
+  },
+  "profile": {
+    "editProfile": "Edytuj profil",
+    "personalInfo": "Informacje osobiste",
+    "contactInfo": "Informacje kontaktowe",
+    "gameStats": "Statystyki gry",
+    "achievements": "Osiągnięcia",
+    "updateProfile": "Zaktualizuj profil",
+    "profileUpdated": "Profil został zaktualizowany pomyślnie",
+    "avatar": "Awatar",
+    "changeAvatar": "Zmień awatar",
+    "selectAvatar": "Wybierz awatar",
+    "verify": "Zweryfikuj",
+    "verified": "Zweryfikowane",
+    "unverified": "Niezweryfikowane",
+    "newUser": "Nowy użytkownik",
+    "phoneNumberNA": "Numer telefonu niedostępny",
+    "myProfile": "Mój profil",
+    "notAvailable": "Niedostępne",
+    "gainedStones": "Zdobyte kamienie",
+    "totalPlayed": "Łącznie rozegranych",
+    "referralCount": "Liczba polecających",
+    "dailyGameStones": "Dzienne kamienie gry",
+    "somethingWentWrong": "Coś poszło nie tak",
+    "tryAgainLater": "Spróbuj ponownie później",
+    "goHome": "Idź do strony głównej"
+  },
+  "leaderboard": {
+    "rank": "Pozycja",
+    "player": "Gracz",
+    "position": "Pozycja",
+    "today": "Dziś",
+    "weekly": "Tygodniowo",
+    "monthly": "Miesięcznie",
+    "allTime": "Wszystkie czasy",
+    "topPlayers": "Najlepsi gracze",
+    "yourRank": "Twoja pozycja",
+    "noData": "Brak dostępnych danych",
+    "daily": "Dziennie",
+    "you": "Ty",
+    "yourPosition": "Twoja pozycja",
+    "noLeaderboardData": "Brak danych tabeli wyników dla"
+  },
+  "messages": {
+    "welcomeBack": "Witaj z powrotem!",
+    "letsPlay": "Zagrajmy!",
+    "goodLuck": "Powodzenia!",
+    "timeUp": "Czas minął!",
+    "correctAnswer": "Poprawna odpowiedź!",
+    "wrongAnswer": "Błędna odpowiedź!",
+    "questionsCompleted": "Pytania ukończone!",
+    "gameCompleted": "Gra ukończona!",
+    "navigationDisabled": "Nawigacja jest wyłączona podczas quizu. Proszę ukończyć lub pominąć pytania, aby kontynuować.",
+    "confirmLeave": "Czy na pewno chcesz opuścić? Postęp w quizie zostanie utracony.",
+    "connectionError": "Błąd połączenia. Proszę sprawdzić połączenie internetowe.",
+    "tryAgain": "Proszę spróbować ponownie"
+  },
+  "timer": {
+    "duration": "Czas trwania",
+    "remaining": "Pozostały",
+    "expired": "Czas wygasł",
+    "minutes": "minuty",
+    "seconds": "sekundy",
+    "hour": "godzina",
+    "hours": "godziny"
+  },
+  "errors": {
+    "somethingWentWrong": "Coś poszło nie tak",
+    "networkError": "Błąd sieci",
+    "serverError": "Błąd serwera",
+    "invalidInput": "Nieprawidłowe dane wejściowe",
+    "requiredField": "To pole jest wymagane",
+    "minLength": "Wymagana minimalna długość",
+    "maxLength": "Przekroczono maksymalną długość"
+  }
+}

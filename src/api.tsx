@@ -125,9 +125,9 @@ export const contests = {
 
 export const questionApis = {
     // fetching question for a particular contest 
-    fetchQuestion: async (contest_id: number, isContestPlayed: boolean): Promise<any> => {
+    fetchQuestion: async (contest_id: number, isContestPlayed: boolean, lang: string): Promise<any> => {
         try {
-            const response = await api.post(endPoints.getQuestion, { contest_id, lang: 'en', play_again: isContestPlayed});
+            const response = await api.post(endPoints.getQuestion, { contest_id, lang: lang, play_again: isContestPlayed});
             // const response = await api.get(`${endPoints.questions}/${contestId}/${questionId}`);
             return response.data;
         } catch (error) {

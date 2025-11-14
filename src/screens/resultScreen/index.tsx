@@ -7,6 +7,7 @@ import { useParams} from 'react-router-dom'
 import { setIsRapidFirePlayed, setIsJackpotPlayed, setIsQuickFingerPlayed } from '../../commonFunctions';
 import { QuestionType } from '../../utils/questionsEnum';
 import { useAppDispatch } from '../../hooks/redux';
+import { useTranslation } from 'react-i18next';
 // @ts-ignore
 import { setCurrentQuestionIndex, setTotalStonesGained } from '../questions/questionsSlice';
 
@@ -30,6 +31,7 @@ interface ResultScreenProps {
 const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     const {type} = useParams();
     console.log("type from result screen:", type, isPlayed);
@@ -217,7 +219,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     fontWeight: '700',
                     margin: '0 0 8px 0'
                 }}>
-                    Congratulations!
+                    {t('results.congratulations')}
                 </h2>
                 <p style={{
                     color: '#ccc',
@@ -225,7 +227,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     margin: 0,
                     lineHeight: '1.4'
                 }}>
-                    You've completed this round<br />for today!
+                    {t('results.completedRoundForToday')}
                 </p>
             </div>
 
@@ -240,7 +242,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     fontWeight: '600',
                     margin: 0
                 }}>
-                    Game Summary
+                    {t('results.gameSummary')}
                 </h3>
             </div>
 
@@ -265,7 +267,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         margin: '0 0 8px 0',
                         fontWeight: '600'
                     }}>
-                        Current Score
+                        {t('results.currentScore')}
                     </p>
                     <p style={{
                         color: 'white',
@@ -291,7 +293,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         margin: '0 0 8px 0',
                         fontWeight: '600'
                     }}>
-                        Correct
+                        {t('results.correct')}
                     </p>
                     <p style={{
                         color: 'white',
@@ -331,7 +333,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         margin: '0 0 8px 0',
                         fontWeight: '600'
                     }}>
-                        Wrong
+                        {t('results.wrong')}
                     </p>
                     <p style={{
                         color: 'white',
@@ -371,7 +373,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         margin: '0 0 8px 0',
                         fontWeight: '600'
                     }}>
-                        Skipped
+                        {t('results.skipped')}
                     </p>
                     <p style={{
                         color: 'white',
@@ -416,7 +418,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         padding: '10px'
                     }}
                 >
-                    View Leaderboard
+                    {t('results.viewLeaderboard')}
                 </button>
             </div>
 
@@ -441,7 +443,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                         boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)'
                     }}
                 >
-                    HOME PAGE
+                    {t('results.homePage')}
                 </button>
             </div>
         </div>
