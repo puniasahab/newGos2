@@ -286,7 +286,6 @@ const Questions = () => {
                 setLoading(false);
             });
         }
-
     }, [skipButtonClicked])
 
     // Prevent browser refresh and back navigation during quiz
