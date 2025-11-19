@@ -38,8 +38,8 @@ const LanguageSelector: React.FC = () => {
           e.currentTarget.style.backgroundColor = 'transparent';
         }}
       >
-        <Globe size={20} style={{ marginRight: '8px' }} />
-        <span>{currentLanguage.toUpperCase()}</span>
+        <Globe size={24} style={{ marginRight: '8px' }} />
+        <span style={{marginTop: '4px'}}>{currentLanguage.toUpperCase()}</span>
       </button>
 
       {/* Dropdown Menu */}

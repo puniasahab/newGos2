@@ -58,7 +58,7 @@ const Home = () => {
                     <Carousel />
                 </div>
                 {/* {Contests Section } */}
-                <div style={{ paddingLeft: '16px', paddingRight: '16px', marginTop: '16px', background: 'var(--black-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <div style={{  marginTop: '16px', background: 'var(--black-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                     <img src={jackpot} alt="Jackpot Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
                         if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.JACKPOT}`) } else navigate("/login")
                     }} />
