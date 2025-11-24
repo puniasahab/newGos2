@@ -3,11 +3,12 @@ import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 import Header from '../../components/header';
-import { useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { setIsRapidFirePlayed, setIsJackpotPlayed, setIsQuickFingerPlayed } from '../../commonFunctions';
 import { QuestionType } from '../../utils/questionsEnum';
 import { useAppDispatch } from '../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import trophyImage from '../../assets/trophy.png';
 // @ts-ignore
 import { setCurrentQuestionIndex, setTotalStonesGained } from '../questions/questionsSlice';
 
@@ -25,7 +26,7 @@ interface GameData {
 
 interface ResultScreenProps {
     gameData?: GameData;
-    isPlayed?:boolean;
+    isPlayed?: boolean;
 }
 
 const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) => {
@@ -33,19 +34,19 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
 
-    const {type} = useParams();
+    const { type } = useParams();
     console.log("type from result screen:", type, isPlayed);
 
 
-    
-    
+
+
     // Get data from Redux state
-    const { 
-        skippedAnswerCount, 
-        correctAnswerCount, 
-        wrongAnswerCount, 
+    const {
+        skippedAnswerCount,
+        correctAnswerCount,
+        wrongAnswerCount,
         totalQuestions,
-        score 
+        score
     } = useAppSelector((state) => state.questions);
 
     // Use prop data if provided, otherwise use Redux state data
@@ -62,11 +63,11 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
     };
 
     const handlePlayNow = () => {
-        if(type === QuestionType.JACKPOT) {
+        if (type === QuestionType.JACKPOT) {
             setIsJackpotPlayed(type, isPlayed);
-        } else if(type === QuestionType.FASTEST_FINGER) {
+        } else if (type === QuestionType.FASTEST_FINGER) {
             setIsQuickFingerPlayed(type, isPlayed);
-        } else if(type === QuestionType.RAPID_FIRE) {
+        } else if (type === QuestionType.RAPID_FIRE) {
             setIsRapidFirePlayed(type, isPlayed);
         }
         // dispatch(setCurrentQuestionIndex(0));
@@ -75,11 +76,11 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
     };
 
     const handleViewLeaderboard = () => {
-        if(type === QuestionType.JACKPOT) {
+        if (type === QuestionType.JACKPOT) {
             setIsJackpotPlayed(type, isPlayed);
-        } else if(type === QuestionType.FASTEST_FINGER) {
+        } else if (type === QuestionType.FASTEST_FINGER) {
             setIsQuickFingerPlayed(type, isPlayed);
-        } else if(type === QuestionType.RAPID_FIRE) {
+        } else if (type === QuestionType.RAPID_FIRE) {
             setIsRapidFirePlayed(type, isPlayed);
         }
         // dispatch(setCurrentQuestionIndex(1));
@@ -88,11 +89,11 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
     };
 
     useEffect(() => {
-        if(type === QuestionType.JACKPOT) {
+        if (type === QuestionType.JACKPOT) {
             setIsJackpotPlayed(type, isPlayed);
-        } else if(type === QuestionType.FASTEST_FINGER) {
+        } else if (type === QuestionType.FASTEST_FINGER) {
             setIsQuickFingerPlayed(type, isPlayed);
-        } else if(type === QuestionType.RAPID_FIRE) {
+        } else if (type === QuestionType.RAPID_FIRE) {
             setIsRapidFirePlayed(type, isPlayed);
         }
     }, [])
@@ -101,9 +102,11 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
 
 
 
+
+
     return (
-        <div style={{ 
-            backgroundColor: 'black', 
+        <div style={{
+            backgroundColor: 'black',
             minHeight: '100vh',
             color: 'white',
             position: 'relative'
@@ -175,36 +178,38 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                     justifyContent: 'center'
                 }}>
                     {/* Confetti/Sparkles around trophy */}
-                    <div style={{
+                    {/* <div style={{
                         position: 'absolute',
                         width: '200px',
                         height: '200px',
                         background: 'radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%)',
                         borderRadius: '50%'
 
-                    }}></div>
-                    
+                    }}></div> */}
+
                     {/* Trophy Icon */}
                     <div style={{
-                        backgroundColor: 'rgba(255, 215, 0, 0.2)',
-                        borderRadius: '50%',
+                        // backgroundColor: 'rgba(255, 215, 0, 0.2)',
+                        // borderRadius: '50%',
                         width: '120px',
-                        height: '120px',
+                        height: '100px',
                         display: 'flex',
                         alignItems: 'center',
+                        padding: '1px',
 
                         justifyContent: 'center',
                         position: 'relative',
                         zIndex: 2
                     }}>
-                        <Trophy size={60} color="#FFD700" fill="#FFD700" />
+                        <img src={trophyImage} alt="Trophy" style={{ width: '100%', height: '100%' }} />
+                        {/* <Trophy size={60} color="#FFD700" fill="#FFD700" /> */}
                     </div>
 
                     {/* Animated sparkles */}
-                    <div style={{ position: 'absolute', top: '20px', left: '20px', color: '#FFD700', fontSize: '20px' }}>✨</div>
+                    {/* <div style={{ position: 'absolute', top: '20px', left: '20px', color: '#FFD700', fontSize: '20px' }}>✨</div>
                     <div style={{ position: 'absolute', top: '30px', right: '30px', color: '#FFD700', fontSize: '16px' }}>⭐</div>
                     <div style={{ position: 'absolute', bottom: '20px', left: '30px', color: '#FFD700', fontSize: '18px' }}>✨</div>
-                    <div style={{ position: 'absolute', bottom: '30px', right: '20px', color: '#FFD700', fontSize: '14px' }}>⭐</div>
+                    <div style={{ position: 'absolute', bottom: '30px', right: '20px', color: '#FFD700', fontSize: '14px' }}>⭐</div> */}
                 </div>
             </div>
 
@@ -215,7 +220,7 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
             }}>
                 <h2 style={{
                     color: 'var(--primary-color)',
-                    fontSize: '20px',
+                    fontSize: '24px',
                     fontWeight: '700',
                     margin: '0 0 8px 0'
                 }}>
@@ -258,21 +263,23 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                 <div style={{
                     backgroundColor: 'var(--primary-color)',
                     borderRadius: '12px',
-                    padding: '20px',
+                    padding: '4px 20px 4px 20px',
                     textAlign: 'center'
                 }}>
                     <p style={{
                         color: 'white',
-                        fontSize: '14px',
+                        fontSize: '18px',
                         margin: '0 0 8px 0',
-                        fontWeight: '600'
+                        // fontWeight: '600',
+                        textAlign: 'start'
                     }}>
                         {t('results.currentScore')}
                     </p>
                     <p style={{
                         color: 'white',
                         fontSize: '32px',
-                        fontWeight: '700',
+                        fontWeight: '400',
+                        textAlign: 'start',
                         margin: 0
                     }}>
                         {gameData.currentScore}
@@ -283,22 +290,24 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                 <div style={{
                     backgroundColor: 'var(--primary-color)',
                     borderRadius: '12px',
-                    padding: '20px',
-                    textAlign: 'center',
+                    padding: '4px 20px 4px 20px',
+                    textAlign: 'start',
+
                     position: 'relative'
                 }}>
                     <p style={{
                         color: 'white',
-                        fontSize: '14px',
+                        fontSize: '18px',
                         margin: '0 0 8px 0',
-                        fontWeight: '600'
+                        // fontWeight: '600'
                     }}>
                         {t('results.correct')}
                     </p>
                     <p style={{
                         color: 'white',
                         fontSize: '32px',
-                        fontWeight: '700',
+                        textAlign: 'start',
+                        fontWeight: '400',
                         margin: 0
                     }}>
                         {gameData.correctPercentage}%
@@ -323,22 +332,24 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                 <div style={{
                     backgroundColor: 'var(--primary-color)',
                     borderRadius: '12px',
-                    padding: '20px',
+                    padding: '4px 20px 4px 20px',
                     textAlign: 'center',
                     position: 'relative'
                 }}>
                     <p style={{
                         color: 'white',
-                        fontSize: '14px',
+                        fontSize: '18px',
+                        textAlign: 'start',
                         margin: '0 0 8px 0',
-                        fontWeight: '600'
+                        // fontWeight: '600'
                     }}>
                         {t('results.wrong')}
                     </p>
                     <p style={{
                         color: 'white',
                         fontSize: '32px',
-                        fontWeight: '700',
+                        textAlign: 'start',
+                        fontWeight: '400',
                         margin: 0
                     }}>
                         {gameData.wrongPercentage}%
@@ -363,22 +374,24 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
                 <div style={{
                     backgroundColor: 'var(--primary-color)',
                     borderRadius: '12px',
-                    padding: '20px',
-                    textAlign: 'center',
+                    padding: '4px 20px 4px 20px',
+                    textAlign: 'start',
                     position: 'relative'
                 }}>
                     <p style={{
                         color: 'white',
-                        fontSize: '14px',
+                        fontSize: '18px',
+                        // textAlign: 'start',
                         margin: '0 0 8px 0',
-                        fontWeight: '600'
+                        // fontWeight: '600'
                     }}>
                         {t('results.skipped')}
                     </p>
                     <p style={{
                         color: 'white',
                         fontSize: '32px',
-                        fontWeight: '700',
+                        textAlign: 'start',
+                        fontWeight: '400',
                         margin: 0
                     }}>
                         {gameData.skippedPercentage}%
@@ -424,20 +437,26 @@ const ResultScreen = ({ gameData: propGameData, isPlayed }: ResultScreenProps) =
 
             {/* Play Now Button */}
             <div style={{
-                padding: '0 20px 40px 20px'
+                padding: '0 20px 40px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
             }}>
                 <button
                     onClick={handlePlayNow}
                     style={{
-                        width: '100%',
+                        width: '70%',
                         padding: '18px',
                         marginTop: '-16px',
                         backgroundColor: 'white',
+                        borderRadius: '0 20px 0 20px',
                         color: 'var(--primary-color)',
                         border: 'none',
-                        borderRadius: '12px',
+                        // borderRadius: '12px',
                         fontSize: '18px',
+
                         fontWeight: '700',
+                        // fontWeight: '400',
                         cursor: 'pointer',
                         transition: 'all 0.3s ease',
                         boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)'

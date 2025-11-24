@@ -659,7 +659,7 @@ const Questions = () => {
                         {/* {Skip Button} */}
                         <div style={{ backgroundColor: 'black' }}>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px', backgroundColor: 'black' }}>
-                                <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '16px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 120px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
+                                <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '16px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 180px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
                                     onClick={() => { handleSkip() }}
                                 >
                                     {t('common.skip')}

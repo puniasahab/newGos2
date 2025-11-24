@@ -43,7 +43,13 @@ const Footer = () => {
                 {/* Game Controller Center Icon */}
                 <div className="nav-item center-item" onClick={handleGameClick}>
                     <div className="center-circle">
-                        <Gamepad2 size={24} color="white" stroke = "white" fill="none"/>
+                        <Gamepad2 
+                            size={24} 
+                            color="white" 
+                            stroke="white" 
+                            fill="none" 
+                            style={{ color: 'white', stroke: 'white' }} 
+                        />
                     </div>
                 </div>
 

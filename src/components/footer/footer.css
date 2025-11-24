@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     background-color: #1a1a1a;
-    padding: 16px 0;
+    padding: 16px 0 4px 0;
     z-index: 1000;
 }
 
@@ -14,7 +14,7 @@
     align-items: center;
     max-width: 400px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 20px;
     position: relative;
 }
 
@@ -71,8 +71,23 @@
     stroke: #ccc;
 }
 
+.center-circle svg {
+    stroke: white !important;
+    color: white !important;
+    margin-top: 20px;
+}
+
+.center-circle svg path {
+    stroke: white !important;
+    fill: none !important;
+}
+
 .center-item:hover .center-circle {
     border-color: #ccc;
+}
+
+.center-item:hover .center-circle svg {
+    stroke: #ccc !important;
 }
 
 .progress-line-left {
