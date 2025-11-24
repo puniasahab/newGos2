@@ -1,4 +1,4 @@
-import { Trophy, Check, X, Hand } from 'lucide-react';
+import {  Check, X, Hand } from 'lucide-react';
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
