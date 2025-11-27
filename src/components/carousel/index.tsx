@@ -5,7 +5,7 @@ import 'swiper/css';
 // @ts-ignore
 import 'swiper/css/pagination';
 import { Pagination, Autoplay } from 'swiper/modules';
-import bannerContent from "../../assets/bannerContent.png"
+// import bannerContent from "../../assets/bannerContent.png"
 import { Link } from 'react-router-dom';
 import  { useTranslation } from 'react-i18next';
 import inviteEnglish from "../../assets/inviteEnglish.jpg";

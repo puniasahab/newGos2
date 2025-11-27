@@ -16,6 +16,9 @@ import rapidArabic from "../../assets/rapidFireArabic.jpg";
 import jackpotPolish from "../../assets/jackpotPolish.jpg";
 import fastestPolish from "../../assets/fatestFingerPolish.jpg";
 import rapidPolish from "../../assets/rapidFirePolish.jpg";
+import liveEnglish from "../../assets/liveEnglish.jpg";
+import liveArabic from "../../assets/liveArabic.jpg";
+import livePolish from "../../assets/livePolish.jpg";
 import { contests } from '../../api';
 import { Check, CheckCircle, Trophy } from 'lucide-react';
 import { QuestionType } from '../../utils/questionsEnum';
@@ -23,6 +26,7 @@ import { setContestsData } from './homeSlice';
 import { getAuthTokenFromLS, setNameAndContestIdInLS } from '../../commonFunctions';
 import { setCurrentQuestionIndex, setIsQuizCompleted, setTotalStonesGained } from '../questions/questionsSlice';
 import { useTranslation } from 'react-i18next';
+import { current } from '@reduxjs/toolkit';
 
 // Or create the Carousel component at '../../components/carousel.tsx'
 
@@ -65,26 +69,30 @@ const Home = () => {
                 return {
                     jackpot: jackpotEnglish,
                     fastest: fastestEnglish,
-                    rapid: rapidEnglish
+                    rapid: rapidEnglish,
+                    liveImage: liveEnglish,
                 };
             case 'ar':
                 return {
                     jackpot: jackpotArabic,
                     fastest: fastestArabic,
-                    rapid: rapidArabic
+                    rapid: rapidArabic,
+                    liveImage: liveArabic,
                 };
             case 'pl':
                 return {
                     jackpot: jackpotPolish,
                     fastest: fastestPolish,
-                    rapid: rapidPolish
+                    rapid: rapidPolish,
+                    liveImage: livePolish,
                 };
             // Add more cases for other languages as needed
             default:
                 return {
                     jackpot: jackpotEnglish,
                     fastest: fastestEnglish,
-                    rapid: rapidEnglish
+                    rapid: rapidEnglish,
+                    liveImage: liveEnglish,
                 };
         }
     };
@@ -114,11 +122,11 @@ const Home = () => {
                 {/* {Game Rules Section} */}
                 <div className="px-4 py-6" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', background: 'var(--black-color)' }}>
                     <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '28px', color: 'white' }}>{t('game.gameRules')}</h1>
-                    <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-16px' }}>
+                    <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-24px' }}>
                         <Check size={24} color="var(--primary-color)" />
                         <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px',  }}>{t('game.answerWithinTimeLimit')}</p>
                     </div>
-                    <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-16px'  }}>
+                    <div className="flex flex-row items-center text-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '-24px'  }}>
                         <CheckCircle size={24} color="var(--primary-color)" />
                         <p className="text-gray-700" style={{ fontSize: '18px', color: 'white', marginLeft: '8px', }}>{t('game.eachCorrectAnswerEarnsPoint')}</p>
                     </div>
@@ -129,7 +137,7 @@ const Home = () => {
                 </div>
                 <div style={{ background: 'var(--black-color)' }}>
                     {/* {Live people section} */}
-                    <img src={jackpotPng} alt="Live People" style={{ width: '100%' }} />
+                    <img src={getBannerBasedOnLanguage(currentLanguage).liveImage} alt="Live People" style={{ width: '100%' }} />
                     <div style={{ marginBottom: '100px', background: 'var(--background-color)', justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
                         <h1 className="text-2xl font-bold text-center mb-1" style={{ fontSize: '32px', color: 'white' }}>{t('game.aboutGameOfStones')}</h1>
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
