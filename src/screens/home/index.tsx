@@ -9,7 +9,7 @@ import Carousel from "../../components/carousel";
 import jackpotEnglish from "../../assets/jackpotEnglish.jpg";
 import fastestEnglish from "../../assets/fatestFingerEnglish.jpg";
 import rapidEnglish from "../../assets/rapidFireEnglish.jpg";
-import jackpotPng from "../../assets/jackpotPng.png";
+// import jackpotPng from "../../assets/jackpotPng.png";
 import jackpotArabic from "../../assets/jackpotArabic.jpg";
 import fastestArabic from "../../assets/fatestFingerArabic.jpg";
 import rapidArabic from "../../assets/rapidFireArabic.jpg";
@@ -26,7 +26,7 @@ import { setContestsData } from './homeSlice';
 import { getAuthTokenFromLS, setNameAndContestIdInLS } from '../../commonFunctions';
 import { setCurrentQuestionIndex, setIsQuizCompleted, setTotalStonesGained } from '../questions/questionsSlice';
 import { useTranslation } from 'react-i18next';
-import { current } from '@reduxjs/toolkit';
+// import { current } from '@reduxjs/toolkit';
 
 // Or create the Carousel component at '../../components/carousel.tsx'
 
