@@ -6,10 +6,16 @@ import { useAppDispatch } from '../../hooks/redux';
 // import Carousel from '../../components/carousel';
 // Update the import path below if Carousel is located elsewhere, for example:
 import Carousel from "../../components/carousel";
-import jackpot from "../../assets/jackpot.png";
-import fastest from "../../assets/fastest.png";
-import rapid from "../../assets/rapid.png";
+import jackpotEnglish from "../../assets/jackpotEnglish.jpg";
+import fastestEnglish from "../../assets/fatestFingerEnglish.jpg";
+import rapidEnglish from "../../assets/rapidFireEnglish.jpg";
 import jackpotPng from "../../assets/jackpotPng.png";
+import jackpotArabic from "../../assets/jackpotArabic.jpg";
+import fastestArabic from "../../assets/fatestFingerArabic.jpg";
+import rapidArabic from "../../assets/rapidFireArabic.jpg";
+import jackpotPolish from "../../assets/jackpotPolish.jpg";
+import fastestPolish from "../../assets/fatestFingerPolish.jpg";
+import rapidPolish from "../../assets/rapidFirePolish.jpg";
 import { contests } from '../../api';
 import { Check, CheckCircle, Trophy } from 'lucide-react';
 import { QuestionType } from '../../utils/questionsEnum';
@@ -21,10 +27,13 @@ import { useTranslation } from 'react-i18next';
 // Or create the Carousel component at '../../components/carousel.tsx'
 
 const Home = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [isExpanded, setIsExpanded] = useState(false);
+
+    // Get current language code
+    const currentLanguage = i18n.language;
 
     const toggleReadMore = () => {
         setIsExpanded(!isExpanded);
@@ -48,7 +57,37 @@ const Home = () => {
         dispatch(setCurrentQuestionIndex(0));
         dispatch(setTotalStonesGained(0));
         dispatch(setIsQuizCompleted(false));
-    }, [])
+    }, []);
+
+    const getBannerBasedOnLanguage = (languageCode: string) => {
+        switch (languageCode) {
+            case 'en':
+                return {
+                    jackpot: jackpotEnglish,
+                    fastest: fastestEnglish,
+                    rapid: rapidEnglish
+                };
+            case 'ar':
+                return {
+                    jackpot: jackpotArabic,
+                    fastest: fastestArabic,
+                    rapid: rapidArabic
+                };
+            case 'pl':
+                return {
+                    jackpot: jackpotPolish,
+                    fastest: fastestPolish,
+                    rapid: rapidPolish
+                };
+            // Add more cases for other languages as needed
+            default:
+                return {
+                    jackpot: jackpotEnglish,
+                    fastest: fastestEnglish,
+                    rapid: rapidEnglish
+                };
+        }
+    };
     return (
         <div className="min-h-screen background-white bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex justify-center" style={{ maxHeight: '100vh', backgroundColor: 'var(--background-color)', }}>
             <div className="w-full max-w-md bg-white min-h-screen" style={{ backgroundColor: 'var(--background-color)' }}>
@@ -59,13 +98,13 @@ const Home = () => {
                 </div>
                 {/* {Contests Section } */}
                 <div style={{  marginTop: '16px', background: 'var(--black-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    <img src={jackpot} alt="Jackpot Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
+                    <img src={getBannerBasedOnLanguage(currentLanguage).jackpot} alt="Jackpot Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
                         if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.JACKPOT}`) } else navigate("/login")
                     }} />
-                    <img src={fastest} alt="Fastest Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
+                    <img src={getBannerBasedOnLanguage(currentLanguage).fastest} alt="Fastest Contest" style={{ width: '100%', marginBottom: '10px' }} onClick={() => {
                         if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.FASTEST_FINGER}`) } else navigate("/login")
                     }} />
-                    <img src={rapid} alt="Rapid Contest" style={{ width: '100%' }} onClick={() => {
+                    <img src={getBannerBasedOnLanguage(currentLanguage).rapid} alt="Rapid Contest" style={{ width: '100%' }} onClick={() => {
                         if (getAuthTokenFromLS()) { navigate(`/questions/${QuestionType.RAPID_FIRE}`) } else navigate("/login")
                     }} />
 

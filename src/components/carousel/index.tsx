@@ -7,6 +7,10 @@ import 'swiper/css/pagination';
 import { Pagination, Autoplay } from 'swiper/modules';
 import bannerContent from "../../assets/bannerContent.png"
 import { Link } from 'react-router-dom';
+import  { useTranslation } from 'react-i18next';
+import inviteEnglish from "../../assets/inviteEnglish.jpg";
+import inviteArabic from "../../assets/inviteArabic.jpg";
+import invitePolish from "../../assets/invitePolish.jpg";
 
 interface SwiperSliderProps {
     banners?: string[];
@@ -14,8 +18,24 @@ interface SwiperSliderProps {
     LinkToLogin?: boolean; // If true, wraps each banner in a Link to the login page
 }
 export default function SwiperSlider({ LinkToLogin = true }: SwiperSliderProps) {
+    const { i18n } = useTranslation();
+    const currentLanguage = i18n.language;
 
-    const imagesToShow = [bannerContent, bannerContent, bannerContent];
+    const getBannerBasedOnLanguage = () => {
+        switch (currentLanguage) {
+            case 'ar':
+                return inviteArabic; // Replace with Arabic banner path
+            case 'pl':
+                return invitePolish; // Replace with Polish banner path
+            case 'en':
+                return inviteEnglish
+            default:
+                return inviteEnglish; // Replace with English banner path
+        }
+    }
+
+    const bannerImage = getBannerBasedOnLanguage();
+    const imagesToShow = [bannerImage, bannerImage, bannerImage];
     // const { crouselImages } = useAppSelector((state) => state.homePage);
     // const defaultBanners = ['/jackpot_img.png', '/winPizes_img.png', '/bigWins_img.png'];
     // const imagesToShow = crouselImages.length ? crouselImages : defaultBanners;
@@ -53,7 +73,7 @@ export default function SwiperSlider({ LinkToLogin = true }: SwiperSliderProps) 
                                     </Link>
                                 ) : (
                                     <img
-                                        src={bannerContent}
+                                        src={inviteEnglish}
                                         alt={`banner-${idx}`}
                                         width={500}
                                         height={200}
