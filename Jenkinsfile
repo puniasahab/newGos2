@@ -7,6 +7,7 @@ pipeline {
         PROD_PORT = "20238"
         DEPLOY_DIR = "/var/www/bhakti-bhav"
         SSH_KEY = "/var/lib/jenkins/.ssh/id_ed25519"
+        GIT_URL_SSH = "git@github.com:puniasahab/newGos2.git"
     }
 
     stages {
@@ -31,11 +32,11 @@ pipeline {
             steps {
                 echo "Installing NPM dependencies and building project..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
                         cd ${DEPLOY_DIR} &&
                         npm install &&
                         npm run build
-                    '
+                    "
                 """
             }
         }
@@ -44,11 +45,11 @@ pipeline {
             steps {
                 echo "Setting permissions..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
                         sudo chown -R jenkins:www-data ${DEPLOY_DIR}
-                        sudo find ${DEPLOY_DIR} -type d -exec chmod 755 {} \;
-                        sudo find ${DEPLOY_DIR} -type f -exec chmod 644 {} \;
-                    '
+                        sudo find ${DEPLOY_DIR} -type d -exec chmod 755 {} \\\;
+                        sudo find ${DEPLOY_DIR} -type f -exec chmod 644 {} \\\;
+                    "
                 """
             }
         }
