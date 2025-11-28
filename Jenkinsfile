@@ -32,11 +32,7 @@ pipeline {
             steps {
                 echo "Installing NPM dependencies and building project..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
-                        cd ${DEPLOY_DIR} &&
-                        npm install &&
-                        npm run build
-                    "
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "cd ${DEPLOY_DIR} && npm install && npm run build"
                 """
             }
         }
@@ -46,9 +42,9 @@ pipeline {
                 echo "Setting permissions..."
                 sh """
                     ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
-                        sudo chown -R jenkins:www-data ${DEPLOY_DIR}
-                        sudo find ${DEPLOY_DIR} -type d -exec chmod 755 {} \\\;
-                        sudo find ${DEPLOY_DIR} -type f -exec chmod 644 {} \\\;
+                        sudo chown -R jenkins:www-data ${DEPLOY_DIR} &&
+                        sudo chmod -R 755 ${DEPLOY_DIR} &&
+                        sudo find ${DEPLOY_DIR} -type f -exec chmod 644 {} ';'
                     "
                 """
             }
