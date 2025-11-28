@@ -35,8 +35,7 @@ pipeline {
                 sh """
                     ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
                         export NVM_DIR="\$HOME/.nvm"
-                        [ -s "\$NVM_DIR/nvm.sh" ] || curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-                        [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
                         nvm install ${NODE_VERSION}
                         nvm use ${NODE_VERSION}
                         nvm alias default ${NODE_VERSION}
@@ -53,7 +52,7 @@ pipeline {
                 sh """
                     ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
                         export NVM_DIR="\$HOME/.nvm"
-                        [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
                         nvm use ${NODE_VERSION}
                         cd ${DEPLOY_DIR} &&
                         npm install &&
@@ -75,10 +74,15 @@ pipeline {
                 """
             }
         }
+
     }
 
     post {
-        success { echo "Deployment completed successfully!" }
-        failure { echo "Deployment failed!" }
+        success {
+            echo "Deployment completed successfully!"
+        }
+        failure {
+            echo "Deployment failed!"
+        }
     }
 }
