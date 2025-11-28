@@ -8,7 +8,7 @@ pipeline {
         DEPLOY_DIR = "/var/www/bhakti-bhav"
         SSH_KEY = "/var/lib/jenkins/.ssh/id_ed25519"
         GIT_URL_SSH = "git@github.com:puniasahab/newGos2.git"
-        NODE_VERSION = "20.19.0"   // Required Node.js version
+        NODE_VERSION = "20.19.0"
     }
 
     stages {
@@ -29,16 +29,20 @@ pipeline {
             }
         }
 
-        stage('Upgrade Node.js') {
+        stage('Install NVM & Node') {
             steps {
-                echo "Upgrading Node.js on server..."
+                echo "Installing NVM and Node.js on server..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
-                        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-                        sudo apt-get install -y nodejs
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
+                        export NVM_DIR="\$HOME/.nvm"
+                        [ -s "\$NVM_DIR/nvm.sh" ] || curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+                        [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+                        nvm install ${NODE_VERSION}
+                        nvm use ${NODE_VERSION}
+                        nvm alias default ${NODE_VERSION}
                         node -v
                         npm -v
-                    "
+                    '
                 """
             }
         }
@@ -47,11 +51,14 @@ pipeline {
             steps {
                 echo "Installing NPM dependencies and building project..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
+                        export NVM_DIR="\$HOME/.nvm"
+                        [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+                        nvm use ${NODE_VERSION}
                         cd ${DEPLOY_DIR} &&
                         npm install &&
                         npm run build
-                    "
+                    '
                 """
             }
         }
@@ -68,15 +75,10 @@ pipeline {
                 """
             }
         }
-
     }
 
     post {
-        success {
-            echo "Deployment completed successfully!"
-        }
-        failure {
-            echo "Deployment failed!"
-        }
+        success { echo "Deployment completed successfully!" }
+        failure { echo "Deployment failed!" }
     }
 }
