@@ -8,7 +8,6 @@ pipeline {
         DEPLOY_DIR = "/var/www/bhakti-bhav"
         SSH_KEY = "/var/lib/jenkins/.ssh/id_ed25519"
         GIT_URL_SSH = "git@github.com:puniasahab/newGos2.git"
-        NODE_VERSION = "20.19.0"
     }
 
     stages {
@@ -29,35 +28,11 @@ pipeline {
             }
         }
 
-        stage('Install NVM & Node') {
-            steps {
-                echo "Installing NVM and Node.js on server..."
-                sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
-                        export NVM_DIR="\$HOME/.nvm"
-                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
-                        nvm install ${NODE_VERSION}
-                        nvm use ${NODE_VERSION}
-                        nvm alias default ${NODE_VERSION}
-                        node -v
-                        npm -v
-                    '
-                """
-            }
-        }
-
         stage('Install Dependencies & Build') {
             steps {
                 echo "Installing NPM dependencies and building project..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} '
-                        export NVM_DIR="\$HOME/.nvm"
-                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
-                        nvm use ${NODE_VERSION}
-                        cd ${DEPLOY_DIR} &&
-                        npm install &&
-                        npm run build
-                    '
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "cd ${DEPLOY_DIR} && npm install && npm run build"
                 """
             }
         }
