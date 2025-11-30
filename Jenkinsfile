@@ -5,7 +5,7 @@ pipeline {
         PROD_USER = "jenkins"
         PROD_HOST = "195.154.184.2"
         PROD_PORT = "20238"
-        DEPLOY_DIR = "/var/www/newGos2"
+        DEPLOY_DIR = "/var/www/demo3.gamespro.co.in"
         SSH_KEY = "/var/lib/jenkins/.ssh/id_ed25519"
     }
 
