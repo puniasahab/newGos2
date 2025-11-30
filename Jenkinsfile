@@ -5,59 +5,80 @@ pipeline {
         PROD_USER = "jenkins"
         PROD_HOST = "195.154.184.2"
         PROD_PORT = "20238"
-        DEPLOY_DIR = "/var/www/bhakti-bhav"
+        DEPLOY_DIR = "/var/www/newGos2"
         SSH_KEY = "/var/lib/jenkins/.ssh/id_ed25519"
-        GIT_URL_SSH = "git@github.com:puniasahab/newGos2.git"
     }
 
     stages {
 
+        /* --------------------------------------------------- */
         stage('Checkout Code') {
             steps {
                 echo "Pulling code from GitHub..."
-                git branch: 'main', url: "${GIT_URL_SSH}"
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'git@github.com:puniasahab/newGos2'
+                    ]]
+                ])
             }
         }
 
-        stage('Copy to Server') {
+        /* --------------------------------------------------- */
+        stage('Install & Build Next.js') {
             steps {
-                echo "Copying files to server..."
+                echo "Installing dependencies..."
+                sh 'npm install'
+                echo "Building Next.js project..."
+                sh 'CI=false npm run build'
+            }
+        }
+
+        /* --------------------------------------------------- */
+        stage('Deploy Project to Server') {
+            steps {
+                echo "Deploying full project to production server..."
                 sh """
-                    rsync -avz -e "ssh -p ${PROD_PORT} -i ${SSH_KEY}" --exclude='node_modules' ./ ${PROD_USER}@${PROD_HOST}:${DEPLOY_DIR}
+                    # Sync all files except node_modules and .env, do not preserve owner/group
+                    rsync -az --no-o --no-g --times --delete --exclude 'node_modules' --exclude '.env' -e "ssh -i ${SSH_KEY} -p ${PROD_PORT}" ./ ${PROD_USER}@${PROD_HOST}:${DEPLOY_DIR}/
+
+                    # Sync dist/ folder separately if it exists
+                    if [ -d "dist" ]; then
+                        rsync -az --no-o --no-g --times -e "ssh -i ${SSH_KEY} -p ${PROD_PORT}" dist/ ${PROD_USER}@${PROD_HOST}:${DEPLOY_DIR}/dist/
+                    fi
                 """
             }
         }
 
-        stage('Install Dependencies & Build') {
+              /* ------------------------------------------ */
+        stage('Copy ENV File to Server') {
             steps {
-                echo "Installing NPM dependencies and building project..."
+                echo "Copying .env file to production server..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "cd ${DEPLOY_DIR} && npm install && npm run build"
+                    scp -i ${SSH_KEY} -P ${PROD_PORT} \
+                        /var/lib/jenkins/.env/newGos2.env \
+                        ${PROD_USER}@${PROD_HOST}:${DEPLOY_DIR}/.env
                 """
             }
         }
 
-        stage('Set Permissions') {
+        /* --------------------------------------------------- */
+        stage('Set Permissions on Server') {
             steps {
-                echo "Setting permissions..."
+                echo "Setting correct permissions on production server..."
                 sh """
-                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "
-                        sudo chown -R jenkins:www-data ${DEPLOY_DIR} &&
-                        sudo chmod -R 755 ${DEPLOY_DIR} &&
-                        sudo find ${DEPLOY_DIR} -type f -exec chmod 644 {} ';'
+                    ssh -i ${SSH_KEY} -p ${PROD_PORT} ${PROD_USER}@${PROD_HOST} "\
+                        echo 'Changing owner to jenkins:www-data'; \
+                        sudo chown -R jenkins:www-data ${DEPLOY_DIR}; \
+                        echo 'Setting directory permissions to 775'; \
+                        sudo find ${DEPLOY_DIR} -type d -exec chmod 775 {} \\\\; ; \
+                        echo 'Setting file permissions to 664'; \
+                        sudo find ${DEPLOY_DIR} -type f -exec chmod 664 {} \\\\; ; \
+                        echo 'Permissions updated!'; \
                     "
                 """
             }
-        }
-
-    }
-
-    post {
-        success {
-            echo "Deployment completed successfully!"
-        }
-        failure {
-            echo "Deployment failed!"
         }
     }
 }
