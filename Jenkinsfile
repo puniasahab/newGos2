@@ -57,7 +57,7 @@ pipeline {
                 echo "Copying .env file to production server..."
                 sh """
                     scp -i ${SSH_KEY} -P ${PROD_PORT} \
-                        /var/lib/jenkins/.env/newGos2.env \
+                        /var/lib/jenkins/.env/gos2.env \
                         ${PROD_USER}@${PROD_HOST}:${DEPLOY_DIR}/.env
                 """
             }
