@@ -26,6 +26,18 @@ pipeline {
         }
 
         /* --------------------------------------------------- */
+        stage('Copy ENV to Workspace') {
+            steps {
+                echo "Copying environment file into Jenkins workspace..."
+                sh """
+                    cp /var/lib/jenkins/.env/gos2.env .env
+                """
+                echo ".env file copied successfully!"
+            }
+        }
+
+        
+        /* --------------------------------------------------- */
         stage('Install & Build Next.js') {
             steps {
                 echo "Installing dependencies..."
