@@ -68,54 +68,74 @@
     "title": "Privacy Policy",
     "introduction": {
       "title": "Our Privacy Policy",
-      "content": "Your privacy is important to us. Game of Stones operates as a completely open platform where users can play games directly without providing any personal information or data. We are committed to protecting your privacy by maintaining a zero-data collection policy."
+      "content": "Your privacy is important to us. It is Game of Stones' policy to respect your privacy regarding any information we may collect from you across our website, http://gameofstones.com, and other sites we own and operate."
     },
     "section1": {
       "title": "1. INTRODUCTION",
-      "content": "This Privacy Policy explains the privacy practices of Game of Stones (\"Platform\"), operated by ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Company,\" \"we,\" \"our,\" or \"us\"). Our platform allows users to play games directly without registration, login, or providing any personal information. We maintain a strict no-data policy."
+      "content": "This Privacy Policy explains how Game of Stones (\"Platform\"), operated by ARSHYA INFO SOLUTIONS PRIVATE LIMITED (\"Company,\" \"we,\" \"our,\" or \"us\"), collects, processes, stores, and protects user data. By using our Platform, you agree to the terms outlined in this policy."
     },
     "section2": {
-      "title": "2. ZERO DATA COLLECTION POLICY",
-      "content1": "2.1. Our platform operates with complete user anonymity - no registration or personal information is required.",
-      "content2": "2.2. Users can access and play all games directly without providing names, email addresses, phone numbers, or any other personal details.",
-      "content3": "2.3. No user accounts, profiles, or personal data storage of any kind exists on our platform.",
-      "content4": "2.4. All gaming is completely anonymous with no digital footprint or stored records."
+      "title": "2. DATA COLLECTION",
+      "content1": "2.1. Users must register using a valid mobile number for authentication and account creation.",
+      "content2": "2.2. Additional details such as gender, age, and payment information may be collected for personalization and compliance purposes.",
+      "content3": "2.3. The Platform may collect data related to user activity, gameplay, device information, and location (if permitted) to enhance service functionality.",
+      "content4": "2.4. All data is securely stored using industry-standard encryption protocols."
     },
     "section3": {
-      "title": "3. ANONYMOUS GAMING EXPERIENCE",
-      "content1": "3.1. Our platform provides a completely anonymous gaming experience:",
-      "bullet1": "Direct game access without any registration or login process.",
-      "bullet2": "No user identification, tracking, or profiling of any kind.",
-      "bullet3": "Completely anonymous gameplay with no data collection or storage.",
-      "bullet4": "No marketing communications as we have no contact information to store.",
-      "bullet5": "No user analytics, behavior tracking, or performance monitoring that involves personal data."
+      "title": "3. PURPOSE OF DATA USAGE",
+      "content1": "3.1. The data collected is used for the following purposes:",
+      "bullet1": "Game participation & winnings distribution.",
+      "bullet2": "Tax compliance, including TDS reporting and documentation.",
+      "bullet3": "Fraud prevention and ensuring fair gameplay.",
+      "bullet4": "Marketing & user experience enhancement, including personalized recommendations and promotional communications (subject to opt-in preferences).",
+      "bullet5": "Technical improvements and troubleshooting to enhance Platform performance."
     },
     "section4": {
-      "title": "4. NO TRANSACTIONS OR FINANCIAL DATA",
-      "content1": "4.1. Currently, our platform operates without any financial transactions or monetary exchanges.",
-      "bullet1": "No payment processing, billing information, or financial data collection.",
-      "bullet2": "No stored payment methods, transaction histories, or financial records.",
-      "bullet3": "No tax-related data collection as there are no monetary transactions.",
-      "content2": "4.2. Games are provided free of charge without any financial commitments or data requirements.",
-      "content3": "4.3. No third-party payment processors or financial service integrations are currently implemented."
+      "title": "4. DATA SHARING & PROTECTION",
+      "content1": "4.1. User data is not shared with third parties except in the following circumstances:",
+      "bullet1": "When required by tax authorities or legal enforcement agencies.",
+      "bullet2": "For payment processing through secure third-party gateways.",
+      "bullet3": "To comply with legal and regulatory obligations.",
+      "content2": "4.2. All personal data is stored on secure servers with encryption to prevent unauthorized access.",
+      "content3": "4.3. The Company implements access controls and security protocols to safeguard user information."
     },
 
 
 
 
     "section5": {
-      "title": "5. USER RIGHTS IN AN ANONYMOUS SYSTEM",
-      "content1": "Since our platform operates completely anonymously without any data collection:",
-      "content2": "No personal accounts or profiles exist that could require updates or modifications.",
-      "content3": "No communication preferences exist as we do not collect contact information.",
-      "content4": "No stored data exists that could be accessed, modified, or deleted."
+      "title": "5. USER RIGHTS & DATA ACCESS",
+      "content1": "Update or modify personal details via account settings.",
+      "content2": "Opt-out of marketing communications through notification preferences.",
+      "content3": "Access information regarding their stored data, subject to verification.",
+      "content4": "Requests for data modifications or deletion may take up to 30 days to process, subject to compliance requirements."
     },
     "section6": {
-      "title": "6. CONTACT INFORMATION",
-      "content": "For any privacy-related queries or general platform inquiries, you may contact:",
+      "title": "6. COOKIES & TRACKING TECHNOLOGIES",
+      "content1": "The Platform uses cookies and tracking technologies for:",
+      "bullet1": "Session management and seamless gameplay experience.",
+      "bullet2": "User analytics to improve services.",
+      "bullet3": "Fraud detection and security enhancements.",
+      "content2": "Users can disable cookies through browser settings, but this may impact certain functionalities of the Platform."
+    },
+    "section7": {
+      "title": "7. DATA RETENTION POLICY",
+      "content1": "User data is retained for as long as necessary to fulfil its purpose, including regulatory and legal requirements.",
+      "content2": "Winnings and tax-related records may be stored for up to 7 years as per applicable tax laws.",
+      "content3": "Inactive accounts may be deleted or anonymized after a period of 24 months."
+    },
+    "section8": {
+      "title": "8. POLICY UPDATES & NOTIFICATIONS",
+      "content1": "The Company reserves the right to update, modify, or amend this Privacy Policy at its discretion.",
+      "content2": "Users will be notified of significant changes via in-app notifications and/or email.",
+      "content3": "Continued use of the Platform after policy changes constitutes acceptance of the revised terms."
+    },
+    "section9": {
+      "title": "9. CONTACT INFORMATION",
+      "content": "For any privacy-related queries or requests, users may contact:",
       "companyName": "ARSHYA INFO SOLUTIONS PRIVATE LIMITED",
       "address": "Address: 032, 4th Floor, EMERALD PLAZA, Sector 65, Gurugram, Haryana 122018",
-      "email": "Email: support@gameofstones.ai"
+      "email": "Email: support@arshiyainfosolutions.com"
     }
   },
   "terms": {
