@@ -51,6 +51,7 @@ const Questions = () => {
     const [skipButtonClicked, setSkipButtonClicked] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+    const [areButtonsDisabled, setAreButtonsDisabled] = useState(false);
     const [timerKey, setTimerKey] = useState(0); // Key to force timer restart
 
     const { playClickSound, playCorrectSound, playWrongSound } = useSound();
@@ -85,10 +86,11 @@ const Questions = () => {
 
     // Handle timer completion
     const handleTimerComplete = async () => {
-        if (isAnswerSubmitted) return; // Don't process if answer already submitted
+        if (isAnswerSubmitted || areButtonsDisabled) return; // Don't process if answer already submitted or buttons disabled
 
         if (type === QuestionType.RAPID_FIRE) {
             // For RAPID_FIRE, when timer ends, send duration to API and complete the entire quiz
+            setAreButtonsDisabled(true); // Disable buttons
             try {
                 const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
                 // Submit with duration = 60 seconds for RAPID_FIRE timer completion
@@ -113,6 +115,7 @@ const Questions = () => {
                 // status 2 = timeout/skip
             } catch (error) {
                 console.error("Error submitting timer completion for RAPID_FIRE:", error);
+                setAreButtonsDisabled(false); // Re-enable on error
             }
         } else {
             // For JACKPOT and FASTEST_FINGER, skip current question and move to next
@@ -131,9 +134,13 @@ const Questions = () => {
 
 
     const handleAnswerClick = async (answer: string) => {
-        if (isAnswerSubmitted) return;
+        if (isAnswerSubmitted || areButtonsDisabled) return;
+        
+        // Disable all buttons immediately
+        setAreButtonsDisabled(true);
         setSelectedAnswer(answer);
         setIsAnswerSubmitted(true);
+        
         const isAnswerCorrect = answer === correctAnswer;
         if (isAnswerCorrect) {
             // Handle correct answer
@@ -159,6 +166,7 @@ const Questions = () => {
             setTimeout(() => {
                 setSelectedAnswer(null);
                 setIsAnswerSubmitted(false);
+                setAreButtonsDisabled(false); // Re-enable buttons for next question
                 setSkipButtonClicked(!skipButtonClicked);
 
                 dispatch(setTotalStonesGained(response.data.session.gain_ston))
@@ -167,6 +175,7 @@ const Questions = () => {
         } catch (error) {
             setSelectedAnswer(null);
             setIsAnswerSubmitted(false);
+            setAreButtonsDisabled(false); // Re-enable buttons on error
         }
     }
 
@@ -197,6 +206,11 @@ const Questions = () => {
     };
 
     const handleSkip = () => {
+        if (areButtonsDisabled) return;
+        
+        // Disable all buttons immediately
+        setAreButtonsDisabled(true);
+        
         try {
             const status = 2;
             const contestId = getNameAndContestId()?.find((item: { name: string, contestId: number }) => item.name === type)?.contestId;
@@ -208,6 +222,7 @@ const Questions = () => {
         setTimeout(() => {
             setSelectedAnswer(null);
             setIsAnswerSubmitted(false);
+            setAreButtonsDisabled(false); // Re-enable buttons for next question
             setSkipButtonClicked(!skipButtonClicked);
             resetTimerForNewQuestion();
         }, 1200);
@@ -558,8 +573,8 @@ const Questions = () => {
                                     fontSize: opt1.length > 50 ? "14px" : opt1.length > 30 ? "16px" : opt1.length > 20 ? "18px" : "20px",
                                     backgroundColor: getOptionBackgroundColor(opt1),
                                     color: getOptionTextColor(opt1),
-                                    cursor: isAnswerSubmitted ? 'default' : 'pointer',
-                                    opacity: isAnswerSubmitted ? 0.8 : 1,
+                                    cursor: (isAnswerSubmitted || areButtonsDisabled) ? 'default' : 'pointer',
+                                    opacity: (isAnswerSubmitted || areButtonsDisabled) ? 0.6 : 1,
                                     transition: 'all 0.3s ease',
                                     height: '48px',
                                     minHeight: '48px',
@@ -569,9 +584,10 @@ const Questions = () => {
                                     justifyContent: 'center',
                                     overflow: 'hidden',
                                     wordWrap: 'break-word',
-                                    lineHeight: '1.2'
+                                    lineHeight: '1.2',
+                                    pointerEvents: (isAnswerSubmitted || areButtonsDisabled) ? 'none' : 'auto'
                                 }}
-                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt1)}
+                                onClick={() => !(isAnswerSubmitted || areButtonsDisabled) && handleAnswerClick(opt1)}
                             >
                                 {opt1}
                             </div>}
@@ -584,8 +600,8 @@ const Questions = () => {
                                     fontSize: opt2.length > 50 ? "14px" : opt2.length > 30 ? "16px" : opt2.length > 20 ? "18px" : "20px",
                                     backgroundColor: getOptionBackgroundColor(opt2),
                                     color: getOptionTextColor(opt2),
-                                    cursor: isAnswerSubmitted ? 'default' : 'pointer',
-                                    opacity: isAnswerSubmitted ? 0.8 : 1,
+                                    cursor: (isAnswerSubmitted || areButtonsDisabled) ? 'default' : 'pointer',
+                                    opacity: (isAnswerSubmitted || areButtonsDisabled) ? 0.6 : 1,
                                     transition: 'all 0.3s ease',
                                     height: '48px',
                                     minHeight: '48px',
@@ -595,9 +611,10 @@ const Questions = () => {
                                     justifyContent: 'center',
                                     overflow: 'hidden',
                                     wordWrap: 'break-word',
-                                    lineHeight: '1.2'
+                                    lineHeight: '1.2',
+                                    pointerEvents: (isAnswerSubmitted || areButtonsDisabled) ? 'none' : 'auto'
                                 }}
-                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt2)}
+                                onClick={() => !(isAnswerSubmitted || areButtonsDisabled) && handleAnswerClick(opt2)}
                             >
                                 {opt2}
                             </div>}
@@ -608,10 +625,10 @@ const Questions = () => {
                                     textAlign: 'center',
                                     padding: '4px',
                                     fontSize: opt3.length > 50 ? "14px" : opt3.length > 30 ? "16px" : opt3.length > 20 ? "18px" : "20px",
-                                    cursor: isAnswerSubmitted ? 'default' : 'pointer',
+                                    cursor: (isAnswerSubmitted || areButtonsDisabled) ? 'default' : 'pointer',
                                     backgroundColor: getOptionBackgroundColor(opt3),
                                     color: getOptionTextColor(opt3),
-                                    opacity: isAnswerSubmitted ? 0.8 : 1,
+                                    opacity: (isAnswerSubmitted || areButtonsDisabled) ? 0.6 : 1,
                                     transition: 'all 0.3s ease',
                                     height: '48px',
                                     minHeight: '48px',
@@ -621,9 +638,10 @@ const Questions = () => {
                                     justifyContent: 'center',
                                     overflow: 'hidden',
                                     wordWrap: 'break-word',
-                                    lineHeight: '1.2'
+                                    lineHeight: '1.2',
+                                    pointerEvents: (isAnswerSubmitted || areButtonsDisabled) ? 'none' : 'auto'
                                 }}
-                                onClick={() => !isAnswerSubmitted && handleAnswerClick(opt3)}
+                                onClick={() => !(isAnswerSubmitted || areButtonsDisabled) && handleAnswerClick(opt3)}
                             >
                                 {opt3}
                             </div>}
@@ -637,8 +655,8 @@ const Questions = () => {
                                         fontSize: opt4.length > 50 ? "14px" : opt4.length > 30 ? "16px" : opt4.length > 20 ? "18px" : "20px",
                                         backgroundColor: getOptionBackgroundColor(opt4),
                                         color: getOptionTextColor(opt4),
-                                        cursor: isAnswerSubmitted ? 'default' : 'pointer',
-                                        opacity: isAnswerSubmitted ? 0.8 : 1,
+                                        cursor: (isAnswerSubmitted || areButtonsDisabled) ? 'default' : 'pointer',
+                                        opacity: (isAnswerSubmitted || areButtonsDisabled) ? 0.6 : 1,
                                         transition: 'all 0.3s ease',
                                         height: '48px',
                                         minHeight: '48px',
@@ -648,9 +666,10 @@ const Questions = () => {
                                         justifyContent: 'center',
                                         overflow: 'hidden',
                                         wordWrap: 'break-word',
-                                        lineHeight: '1.2'
+                                        lineHeight: '1.2',
+                                        pointerEvents: (isAnswerSubmitted || areButtonsDisabled) ? 'none' : 'auto'
                                     }}
-                                    onClick={() => !isAnswerSubmitted && handleAnswerClick(opt4)}
+                                    onClick={() => !(isAnswerSubmitted || areButtonsDisabled) && handleAnswerClick(opt4)}
                                 >
                                     {opt4}
                                 </div>}
@@ -659,8 +678,26 @@ const Questions = () => {
                         {/* {Skip Button} */}
                         <div style={{ backgroundColor: 'black' }}>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '32px', marginLeft: '32px', backgroundColor: 'black' }}>
-                                <div style={{ boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', color: '#930000', backgroundColor: 'white', padding: '8px', marginTop: '16px', textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginLeft: '16px', marginRight: '16px', width: 'calc(100% - 180px)', marginBottom: '120px', borderRadius: '0 20px 0 20px' }}
-                                    onClick={() => { handleSkip() }}
+                                <div style={{ 
+                                    boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)', 
+                                    color: areButtonsDisabled ? '#666' : '#930000', 
+                                    backgroundColor: areButtonsDisabled ? '#f0f0f0' : 'white', 
+                                    padding: '8px', 
+                                    marginTop: '16px', 
+                                    textAlign: 'center', 
+                                    fontSize: '24px', 
+                                    fontWeight: 'bold', 
+                                    marginLeft: '16px', 
+                                    marginRight: '16px', 
+                                    width: 'calc(100% - 180px)', 
+                                    marginBottom: '120px', 
+                                    borderRadius: '0 20px 0 20px',
+                                    cursor: areButtonsDisabled ? 'not-allowed' : 'pointer',
+                                    opacity: areButtonsDisabled ? 0.6 : 1,
+                                    transition: 'all 0.3s ease',
+                                    pointerEvents: areButtonsDisabled ? 'none' : 'auto'
+                                }}
+                                    onClick={() => !areButtonsDisabled && handleSkip()}
                                 >
                                     {t('common.skip')}
                                 </div>
