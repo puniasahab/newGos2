@@ -17,7 +17,7 @@ const Footer = () => {
             navigate('/login');
             return;
         }
-        navigate('/questions');
+        navigate('/');
     };
 
     const handleProfileClick = () => {
@@ -41,7 +41,7 @@ const Footer = () => {
                 <div className="progress-line-left"></div>
                 
                 {/* Game Controller Center Icon */}
-                <div className="nav-item center-item" onClick={handleGameClick}>
+                <div className="nav-item center-item" onClick={handleGameClick} style={{cursor: 'pointer'}}>
                     <div className="center-circle">
                         <Gamepad2 
                             size={24} 
